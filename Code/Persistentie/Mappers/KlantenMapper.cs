@@ -1,15 +1,13 @@
-﻿using System;
+﻿using Domein;
+using Domein.Exceptions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Domein;
-using Domein.Exceptions;
 
 namespace Persistentie {
 	public class KlantenMapper : IKlantenRepository {
 		public List<Klant> Klanten { get; } = new List<Klant>() {
-			new Klant(1, "Stan", "Persoons", "stan.persoons@student.hogent.be", 
+			new Klant(1, "Stan", "Persoons", "stan.persoons@student.hogent.be",
 				new List<string>() {
 					"Programmeren",
 					"Javascript",

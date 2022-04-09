@@ -1,122 +1,167 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Domein;
-using Domein.Exceptions;
+﻿using Domein;
 using Persistentie;
+using System;
+using System.Collections.Generic;
 
 namespace CUI {
 	public class FitnessApp {
-		private static IKlantenRepository _klantenRepo = new KlantenMapper();
-		private static IReservatieRepository _reservatienRepo = new ReservatieMapper();
-		private static IToestelRepository _toestellenRepo = new ToestellenMapper();
+		private static readonly IKlantenRepository _klantenRepo = new KlantenMapper();
+		private static readonly IReservatieRepository _reservatienRepo = new ReservatieMapper();
+		private static readonly IToestelRepository _toestellenRepo = new ToestellenMapper();
+		private static readonly UniekeCode _uniekeCode = UniekeCode.Instance;
+		private readonly DomeinController _domeinController = new(_reservatienRepo, _klantenRepo, _toestellenRepo);
+		private const char _requiredCharacter = '#';
 
-		static UniekeCode _uniekeCode = UniekeCode.Instance;
-
-		DomeinController _domeinController = new DomeinController(_reservatienRepo, _klantenRepo, _toestellenRepo);
+		public static readonly ConsoleColor DefaultReadLineColor = ConsoleColor.DarkYellow;
+		public static readonly string GaVerderOptie = Utility.SchrijfUnderline("Ga Verder");
+		public static int SelectedIndex = 0;
+		public static int OudeselectedIndex;
 
 		public Klant RegistreerKlant() {
-			string voornaam = String.Empty, achternaam = String.Empty, email = String.Empty, typeAlsString = String.Empty;
-			List<string> interesses = new List<string>();
-			DateTime geboorteDatum = new DateTime();
-			Adres adres = new Adres();
-			TypeKlant type;
+			ResetPositionIndex();
 
-			const int overgeblevenOpties = 5;
+			// Voornaam
+			string voornaam = string.Empty;
 
-			bool isOk = false,
-				 VoornaamIngevuld = false,
-				 AchternaamIngevuld = false,
-				 InteresseIngevuld = false,
-				 AdresIngevuld = false,
-				 typeIngevuld = false,
-				 geboorteDatumIngevuld = false;
+			// Achternaam
+			string achternaam = string.Empty;
+
+			// Email
+			string email = string.Empty;
+
+			// Adres
+			Adres adres = new();
+			int selectedAdresIndex, postCode = 0;
+			string straatNaam = string.Empty, huisNummer = string.Empty, plaats = string.Empty;
+			bool straatNaamIngevuld = false, huisNummerIngevuld = false, plaatsIngevuld = false, postCodeIngevuld = false;
+
+			//Abonnement
+			int selectedAbonnementIndex;
+			string typeAlsString = string.Empty;
+			TypeKlant type = TypeKlant.Bronze;  // Info: Moet er staat anders krijg je een null reference error, Hieronder krijgt hij een waarde.
+			List<string> TypeAbonementen = new() { "Gold", "Silver", "Bronze" };
+
+			//Interesses
+			int selectedInteresseIndex;
+			List<string> interesses = new();
+			List<string> interesseOpties = new() { "Voeg interesse toe.", "Ga terug." };
+
+			//GeboorteDatum
+			DateTime geboorteDatum = new();
+
+			List<string> optieLijst;
+			int selectedRegistreerOptieIndex;
+			bool isOk, VnaamOk = false, AnaamOk = false, InterOk = false, AdrOk = false, TypOk = false, GebrOk = false, gaTerug, CompleetOk = false;
 
 			do {
-				List<string> optieLijst = new List<string>() { $"Voornaam {(string.IsNullOrEmpty(voornaam) ? '*' : voornaam)}", $"Achternaam {(string.IsNullOrEmpty(achternaam) ? '*' : achternaam)}", $"GeboorteDatum {(geboorteDatumIngevuld ? geboorteDatum.ToShortDateString() : '*')}", $"Adres {(AdresIngevuld ? $"{adres.StraatNaam}..." : '*')}", $"Abonnoment {(typeIngevuld ? typeAlsString : '*')}", $"Interesses {string.Join(", ", interesses)}" };
-				int selectedIndex = OptieLijstConroller(optieLijst);
-				switch (selectedIndex) {
+				optieLijst = new() {
+					$"Voornaam: {(string.IsNullOrEmpty(voornaam) ? _requiredCharacter : voornaam)}",
+					$"Achternaam: {(string.IsNullOrEmpty(achternaam) ? _requiredCharacter : achternaam)}",
+					$"GeboorteDatum: {(GebrOk ? geboorteDatum.ToShortDateString() : _requiredCharacter)}",
+					$"Adres: {(AdrOk ? $"{adres.StraatNaam}..." : _requiredCharacter)}",
+					$"Abonnement: {(TypOk ? typeAlsString : _requiredCharacter)}",
+					$"Interesses: {(interesses.Count == 0 ? _requiredCharacter : string.Join(", ", interesses))}"
+				};
+
+				if (VnaamOk && AnaamOk && AdrOk && GebrOk && InterOk && TypOk) {
+					optieLijst[^1] = $"Interesses: {(interesses.Count == 0 ? _requiredCharacter : string.Join(", ", interesses))}\n";
+					optieLijst.Add(GaVerderOptie);
+				}
+
+				selectedRegistreerOptieIndex = Utility.OptieLijstConroller(optieLijst, metEinde: true);
+				switch (selectedRegistreerOptieIndex) {
+					#region |=> Voornaam
 					case 0:
-						Console.Write($"Voornaam: ");
-						voornaam = Console.ReadLine();
-						VoornaamIngevuld = true;
+						Utility.Logger.Info($"--- Voornaam ---", true);
+						voornaam = Utility.ColorInput.ReadInput(ConsoleColor.Cyan, Utility.SelectPrefix);
+						VnaamOk = true;
+						SchuifIndexPositieOp();
 						break;
+					#endregion
 
+					#region |=> Achternaam
 					case 1:
-						Console.Write($"Achternaam: ");
-						achternaam = Console.ReadLine();
-						AchternaamIngevuld = true;
+						Utility.Logger.Info($"--- Achternaam ---", true);
+						achternaam = Utility.ColorInput.ReadInput(ConsoleColor.Cyan, Utility.SelectPrefix);
+						AnaamOk = true;
+						SchuifIndexPositieOp();
 						break;
+					#endregion
 
+					#region |=> GeboorteDatum
 					case 2:
-						Console.Write($"GeboorteDatum (DD-MM-YYYY): ");
-						DateTime datum;
 						do {
-							isOk = DateTime.TryParse(Console.ReadLine(), out datum);
+							Utility.Logger.Info($"--- GeboorteDatum (DD/MM/YYYY) ---", true);
+							isOk = DateTime.TryParse(Utility.ColorInput.ReadInput(ConsoleColor.Cyan, Utility.SelectPrefix), out geboorteDatum);
+							Console.Clear();
+							Utility.Logger.Error("GeboorteDatum is niet in de correcte vorm!", true);
 						} while (!isOk);
-						geboorteDatum = datum;
-						geboorteDatumIngevuld = true;
+						GebrOk = true;
+						SchuifIndexPositieOp();
 						break;
+					#endregion
 
+					#region |=> Adres
 					case 3:
-						Console.Write($"Adres: ");
-						int selectedAdresIndex;
-
-						string straatNaam = String.Empty,
-							   straatNummer = String.Empty,
-							   plaats = String.Empty;
-
-						int postCode = 0;
-
-						bool straatNaamIngevuld = false,
-							 straatNummerIngevuld = false,
-							 plaatsIngevuld = false,
-							 postCodeIngevuld = false;
-
+						ResetPositionIndex();
 						do {
-							List<string> adresOpties = new List<string>() { $"Straat: {straatNaam}", $"HuisNr: {straatNummer}", $"Plaats: {plaats}", $"PostCode: {postCode}" };
-							selectedAdresIndex = OptieLijstConroller(adresOpties);
-
+							gaTerug = false;
+							List<string> adresOpties = new() { 
+								$"Straat: {(straatNaamIngevuld ? straatNaam : _requiredCharacter)}",
+								$"HuisNr: {(huisNummerIngevuld ? huisNummer : _requiredCharacter)}",
+								$"Plaats: {(plaatsIngevuld ? plaats : _requiredCharacter)}",
+								$"PostCode: {(postCodeIngevuld ? postCode.ToString() /* Als je de Tostring wegdoet dan geeft hij een random value meestal 35... Raar... */ : _requiredCharacter)}",
+								"Ga Terug" };
+							selectedAdresIndex = Utility.OptieLijstConroller(adresOpties, "Adres:");
 							switch (selectedAdresIndex) {
 								case 0:
-									Console.Write("Straat: ");
-									straatNaam = Console.ReadLine();
+									Utility.Logger.Info("--- Straat ---", true);
+									straatNaam = Utility.ColorInput.ReadInput(ConsoleColor.Cyan, Utility.SelectPrefix);
 									straatNaamIngevuld = true;
+									SchuifIndexPositieOp();
 									break;
 								case 1:
-									Console.Write("Nummer: ");
-									straatNummer = Console.ReadLine();
-									straatNummerIngevuld = true;
+									Utility.Logger.Info("--- Nummer ---", true);
+									huisNummer = Utility.ColorInput.ReadInput(ConsoleColor.Cyan, Utility.SelectPrefix);
+									huisNummerIngevuld = true;
+									SchuifIndexPositieOp();
 									break;
 								case 2:
-									Console.Write("Plaats: ");
-									plaats = Console.ReadLine();
+									Utility.Logger.Info("--- Plaats ---", true);
+									plaats = Utility.ColorInput.ReadInput(ConsoleColor.Cyan, Utility.SelectPrefix);
 									plaatsIngevuld = true;
+									SchuifIndexPositieOp();
 									break;
 								case 3:
 									do {
-										Console.Write("PostCode: ");
-										isOk = int.TryParse(Console.ReadLine(), out postCode);
+										Utility.Logger.Info("--- PostCode ---", true);
+										isOk = int.TryParse(Utility.ColorInput.ReadInput(ConsoleColor.Cyan, Utility.SelectPrefix), out postCode);
+										if (!isOk) {
+											Console.Clear();
+											Utility.Logger.Error("Postcode is niet in de correcte vorm! -> B.v [9000, 9860, ...]", true);
+										}
 									} while (!isOk);
 									postCodeIngevuld = true;
 									break;
+								case 4:
+									gaTerug = true;
+									break;
 							}
-						} while (!straatNaamIngevuld || !straatNummerIngevuld || !plaatsIngevuld || !postCodeIngevuld);
-						adres = new Adres(straatNaam, straatNummer, plaats, postCode);
-						AdresIngevuld = true;
+							if (straatNaamIngevuld && huisNummerIngevuld && plaatsIngevuld && postCodeIngevuld) {
+								gaTerug = true;
+								AdrOk = true;
+							}
+						} while (!gaTerug);
+						adres = new Adres(straatNaam, huisNummer, plaats, postCode);
+						AssignOudePositie();
+						SchuifIndexPositieOp();
 						break;
+					#endregion
 
+					#region |=> Abonnement
 					case 4:
-						List<string> TypeAbonementen = new List<string>() {
-							"Gold",
-							"Silver",
-							"Bronze"
-						};
-						int selectedAbonnementIndex;
-
-						selectedAbonnementIndex = OptieLijstConroller(TypeAbonementen, "Abonnement: ");
+						ResetPositionIndex();
+						selectedAbonnementIndex = Utility.OptieLijstConroller(TypeAbonementen, "Abonnement:");
 						type = selectedAbonnementIndex switch {
 							0 => TypeKlant.Gold,
 							1 => TypeKlant.Silver,
@@ -124,102 +169,56 @@ namespace CUI {
 							_ => TypeKlant.Bronze,
 						};
 						typeAlsString = type.ToString();
-						typeIngevuld = true;
+						TypOk = true;
+						AssignOudePositie();
+						SchuifIndexPositieOp();
 						break;
+					#endregion
 
+					#region |=> Interesses
 					case 5:
-						Console.Write($"interesses: ");
-						List<string> interesseOpties = new List<string>() {
-							"Voeg interesse toe.",
-							"Ga terug."
-						};
-						int selectedInteresseIndex;
+						ResetPositionIndex();
 						do {
-							selectedInteresseIndex = OptieLijstConroller(interesseOpties);
-
+							selectedInteresseIndex = Utility.OptieLijstConroller(interesseOpties, "interesses:");
 							if (selectedInteresseIndex == 0) {
-								Console.Write("Interesse: ");
-								interesses.Add(Console.ReadLine());
+								Utility.Logger.Info("--- Interesse ---", true);
+								interesses.Add(Utility.ColorInput.ReadInput(ConsoleColor.Cyan, Utility.SelectPrefix));
 								Console.Clear();
 							}
 						} while (selectedInteresseIndex != 1);
-						InteresseIngevuld = true;
+						InterOk = true;
+						AssignOudePositie();
 						break;
-				}
-			} while (!VoornaamIngevuld || !AchternaamIngevuld || !AdresIngevuld || !geboorteDatumIngevuld || !InteresseIngevuld || !typeIngevuld);
+					#endregion
 
-			Klant klant = new Klant(_uniekeCode.GenereerRandomCode(), voornaam, achternaam, email, interesses, geboorteDatum, adres, type);
+					#region |=> Compleet Registratie
+					case 6:
+						CompleetOk = true;
+						break;
+						#endregion
+				}
+			} while (!CompleetOk);
+
+			Klant klant = new(_uniekeCode.GenereerRandomCode(), voornaam, achternaam, email, interesses, geboorteDatum, adres, type);
 			_domeinController.RegistreerKlant(klant);
-			return null;
+			return klant;
 		}
 
 		public Klant Login() {
-			Console.Write("Wat is je E-mailAdress: ");
-			string email = CustomInput.ReadInput(ConsoleColor.Green).ToLower();
+			Utility.Logger.Info("Wat is je E-mailAdress:", true);
+			string email = Utility.ColorInput.ReadInput(ConsoleColor.Cyan, Utility.SelectPrefix).ToLower();
 			return _domeinController.Login(email);
 		}
 
-		private static int selectedIndex = 0;
-
-		public void DisplayOptions(List<string> optieLijst) {
-			for (int i = 0; i < optieLijst.Count; i++) {
-				if (i == selectedIndex) {
-					Console.ForegroundColor = ConsoleColor.Green;
-					Console.WriteLine(@$"-> {optieLijst[i]}");
-					Console.ResetColor();
-				} else {
-					Console.ResetColor();
-					Console.WriteLine(@$"   {optieLijst[i]}");
-				}
-			}
+		private void ResetPositionIndex() {
+			OudeselectedIndex = SelectedIndex;
+			SelectedIndex = 0;
 		}
-
-
-		public int OptieLijstConroller(List<string> optieLijst, string prompt = "") {
-			Console.Clear();
-			ConsoleKey consoleKey;
-			do {
-				Console.WriteLine(prompt);
-				DisplayOptions(optieLijst);
-				consoleKey = Console.ReadKey().Key;
-				if (consoleKey == ConsoleKey.UpArrow) {
-					if (selectedIndex > 0)
-						selectedIndex--;
-				} else if (consoleKey == ConsoleKey.DownArrow) {
-					if (selectedIndex < optieLijst.Count - 1)
-						selectedIndex++;
-				}
-				Console.Clear();
-			} while (consoleKey != ConsoleKey.Enter);
-			int _selectedIndex = selectedIndex;
-			selectedIndex = 0;
-			return _selectedIndex;
-		}
-
-		public static class Logger {
-			public static void Error(Exception error) {
-				Console.BackgroundColor = ConsoleColor.DarkRed;
-				Console.ForegroundColor = ConsoleColor.White;
-				Console.WriteLine(error.Message);
-				Console.ResetColor();
-			}
-
-			public static void Info(Exception error) {
-				Console.BackgroundColor = ConsoleColor.DarkYellow;
-				Console.ForegroundColor = ConsoleColor.Black;
-				Console.WriteLine(error.Message);
-				Console.ResetColor();
-			}
-		}
-
-		public static class CustomInput {
-			public static string ReadInput(ConsoleColor color = ConsoleColor.White) {
-				Console.ForegroundColor = color;
-				string input = Console.ReadLine();
-				if (color != ConsoleColor.White)
-					Console.ResetColor();
-				return input;
-			}
+		private void AssignOudePositie() {
+			SelectedIndex = OudeselectedIndex;
+		}		
+		private void SchuifIndexPositieOp() {
+			SelectedIndex++;
 		}
 	}
 }

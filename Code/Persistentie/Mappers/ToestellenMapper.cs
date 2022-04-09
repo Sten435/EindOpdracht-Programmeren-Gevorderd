@@ -1,7 +1,5 @@
-﻿using System;
+﻿using Domein;
 using System.Collections.Generic;
-using System.Linq;
-using Domein;
 
 namespace Persistentie {
 	public class ToestellenMapper : IToestelRepository {
@@ -15,7 +13,7 @@ namespace Persistentie {
 		public List<Toestel> GeefAlleToestellen() => Toestellen;
 
 		public void VoegToestelToe(string naam) {
-			Toestel toestel = new Toestel(_uniekeCode.GenereerRandomCode(), naam, false);
+			Toestel toestel = new(_uniekeCode.GenereerRandomCode(), naam, false);
 			Toestellen.Add(toestel);
 		}
 
@@ -23,7 +21,7 @@ namespace Persistentie {
 
 		public void ZetToestelInHerstelling(Toestel toestel) {
 			for (int i = 0; i < Toestellen.Count; i++) {
-				if(toestel.IdentificatieCode == Toestellen[i].IdentificatieCode) {
+				if (toestel.IdentificatieCode == Toestellen[i].IdentificatieCode) {
 					Toestellen[i].InHerstelling = true;
 					break;
 				}

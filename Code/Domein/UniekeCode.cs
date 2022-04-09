@@ -1,17 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Domein {
 	public class UniekeCode {
-		Random rnd = new Random();
+		Random rnd = new();
 
-		List<int> VoorbijeCodes = new List<int>();
+		List<int> VoorbijeCodes = new();
 
 		private static UniekeCode instance = null;
-		private static readonly object padlock = new object();
+		private static readonly object padlock = new();
 
 		UniekeCode() {
 		}

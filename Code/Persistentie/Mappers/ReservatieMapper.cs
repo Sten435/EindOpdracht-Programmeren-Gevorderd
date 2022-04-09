@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Domein;
+using System;
 using System.Collections.Generic;
-using Domein;
 
 namespace Persistentie {
 	public class ReservatieMapper : IReservatieRepository {
@@ -21,7 +21,7 @@ namespace Persistentie {
 				}, new DateTime(2003, 01, 14), new Adres("BartStraat", "14", "Oostende", 8400), TypeKlant.Gold), new List<TijdsSlot>(){
 				new TijdsSlot(new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 9, 0, 0)),
 				}, new Toestel(2, "Loopband", false)),
-			
+
 			new Reservatie(3, new Klant(3, "Dirk", "Hermans", "dirk.hermans@student.hogent.be",
 				new List<string>() {
 					"HTML",

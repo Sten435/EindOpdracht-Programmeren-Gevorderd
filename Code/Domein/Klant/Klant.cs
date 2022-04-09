@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Domein.Exceptions;
+using System;
 using System.Collections.Generic;
-using Domein.Exceptions;
 
 namespace Domein {
 
