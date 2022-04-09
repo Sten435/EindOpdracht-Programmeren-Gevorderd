@@ -26,6 +26,10 @@ namespace Domein {
 			TypeKlant = typeKlant;
 		}
 
+		public Klant() {
+
+		}
+
 		private void CheckDatumGeboorteDatum(DateTime datum) {
 			if (datum > DateTime.Now) throw new LeeftijdException("Geboortedatum mag niet in de toekomst zijn.");
 		}

@@ -1,8 +1,9 @@
 {
   "ExpandedNodes": [
     "",
-    "\\CUI"
+    "\\CUI",
+    "\\CUI\\Klant"
   ],
-  "SelectedNode": "\\CUI\\FitnessApp.cs",
+  "SelectedNode": "\\CUI\\Klant\\Program.cs",
   "PreviewInSolutionExplorer": false
 }
