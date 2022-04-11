@@ -5,16 +5,23 @@ using System.Collections.Generic;
 
 namespace CUI {
 	public class KlantProgram {
-		static FitnessApp _fitnessApp = new();
-		private static Klant klant;
+		private static readonly FitnessApp _fitnessApp = new();
+		//private static Klant klant;
 
-		// Todo: Sneller Werken
+		// Todo: Geregistreerde uren van andere klaten weglaten in keuze bij reservatie.
+
+		// REMOVE:
+		private static Klant klant = FitnessApp.DEBUGUSER;
+		// REMOVE:
+
+
+
 
 		static void Main(string[] args) {
 			Console.ResetColor();
 			do {
 				try {
-					LoginOrRegisterScreen();
+					//LoginOrRegisterScreen();
 					LoggedInPanel();
 				} catch (LoginFailedException error) {
 					Utility.Logger.Error(error, clearConsole: true);
@@ -28,6 +35,7 @@ namespace CUI {
 			} while (true);
 		}
 
+		#region LoginOrRegisterSceen()
 		private static void LoginOrRegisterScreen() {
 			FitnessApp.SelectedIndex = 0;
 			bool heeftGeanuleerd;
@@ -45,26 +53,32 @@ namespace CUI {
 					break;
 			}
 		}
+		#endregion
 
+		#region LoggedInPanel()
 		private static void LoggedInPanel() {
 			bool heeftUitgelogd = false;
 			do {
-				List<string> optieLijst = new() { "Reserveer Toestel", "Toon User Details", "Uitloggen" };
+				List<string> optieLijst = new() { "Reserveer Toestel", "Mijn Reservaties", "Toon User Details", FitnessApp.StopOpties[2] };
 				int selectedIndex = Utility.OptieLijstConroller(optieLijst, "Maak een keuze door op je pijltjes te drukken.\n");
 
 				switch (selectedIndex) {
 					case 0:
-						_fitnessApp.RegistreerToestel();
+						_fitnessApp.RegistreerToestel(klant);
 						break;
 					case 1:
-						_fitnessApp.ToonKlantDetails(klant);
+						_fitnessApp.ToonKlantReservaties(klant);
 						break;
 					case 2:
+						_fitnessApp.ToonKlantDetails(klant);
+						break;
+					case 3:
 						heeftUitgelogd = true;
 						klant = null;
 						break;
 				}
 			} while (!heeftUitgelogd);
 		}
+		#endregion
 	}
 }

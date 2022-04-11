@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Domein {
 
@@ -28,5 +30,7 @@ namespace Domein {
 		public void ReserveerToestel(Reservatie reservatie) => _reservatieRepo.VoegReservatieToe(reservatie);
 
 		public void VoegNieuwToestelToe(string naam) => _toestselRepo.VoegToestelToe(naam);
+
+		public Toestel GeefToestelOpNaam(string toestelNaam) => GeefAlleToestellen().SingleOrDefault(toestel => toestel.ToestelType.ToLower() == toestelNaam.ToLower());
 	}
 }

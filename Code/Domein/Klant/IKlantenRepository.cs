@@ -3,7 +3,6 @@
 namespace Domein {
 
 	public interface IKlantenRepository {
-		List<Klant> Klanten { get; }
 
 		List<Klant> GeefAlleKlanten();
 

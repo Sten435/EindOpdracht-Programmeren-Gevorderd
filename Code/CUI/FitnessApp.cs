@@ -2,28 +2,48 @@
 using Persistentie;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace CUI {
 	public class FitnessApp {
+		#region Private Fields
 		private static readonly IKlantenRepository _klantenRepo = new KlantenMapper();
 		private static readonly IReservatieRepository _reservatienRepo = new ReservatieMapper();
 		private static readonly IToestelRepository _toestellenRepo = new ToestellenMapper();
 		private static readonly UniekeCode _uniekeCode = UniekeCode.Instance;
 		private readonly DomeinController _domeinController = new(_reservatienRepo, _klantenRepo, _toestellenRepo);
 		private const char _requiredCharacter = '#';
+		private const int _maximumDagenReserverenToekomst = 7;
+		#endregion
 
-		public static readonly ConsoleColor DefaultReadLineColor = ConsoleColor.DarkYellow;
+		#region Public Properties
+		public static readonly ConsoleColor DefaultReadLineColor = ConsoleColor.DarkCyan;
+		public static readonly ConsoleColor SecondReadLineColor = ConsoleColor.Cyan;
+
+		public static readonly ConsoleColor DefaultInfoBackgroundPrintLineColor = ConsoleColor.DarkYellow;
+		public static readonly ConsoleColor DefaultInfoForeGrountPrintLineColor = ConsoleColor.Black;
+
+		public static readonly ConsoleColor DefaultErrorBackgroundPrintLineColor = ConsoleColor.DarkRed;
+		public static readonly ConsoleColor DefaultErrorForeGrountPrintLineColor = ConsoleColor.White;
+
 		public static readonly List<string> GaVerderOpties = new() {
 			Utility.SchrijfUnderline("Ga Verder"),
 		};
-
 		public static readonly List<string> StopOpties = new() {
 			Utility.SchrijfUnderline("Stop Registratie"),
 			Utility.SchrijfUnderline("Ga Terug"),
+			Utility.SchrijfUnderline("Uitloggen"),
 		};
+
 		public static int SelectedIndex = 0;
 		public static int OudeselectedIndex;
+		#endregion
 
+		#region Public Debug Properties
+		public static Klant DEBUGUSER = _klantenRepo.GeefAlleKlanten().Single(klant => klant.Email == "stan.persoons@student.hogent.be");
+		#endregion
+
+		#region RegistreerKlant()
 		public (Klant, bool) RegistreerKlant() {
 			ResetPositionIndex();
 
@@ -81,7 +101,7 @@ namespace CUI {
 					#region |=> Voornaam
 					case 0:
 						Utility.Logger.Info($"--- Voornaam ---", true);
-						voornaam = Utility.ColorInput.ReadInput(ConsoleColor.Cyan, Utility.SelectPrefix);
+						voornaam = Utility.ColorInput.ReadInput(DefaultInfoBackgroundPrintLineColor, Utility.SelectPrefix);
 						VnaamOk = true;
 						SchuifIndexPositieOp();
 						break;
@@ -90,7 +110,7 @@ namespace CUI {
 					#region |=> Achternaam
 					case 1:
 						Utility.Logger.Info($"--- Achternaam ---", true);
-						achternaam = Utility.ColorInput.ReadInput(ConsoleColor.Cyan, Utility.SelectPrefix);
+						achternaam = Utility.ColorInput.ReadInput(DefaultInfoBackgroundPrintLineColor, Utility.SelectPrefix);
 						AnaamOk = true;
 						SchuifIndexPositieOp();
 						break;
@@ -99,7 +119,7 @@ namespace CUI {
 					#region |=> Email
 					case 2:
 						Utility.Logger.Info($"--- Email ---", true);
-						email = Utility.ColorInput.ReadInput(ConsoleColor.Cyan, Utility.SelectPrefix);
+						email = Utility.ColorInput.ReadInput(DefaultInfoBackgroundPrintLineColor, Utility.SelectPrefix);
 						EmailOk = true;
 						SchuifIndexPositieOp();
 						break;
@@ -109,7 +129,7 @@ namespace CUI {
 					case 3:
 						do {
 							Utility.Logger.Info($"--- GeboorteDatum (DD/MM/YYYY) ---", true);
-							isOk = DateTime.TryParse(Utility.ColorInput.ReadInput(ConsoleColor.Cyan, Utility.SelectPrefix), out geboorteDatum);
+							isOk = DateTime.TryParse(Utility.ColorInput.ReadInput(DefaultInfoBackgroundPrintLineColor, Utility.SelectPrefix), out geboorteDatum);
 							if (!isOk) {
 								Console.Clear();
 								Utility.Logger.Error("GeboorteDatum is niet in de correcte vorm!", true);
@@ -137,7 +157,7 @@ namespace CUI {
 								#region Straat
 								case 0:
 									Utility.Logger.Info("--- Straat ---", true);
-									straatNaam = Utility.ColorInput.ReadInput(ConsoleColor.Cyan, Utility.SelectPrefix);
+									straatNaam = Utility.ColorInput.ReadInput(DefaultInfoBackgroundPrintLineColor, Utility.SelectPrefix);
 									straatNaamIngevuld = true;
 									SchuifIndexPositieOp();
 									break;
@@ -145,7 +165,7 @@ namespace CUI {
 								#region Nummer
 								case 1:
 									Utility.Logger.Info("--- Nummer ---", true);
-									huisNummer = Utility.ColorInput.ReadInput(ConsoleColor.Cyan, Utility.SelectPrefix);
+									huisNummer = Utility.ColorInput.ReadInput(DefaultInfoBackgroundPrintLineColor, Utility.SelectPrefix);
 									huisNummerIngevuld = true;
 									SchuifIndexPositieOp();
 									break;
@@ -153,7 +173,7 @@ namespace CUI {
 								#region Plaats
 								case 2:
 									Utility.Logger.Info("--- Plaats ---", true);
-									plaats = Utility.ColorInput.ReadInput(ConsoleColor.Cyan, Utility.SelectPrefix);
+									plaats = Utility.ColorInput.ReadInput(DefaultInfoBackgroundPrintLineColor, Utility.SelectPrefix);
 									plaatsIngevuld = true;
 									SchuifIndexPositieOp();
 									break;
@@ -162,7 +182,7 @@ namespace CUI {
 								case 3:
 									do {
 										Utility.Logger.Info("--- PostCode ---", true);
-										isOk = int.TryParse(Utility.ColorInput.ReadInput(ConsoleColor.Cyan, Utility.SelectPrefix), out postCode);
+										isOk = int.TryParse(Utility.ColorInput.ReadInput(DefaultInfoBackgroundPrintLineColor, Utility.SelectPrefix), out postCode);
 										if (!isOk) {
 											Console.Clear();
 											Utility.Logger.Error("Postcode is niet in de correcte vorm! -> B.v [9000, 9860, ...]", true);
@@ -212,7 +232,7 @@ namespace CUI {
 							selectedInteresseIndex = Utility.OptieLijstConroller(interesseOpties, "interesses:", metEinde: true);
 							if (selectedInteresseIndex == 0) {
 								Utility.Logger.Info("--- Interesse ---", true);
-								interesses.Add(Utility.ColorInput.ReadInput(ConsoleColor.Cyan, Utility.SelectPrefix));
+								interesses.Add(Utility.ColorInput.ReadInput(DefaultInfoBackgroundPrintLineColor, Utility.SelectPrefix));
 								Console.Clear();
 							}
 						} while (selectedInteresseIndex != 1);
@@ -238,31 +258,182 @@ namespace CUI {
 			_domeinController.RegistreerKlant(klant);
 			return (klant, false);
 		}
+		#endregion
 
-		internal void RegistreerToestel() {
-			throw new NotImplementedException();
+		#region ToonKlantReservaties()
+		public void ToonKlantReservaties(Klant klant) {
+			List<Reservatie> reservaties = _domeinController.GeefAlleReservaties().Where(reservatie => reservatie.Klant.KlantenNummer == klant.KlantenNummer).ToList();
+
+			if(reservaties.Count != 0) {
+				Utility.Table table = new();
+				table.SetHeaders("Reservaties");
+				reservaties.ForEach(reservatie => table.AddRow(reservatie.ToString()));
+				Utility.Logger.Info(table.ToString());
+				Utility.ColorInput.ReadKnop();
+			} else {
+				Utility.Logger.Info("U heeft tot nu toe nog geen reservaties.", newLine: false);
+			}
 		}
+		#endregion
 
+		#region RegistreerToestel()
+		public void RegistreerToestel(Klant klant) {
+			Utility.Table table = new();
+			DateTime tijdsSlotDatum;
+			Toestel toestel;
+
+			List<Toestel> beschikbaretoestellen = _domeinController.GeefAlleToestellen();
+
+			do {
+				List<string> toestellen = beschikbaretoestellen.Select(toestel => toestel.ToestelType).ToList();
+				int selectedIndex = Utility.OptieLijstConroller(toestellen, prompt: "Welk toestel wil je gebruiken.");
+				toestel = _domeinController.GeefAlleToestellen()[selectedIndex];
+				if (toestel == null) Console.Clear();
+			} while (toestel == null);
+
+			tijdsSlotDatum = TijdsDisplayControl();
+
+			TijdsSlot tijdsSlot = new(tijdsSlotDatum);
+			Reservatie reservatie = new(klant, tijdsSlot, toestel);
+
+			_domeinController.VoegReservatieToe(reservatie);
+
+			table.SetHeaders("Reservatie");
+			table.AddRow(reservatie.ToString());
+
+			Console.Clear();
+
+			Utility.Logger.Info(table.ToString());
+			Utility.ColorInput.ReadKnop();
+
+			#region Functionaliteit TijdsDisplayControl()
+			DateTime TijdsDisplayControl() {
+				int lowerBoundUur = 8;
+				int lowerBoundMinuten = 0;
+				DateTime lowerBoundDag = DateTime.Now;
+
+				int upperBoundUur = 22;
+				int upperBoundMinuten = 59;
+				DateTime upperBoundDag = DateTime.Now.Date.AddDays(_maximumDagenReserverenToekomst);
+
+				int uur = lowerBoundUur;
+				int minuten = lowerBoundMinuten;
+				DateTime dag = lowerBoundDag;
+
+				bool hasMinuten = false;
+				bool pressedRight = false;
+
+				ConsoleKey keyPressed;
+
+				Console.CursorVisible = false;
+				StartDatumSelectie();
+				Console.CursorVisible = true;
+
+				#region DatumSelectie()
+				void SelecteerUur() {
+					do {
+						Utility.Logger.Info($"\r{Utility.SchrijfUnderline((uur.ToString().Length == 1 ? $"0{uur}" : $"{uur}"))}", newLine: false, metAchtergrond: false);
+						Console.Write($":00");
+						keyPressed = Console.ReadKey(false).Key;
+
+						if (keyPressed == ConsoleKey.UpArrow) {
+							if (uur < upperBoundUur) {
+								uur++;
+							}
+						} else if (keyPressed == ConsoleKey.DownArrow) {
+							if (uur > lowerBoundUur) {
+								uur--;
+							}
+						} else if (keyPressed == ConsoleKey.RightArrow) {
+							pressedRight = true;
+							SelecteerMinuten();
+						}
+
+					} while (keyPressed != ConsoleKey.Enter);
+					if (!pressedRight) SelecteerMinuten();
+				}
+				void SelecteerMinuten() {
+					do {
+						Console.Write($"\r{(uur.ToString().Length == 1 ? $"0{uur}" : $"{uur}")}:");
+						Utility.Logger.Info($"{Utility.SchrijfUnderline((minuten.ToString().Length == 1 ? $"0{minuten}" : $"{minuten}"))}", newLine: false, metAchtergrond: false);
+						keyPressed = Console.ReadKey(false).Key;
+						hasMinuten = true;
+
+						if (keyPressed == ConsoleKey.UpArrow) {
+							if (minuten < upperBoundMinuten) {
+								minuten++;
+							}
+						} else if (keyPressed == ConsoleKey.DownArrow) {
+							if (minuten > lowerBoundMinuten) {
+								minuten--;
+							}
+						} else if (keyPressed == ConsoleKey.LeftArrow) {
+							SelecteerUur();
+						}
+					} while (keyPressed != ConsoleKey.Enter);
+				}
+				void SelecteerDag() {
+					if (!hasMinuten) {
+						do {
+							Utility.Logger.Info($"\r{Utility.SchrijfUnderline(dag.Day.ToString())}", newLine: false, metAchtergrond: false);
+							Console.Write($"/{dag.Month}/{dag.Year}");
+							keyPressed = Console.ReadKey(false).Key;
+							hasMinuten = true;
+
+							if (keyPressed == ConsoleKey.UpArrow) {
+								if (dag.Day < upperBoundDag.Day) {
+									dag = dag.AddDays(1);
+								}
+							} else if (keyPressed == ConsoleKey.DownArrow) {
+								if (dag.Day > lowerBoundDag.Day) {
+									dag = dag.AddDays(-1);
+								}
+							}
+						} while (keyPressed != ConsoleKey.Enter);
+					}
+					Console.SetCursorPosition(0, Console.CursorTop);
+					Console.Write(new string(' ', Console.WindowWidth));
+					Console.SetCursorPosition(0, 0);
+					Utility.Logger.Info($"\rReservaties duren telkens 1 uur.\nDruk op [ ‹ | › ] om Uren/Minuten te wijzigen, en [Enter] om te bevestigen");
+					SelecteerUur();
+				}
+				void StartDatumSelectie() {
+					Utility.Logger.Info($"Reservaties duren telkens 1 uur.\nDruk op [Enter] om te bevestigen");
+					SelecteerDag();
+				}
+				#endregion
+
+				return new DateTime(dag.Year, dag.Month, dag.Day, uur, minuten, 0);
+			}
+			#endregion
+		}
+		#endregion
+
+		#region Login()
 		public Klant Login() {
 			Utility.Logger.Info("Wat is je E-mailAdress:", true);
-			string email = Utility.ColorInput.ReadInput(ConsoleColor.Cyan, Utility.SelectPrefix).ToLower();
+			string email = Utility.ColorInput.ReadInput(DefaultInfoBackgroundPrintLineColor, Utility.SelectPrefix).ToLower();
 			return _domeinController.Login(email);
 		}
+		#endregion
 
+		#region ToonKlantDetails()
 		public void ToonKlantDetails(Klant klant) {
 			Utility.Table table = new();
 			table.SetHeaders("KlantenNummer", "Naam", "Email", "GeboorteDatum", "Abonnement", "Interesses");
 			table.AddRow(klant.KlantenNummer.ToString(), $"{klant.Voornaam} {klant.Achternaam}", klant.Email, klant.GeboorteDatum.ToShortDateString(), klant.TypeKlant.ToString(), string.Join(',', klant.Interesses));
-			Console.WriteLine($"{table}\n");
+			Utility.Logger.Info($"{table}\n", newLine: true, metAchtergrond: true);
 			table.Clear();
 
 			table.SetHeaders("Adres");
 			table.AddRow("Straat", "Nr", "Plaats", "PostCode");
 			table.AddRow(klant.Adres.StraatNaam, klant.Adres.HuisNummer, klant.Adres.Plaats, klant.Adres.PostCode.ToString());
-			Console.WriteLine($"{table}\n\n\n");
+			Utility.Logger.Info($"{table}\n\n\n", newLine: true, metAchtergrond: true);
 			Utility.ColorInput.ReadKnop();
 		}
+		#endregion
 
+		#region ConsoleIndexPostion()
 		private void ResetPositionIndex() {
 			OudeselectedIndex = SelectedIndex;
 			SelectedIndex = 0;
@@ -273,5 +444,6 @@ namespace CUI {
 		private void SchuifIndexPositieOp() {
 			SelectedIndex++;
 		}
+		#endregion
 	}
 }

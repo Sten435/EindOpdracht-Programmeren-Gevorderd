@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Persistentie {
 	public class KlantenMapper : IKlantenRepository {
-		public List<Klant> Klanten { get; } = new List<Klant>() {
+		private List<Klant> _klanten = new List<Klant>() {
 			new Klant(1, "Stan", "Persoons", "stan.persoons@student.hogent.be",
 				new List<string>() {
 					"Programmeren",
@@ -27,7 +27,7 @@ namespace Persistentie {
 				}, new DateTime(2006, 04, 6), new Adres("DirkStraat", "4", "Gent", 9000), TypeKlant.Bronze)
 		};
 
-		public List<Klant> GeefAlleKlanten() => Klanten;
+		public List<Klant> GeefAlleKlanten() => _klanten;
 
 		public Klant Login(string email) {
 			Klant? Klant = GeefAlleKlanten().FirstOrDefault(_klant => _klant.Email == email);
@@ -35,8 +35,8 @@ namespace Persistentie {
 			return Klant;
 		}
 
-		public void RegistreerKlant(Klant klant) => Klanten.Add(klant);
+		public void RegistreerKlant(Klant klant) => _klanten.Add(klant);
 
-		public void VerwijderKlant(Klant klant) => Klanten.Remove(klant);
+		public void VerwijderKlant(Klant klant) => _klanten.Remove(klant);
 	}
 }
