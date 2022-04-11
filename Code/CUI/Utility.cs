@@ -23,6 +23,7 @@ namespace CUI {
 
 		#region DisplayOptions
 		public static void DisplayOptions(List<string> optieLijst, bool metEinde = false) {
+			Console.ResetColor();
 			for (int i = 0; i < optieLijst.Count; i++) {
 				if (i == FitnessApp.SelectedIndex) {
 					if (FitnessApp.GaVerderOpties.Contains(optieLijst[i])) {
@@ -43,6 +44,7 @@ namespace CUI {
 					Console.WriteLine($"    {optieLijst[i]}");
 				}
 			}
+			Console.ResetColor();
 		}
 		#endregion
 

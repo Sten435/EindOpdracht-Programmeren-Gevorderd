@@ -6,12 +6,12 @@ using System.Collections.Generic;
 namespace CUI {
 	public class KlantProgram {
 		private static readonly FitnessApp _fitnessApp = new();
-		//private static Klant klant;
+		private static Klant klant;
 
 		// Todo: Geregistreerde uren van andere klaten weglaten in keuze bij reservatie.
 
 		// REMOVE:
-		private static Klant klant = FitnessApp.DEBUGUSER;
+		//private static Klant klant = FitnessApp.DEBUGUSER;
 		// REMOVE:
 
 
@@ -21,7 +21,7 @@ namespace CUI {
 			Console.ResetColor();
 			do {
 				try {
-					//LoginOrRegisterScreen();
+					LoginOrRegisterScreen();
 					LoggedInPanel();
 				} catch (LoginFailedException error) {
 					Utility.Logger.Error(error, clearConsole: true);
@@ -57,9 +57,10 @@ namespace CUI {
 
 		#region LoggedInPanel()
 		private static void LoggedInPanel() {
+			FitnessApp.SelectedIndex = 0;
 			bool heeftUitgelogd = false;
 			do {
-				List<string> optieLijst = new() { "Reserveer Toestel", "Mijn Reservaties", "Toon User Details", FitnessApp.StopOpties[2] };
+				List<string> optieLijst = new() { "Reserveer Toestel", "Mijn Reservaties", "Toon User Details\n", FitnessApp.StopOpties[2] };
 				int selectedIndex = Utility.OptieLijstConroller(optieLijst, "Maak een keuze door op je pijltjes te drukken.\n");
 
 				switch (selectedIndex) {

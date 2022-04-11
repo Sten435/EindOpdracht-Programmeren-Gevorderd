@@ -27,8 +27,8 @@ namespace Persistentie {
 					"HTML",
 					"JS",
 				}, new DateTime(2006, 04, 6), new Adres("DirkStraat", "4", "Gent", 9000), TypeKlant.Bronze),
-				new TijdsSlot(new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 9, 0, 0)),
-				new Toestel(2, "Roeien", false)),
+				new TijdsSlot(new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 10, 0, 0)),
+				new Toestel(2, "Roeien", false))
 		};
 
 		public List<Reservatie> GeefAlleReservaties() => _reservaties;
