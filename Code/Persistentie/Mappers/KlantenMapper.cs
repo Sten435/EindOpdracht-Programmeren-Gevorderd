@@ -1,5 +1,4 @@
 ﻿using Domein;
-using Domein.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,7 +30,7 @@ namespace Persistentie {
 
 		public Klant Login(string email) {
 			Klant? Klant = GeefAlleKlanten().FirstOrDefault(_klant => _klant.Email == email);
-			if (Klant == null) throw new LoginFailedException("Email is niet correct.");
+			if (Klant == null) throw new Exception("Email is niet correct.");
 			return Klant;
 		}
 

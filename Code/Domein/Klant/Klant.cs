@@ -1,5 +1,4 @@
-﻿using Domein.Exceptions;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace Domein {
@@ -31,7 +30,7 @@ namespace Domein {
 		}
 
 		private void CheckDatumGeboorteDatum(DateTime datum) {
-			if (datum > DateTime.Now) throw new LeeftijdException("Geboortedatum mag niet in de toekomst zijn.");
+			if (datum > DateTime.Now) throw new Exception("Geboortedatum mag niet in de toekomst zijn.");
 		}
 	}
 }

@@ -9,6 +9,8 @@ namespace Domein {
 		private IKlantenRepository _klantenRepo;
 		private IToestelRepository _toestselRepo;
 
+		public int UurIndex = 0;
+
 		public DomeinController(IReservatieRepository reservatieRepo, IKlantenRepository klantenRepo, IToestelRepository toestselRepo) {
 			_reservatieRepo = reservatieRepo;
 			_klantenRepo = klantenRepo;
@@ -30,6 +32,20 @@ namespace Domein {
 			List<TijdsSlot> slots = _reservatieRepo.GeefAlleReservaties().Select(reservatie => reservatie.TijdsSlot).ToList();
 			return slots;
 		}
+		public List<int> GeefBeschikbareUrenOpDatum(DateTime dag) {
+			List<DateTime> onbeschibareTijdsSloten = GeefAlleTijdsSloten().Select(tijdsSlot => tijdsSlot.StartTijd).ToList();
+			List<int> beschikbareUrenFitness = Enumerable.Range(8, 15).ToList();
+			List<int> urenNaFilter = new();
+
+			for (int i = 0; i < beschikbareUrenFitness.Count; i++) {
+				int uur = beschikbareUrenFitness[i];
+				DateTime tijdsSlot = new(dag.Year, dag.Month, dag.Day, uur, 0, 0);
+
+				if (!onbeschibareTijdsSloten.Contains(tijdsSlot)) urenNaFilter.Add(uur);
+			}
+			return urenNaFilter;
+		}
+		public void ResetUurIndex() => UurIndex = 0;
 		#endregion
 
 		#region Klant

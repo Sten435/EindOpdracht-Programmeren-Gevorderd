@@ -84,36 +84,41 @@ namespace CUI {
 
 		#region Logger
 		public static class Logger {
-			public static void Error(Exception error, bool newLine = true, bool metAchtergrond = true, bool clearConsole = false) {
+			public static void Error(Exception error, bool newLine = true, bool metAchtergrond = true, bool clearConsole = false, bool metKeyPress = true) {
 				Console.ResetColor();
 				if (clearConsole) Console.Clear();
 				if (metAchtergrond) {
 					Console.BackgroundColor = FitnessApp.DefaultErrorBackgroundPrintLineColor;
 					Console.ForegroundColor = FitnessApp.DefaultErrorForeGrountPrintLineColor;
-				}else
+				} else
 					Console.ForegroundColor = FitnessApp.DefaultReadLineColor;
 				if (newLine)
 					Console.WriteLine($"{error.Message}\n");
 				else
 					Console.Write($"{error.Message}");
 				Console.ResetColor();
-				ColorInput.ReadKnop();
+				if (metKeyPress)
+					ColorInput.ReadKnop();
 			}
 
-			public static void Error(string message, bool newLine = true, bool metAchtergrond = true, bool clearConsole = false) {
+			public static void Error(string message, bool newLine = true, bool metAchtergrond = true, bool clearConsole = false, bool metKeyPress = true) {
 				if (newLine)
-					Error(new Exception(message), true, metAchtergrond, clearConsole: clearConsole);
+					Error(new Exception(message), true, metAchtergrond, clearConsole: clearConsole, metKeyPress: metKeyPress);
 				else
-					Error(new Exception(message), false, metAchtergrond, clearConsole: clearConsole);
+					Error(new Exception(message), false, metAchtergrond, clearConsole: clearConsole, metKeyPress: metKeyPress);
 			}
 
-			public static void Info(Exception error, bool newLine = true, bool metAchtergrond = true) {
+			public static void Info(Exception error, bool newLine = true, bool metAchtergrond = true, ConsoleColor color = ConsoleColor.Black) {
 				Console.ResetColor();
 				if (metAchtergrond) {
 					Console.BackgroundColor = FitnessApp.DefaultInfoBackgroundPrintLineColor;
 					Console.ForegroundColor = FitnessApp.DefaultInfoForeGrountPrintLineColor;
-				}else
+				} else
 					Console.ForegroundColor = FitnessApp.DefaultReadLineColor;
+
+				if (color != ConsoleColor.Black)
+					Console.ForegroundColor = color;
+
 				if (newLine)
 					Console.WriteLine($"{error.Message}\n");
 				else
@@ -121,11 +126,11 @@ namespace CUI {
 				Console.ResetColor();
 			}
 
-			public static void Info(string message, bool newLine = true, bool metAchtergrond = true) {
+			public static void Info(string message, bool newLine = true, bool metAchtergrond = true, ConsoleColor color = ConsoleColor.Black) {
 				if (newLine)
-					Info(new Exception(message), true, metAchtergrond);
+					Info(new Exception(message), true, metAchtergrond, color: color);
 				else
-					Info(new Exception(message), false, metAchtergrond);
+					Info(new Exception(message), false, metAchtergrond, color: color);
 			}
 		}
 		#endregion

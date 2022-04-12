@@ -1,5 +1,4 @@
 ﻿using Domein;
-using Domein.Exceptions;
 using System;
 using System.Collections.Generic;
 
@@ -14,21 +13,13 @@ namespace CUI {
 		//private static Klant klant = FitnessApp.DEBUGUSER;
 		// REMOVE:
 
-
-
-
 		static void Main(string[] args) {
 			Console.ResetColor();
 			do {
 				try {
-					LoginOrRegisterScreen();
+					if (klant == null)
+						LoginOrRegisterScreen();
 					LoggedInPanel();
-				} catch (LoginFailedException error) {
-					Utility.Logger.Error(error, clearConsole: true);
-				} catch (ReservatieException error) {
-					Utility.Logger.Error(error, clearConsole: true);
-				} catch (LeeftijdException error) {
-					Utility.Logger.Error(error, clearConsole: true);
 				} catch (Exception error) {
 					Utility.Logger.Error(error, clearConsole: true);
 				}
@@ -37,21 +28,22 @@ namespace CUI {
 
 		#region LoginOrRegisterSceen()
 		private static void LoginOrRegisterScreen() {
-			FitnessApp.SelectedIndex = 0;
 			bool heeftGeanuleerd;
 			List<string> optieLijst = new() { "Login", "Nieuwe Gebruiker" };
-			int selectedIndex = Utility.OptieLijstConroller(optieLijst, "Maak een keuze door op je pijltjes te drukken.\n");
 
-			switch (selectedIndex) {
-				case 0:
-					klant = _fitnessApp.Login();
-					break;
-				case 1:
-					(klant, heeftGeanuleerd) = _fitnessApp.RegistreerKlant();
-					if (heeftGeanuleerd)
-						throw new LoginFailedException("Registratie geannuleerd");
-					break;
-			}
+			do {
+				FitnessApp.SelectedIndex = 0;
+				heeftGeanuleerd = false;
+				int selectedIndex = Utility.OptieLijstConroller(optieLijst, "Druk op [ ▲ | ▼ ] om je keuze te wijzigen\nDruk op [Enter] om te bevestigen.\n");
+				switch (selectedIndex) {
+					case 0:
+						klant = _fitnessApp.Login();
+						break;
+					case 1:
+						(klant, heeftGeanuleerd) = _fitnessApp.RegistreerKlant();
+						break;
+				}
+			} while (heeftGeanuleerd);
 		}
 		#endregion
 
@@ -61,7 +53,7 @@ namespace CUI {
 			bool heeftUitgelogd = false;
 			do {
 				List<string> optieLijst = new() { "Reserveer Toestel", "Mijn Reservaties", "Toon User Details\n", FitnessApp.StopOpties[2] };
-				int selectedIndex = Utility.OptieLijstConroller(optieLijst, "Maak een keuze door op je pijltjes te drukken.\n");
+				int selectedIndex = Utility.OptieLijstConroller(optieLijst, "\rDruk op [ ▲ | ▼ ] om de dag te wijzigen\nDruk op [Enter] om te bevestigen\n");
 
 				switch (selectedIndex) {
 					case 0:

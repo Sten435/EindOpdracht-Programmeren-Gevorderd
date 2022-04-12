@@ -18,7 +18,7 @@ namespace Domein {
 		}
 
 		public override string ToString() {
-			return $"ReservatieNr: {ReservatieNummer} --- Toestel: {Toestel.ToestelType} --- Begin Tijd: {TijdsSlot.StartTijd:g} --- Eind Tijd: {TijdsSlot.EindTijd:g}";
+			return $" Nr: {ReservatieNummer} - {Toestel.ToestelType} - Datum: {TijdsSlot.StartTijd:d} - Tijdslot: {TijdsSlot.StartTijd:t}/uur -> {TijdsSlot.EindTijd:t}/uur ";
 		}
 	}
 }
