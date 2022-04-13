@@ -30,6 +30,8 @@ namespace CUI {
 						Console.ForegroundColor = ConsoleColor.Green;
 					} else if (FitnessApp.StopOpties.Contains(optieLijst[i])) {
 						Console.ForegroundColor = ConsoleColor.Red;
+					} else if (FitnessApp.DisabledOptie.Contains(optieLijst[i])) {
+						Console.ForegroundColor = ConsoleColor.DarkGray;
 					} else
 						Console.ForegroundColor = FitnessApp.DefaultReadLineColor;
 					Console.WriteLine($"{SelectPrefix}{optieLijst[i]}");

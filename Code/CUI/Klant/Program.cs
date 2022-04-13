@@ -5,12 +5,12 @@ using System.Collections.Generic;
 namespace CUI {
 	public class KlantProgram {
 		private static readonly FitnessApp _fitnessApp = new();
-		private static Klant klant;
+		//private static Klant klant;
 
 		// Todo: Geregistreerde uren van andere klaten weglaten in keuze bij reservatie.
 
 		// REMOVE:
-		//private static Klant klant = FitnessApp.DEBUGUSER;
+		private static Klant klant = FitnessApp.DEBUGUSER;
 		// REMOVE:
 
 		static void Main(string[] args) {
@@ -52,12 +52,19 @@ namespace CUI {
 			FitnessApp.SelectedIndex = 0;
 			bool heeftUitgelogd = false;
 			do {
-				List<string> optieLijst = new() { "Reserveer Toestel", "Mijn Reservaties", "Toon User Details\n", FitnessApp.StopOpties[2] };
+				List<string> beschikbaretoestellen = _fitnessApp.GeefBeschikbareToestellen();
+				List<string> optieLijst;
+				if (beschikbaretoestellen.Count > 0) {
+					optieLijst = new() { $"Reserveer Toestel", "Mijn Reservaties", "Toon User Details\n", FitnessApp.StopOpties[2] };
+				} else
+					optieLijst = new() { FitnessApp.DisabledOptie[0], "Mijn Reservaties", "Toon User Details\n", FitnessApp.StopOpties[2] };
+
 				int selectedIndex = Utility.OptieLijstConroller(optieLijst, "\rDruk op [ ▲ | ▼ ] om de dag te wijzigen\nDruk op [Enter] om te bevestigen\n");
 
 				switch (selectedIndex) {
 					case 0:
-						_fitnessApp.RegistreerToestel(klant);
+						if (beschikbaretoestellen.Count > 0)
+							_fitnessApp.RegistreerToestel(klant);
 						break;
 					case 1:
 						_fitnessApp.ToonKlantReservaties(klant);
