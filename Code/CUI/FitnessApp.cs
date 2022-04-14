@@ -41,12 +41,44 @@ namespace CUI {
 		public static int OudeselectedIndex;
 		#endregion
 
+		#region VoegToestelToe
+		public void VoegToestelToe() {
+			string naam;
+			bool naamIsOk = true;
+			do {
+				naam = Utility.ColorInput.ReadInput(prompt: "Welk toestel wil je toevoegen ?");
+				if (string.IsNullOrWhiteSpace(naam)) {
+					naamIsOk = false;
+					Console.Clear();
+				}
+			} while (naamIsOk);
+			_domeinController.VoegNieuwToestelToe(naam);
+		}
+		#endregion
+
+		#region ToonAlleReservaties()
+		public void ToonAlleReservaties() => _domeinController.GeefAlleReservaties();
+		#endregion
+
+		#region ToonAlleToestellen()
+		public void ToonAlleToestellen() {
+			List<Toestel> toestellen = _domeinController.GeefAlleToestellen();
+
+			// Todo: Toestellen Tonen in table
+			// Todo: Toestellen kunnen veranderen en in onderhoud zetten
+		}
+		#endregion
+
+		#region ToonAlleKlanten()
+		public void ToonAlleKlanten() => _domeinController.GeefAlleKlanten();
+		#endregion
+
 		#region Public Debug Properties
 		public static Klant DEBUGUSER = _klantenRepo.GeefAlleKlanten().Single(klant => klant.Email == "stan.persoons@student.hogent.be");
 		#endregion
 
-		#region RegistreerKlant()
-		public (Klant, bool) RegistreerKlant() {
+		#region RegistreerKlant(bool isBeheerder)
+		public (Klant, bool) RegistreerKlant(bool isBeheerder = false) {
 			ResetPositionIndex();
 
 			// Voornaam
@@ -66,9 +98,8 @@ namespace CUI {
 
 			//Abonnement
 			int selectedAbonnementIndex;
-			string typeAlsString = string.Empty;
+			string typeAlsString = isBeheerder ? "Beheerder" : string.Empty;
 			TypeKlant type = TypeKlant.Bronze;  // Info: Moet er staat anders krijg je een null reference error, Hieronder krijgt hij een waarde.
-			List<string> TypeAbonementen = new() { "Gold", "Silver", "Bronze" };
 
 			//Interesses
 			int selectedInteresseIndex;
@@ -80,7 +111,7 @@ namespace CUI {
 
 			List<string> optieLijst;
 			int selectedRegistreerOptieIndex;
-			bool isOk, VnaamOk = false, AnaamOk = false, InterOk = false, AdrOk = false, TypOk = false, GebrOk = false, EmailOk = false, gaTerug, CompleetOk = false;
+			bool isOk, VnaamOk = false, AnaamOk = false, InterOk = isBeheerder, AdrOk = false, TypOk = isBeheerder, GebrOk = false, EmailOk = false, gaTerug, CompleetOk = false;
 
 			do {
 				optieLijst = new() {
@@ -90,7 +121,7 @@ namespace CUI {
 					$"GeboorteDatum: {(GebrOk ? geboorteDatum.ToShortDateString() : _requiredCharacter)}",
 					$"Adres: {(AdrOk ? $"{adres.StraatNaam}..." : _requiredCharacter)}",
 					$"Abonnement: {(TypOk ? typeAlsString : _requiredCharacter)}",
-					$"Interesses: {(interesses.Count == 0 ? _requiredCharacter : string.Join(", ", interesses))}\n",
+					$"Interesses: {(interesses.Count == 0 ? (isBeheerder ? "Niet Van Toepassing" : _requiredCharacter) : string.Join(", ", interesses))}\n",
 					StopOpties[0]
 				};
 
@@ -213,13 +244,22 @@ namespace CUI {
 					#region |=> Abonnement
 					case 5:
 						ResetPositionIndex();
+						List<string> TypeAbonementen = new() { "Gold", "Silver", "Bronze" };
+						if (isBeheerder) TypeAbonementen = new() { "Beheerder" };
+
 						selectedAbonnementIndex = Utility.OptieLijstConroller(TypeAbonementen, "Abonnement:");
-						type = selectedAbonnementIndex switch {
-							0 => TypeKlant.Gold,
-							1 => TypeKlant.Silver,
-							2 => TypeKlant.Bronze,
-							_ => TypeKlant.Bronze,
-						};
+						if (isBeheerder) {
+							type = selectedAbonnementIndex switch {
+								0 => TypeKlant.Beheerder,
+							};
+						} else {
+							type = selectedAbonnementIndex switch {
+								0 => TypeKlant.Gold,
+								1 => TypeKlant.Silver,
+								2 => TypeKlant.Bronze,
+								_ => TypeKlant.Bronze,
+							};
+						}
 						typeAlsString = type.ToString();
 						TypOk = true;
 						AssignOudePositie();

@@ -7,6 +7,14 @@ namespace CUI {
 		private static readonly FitnessApp _fitnessApp = new();
 		//private static Klant klant;
 
+		static string _naam = @"  ______ _ _                        
+ |  ____(_) |                       
+ | |__   _| |_ _ __   ___  ___ ___  
+ |  __| | | __| '_ \ / _ \/ __/ __| 
+ | |    | | |_| | | |  __/\__ \__ \ 
+ |_|    |_|\__|_| |_|\___||___/___/ 
+                                    ";
+
 		// Todo: Geregistreerde uren van andere klaten weglaten in keuze bij reservatie.
 
 		// REMOVE:
@@ -19,7 +27,7 @@ namespace CUI {
 				try {
 					if (klant == null)
 						LoginOrRegisterScreen();
-					LoggedInPanel();
+					Dashboard();
 				} catch (Exception error) {
 					Utility.Logger.Error(error, clearConsole: true);
 				}
@@ -34,7 +42,7 @@ namespace CUI {
 			do {
 				FitnessApp.SelectedIndex = 0;
 				heeftGeanuleerd = false;
-				int selectedIndex = Utility.OptieLijstConroller(optieLijst, "Druk op [ ▲ | ▼ ] om je keuze te wijzigen\nDruk op [Enter] om te bevestigen.\n");
+				int selectedIndex = Utility.OptieLijstConroller(optieLijst, $"{_naam}\n\nDruk op [ ▲ | ▼ ] om je keuze te wijzigen\nDruk op [Enter] om te bevestigen.\n");
 				switch (selectedIndex) {
 					case 0:
 						klant = _fitnessApp.Login();
@@ -47,8 +55,8 @@ namespace CUI {
 		}
 		#endregion
 
-		#region LoggedInPanel()
-		private static void LoggedInPanel() {
+		#region Dashboard()
+		private static void Dashboard() {
 			FitnessApp.SelectedIndex = 0;
 			bool heeftUitgelogd = false;
 			do {
@@ -70,7 +78,7 @@ namespace CUI {
 						_fitnessApp.ToonKlantReservaties(klant);
 						break;
 					case 2:
-						_fitnessApp.ToonKlantDetails(klant);
+						_fitnessApp.ToonAlleToestellen(klant);
 						break;
 					case 3:
 						heeftUitgelogd = true;
