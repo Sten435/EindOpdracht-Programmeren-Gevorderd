@@ -319,10 +319,12 @@ namespace CUI {
 		#endregion
 
 		#region Login()
-		public Klant Login() {
+		public Klant Login(bool isBeheerder = false) {
 			Utility.Logger.Info("Wat is je E-mailAdres:");
 			string email = Utility.ColorInput.ReadInput(DefaultInfoBackgroundPrintLineColor, Utility.SelectPrefix).ToLower();
-			return _domeinController.Login(email);
+			Klant klant = _domeinController.Login(email);
+			if (isBeheerder && klant.TypeKlant != TypeKlant.Beheerder) throw new LoginException($"{klant.Voornaam} {klant.Achternaam} is geen beheerder.");
+			return klant;
 		}
 		#endregion
 

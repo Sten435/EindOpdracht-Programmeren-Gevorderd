@@ -14,6 +14,8 @@ namespace CUI {
 					if (klant == null)
 						LoginOrRegisterScreen();
 					Dashboard();
+				} catch (LoginException error) {
+					Utility.Logger.Error(error, clearConsole: true);
 				} catch (Exception error) {
 					Utility.Logger.Error(error, clearConsole: true);
 				}
@@ -31,7 +33,7 @@ namespace CUI {
 				int selectedIndex = Utility.OptieLijstConroller(optieLijst, "Druk op [ ▲ | ▼ ] om je keuze te wijzigen\nDruk op [Enter] om te bevestigen.\n");
 				switch (selectedIndex) {
 					case 0:
-						klant = _fitnessApp.Login();
+						klant = _fitnessApp.Login(true);
 						break;
 					case 1:
 						(klant, heeftGeanuleerd) = _fitnessApp.RegistreerKlant(true);

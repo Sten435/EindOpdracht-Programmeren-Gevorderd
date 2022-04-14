@@ -2,8 +2,9 @@
   "ExpandedNodes": [
     "",
     "\\CUI",
+    "\\CUI\\Beheerder",
     "\\CUI\\Klant"
   ],
-  "SelectedNode": "\\EindOpdracht.sln",
+  "SelectedNode": "\\CUI\\Beheerder\\Program.cs",
   "PreviewInSolutionExplorer": false
 }

@@ -28,6 +28,8 @@ namespace CUI {
 					if (klant == null)
 						LoginOrRegisterScreen();
 					Dashboard();
+				} catch (LoginException error) {
+					Utility.Logger.Error(error, clearConsole: true);
 				} catch (Exception error) {
 					Utility.Logger.Error(error, clearConsole: true);
 				}
@@ -78,7 +80,7 @@ namespace CUI {
 						_fitnessApp.ToonKlantReservaties(klant);
 						break;
 					case 2:
-						_fitnessApp.ToonAlleToestellen(klant);
+						_fitnessApp.ToonKlantDetails(klant);
 						break;
 					case 3:
 						heeftUitgelogd = true;

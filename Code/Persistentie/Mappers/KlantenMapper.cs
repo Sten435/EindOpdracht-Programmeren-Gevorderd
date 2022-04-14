@@ -29,8 +29,8 @@ namespace Persistentie {
 		public List<Klant> GeefAlleKlanten() => _klanten;
 
 		public Klant Login(string email) {
-			Klant? Klant = GeefAlleKlanten().FirstOrDefault(_klant => _klant.Email == email);
-			if (Klant == null) throw new Exception("Email is niet correct.");
+			Klant Klant = GeefAlleKlanten().FirstOrDefault(_klant => _klant.Email == email);
+			if (Klant == null) throw new LoginException("Email is niet correct.");
 			return Klant;
 		}
 
