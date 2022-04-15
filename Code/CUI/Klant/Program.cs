@@ -15,8 +15,6 @@ namespace CUI {
  |_|    |_|\__|_| |_|\___||___/___/ 
                                     ";
 
-		// Todo: Geregistreerde uren van andere klaten weglaten in keuze bij reservatie.
-
 		// REMOVE:
 		private static Klant klant = FitnessApp.DEBUGUSER;
 		// REMOVE:

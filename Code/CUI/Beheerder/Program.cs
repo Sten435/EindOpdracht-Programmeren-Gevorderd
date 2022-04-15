@@ -4,8 +4,12 @@ using System.Collections.Generic;
 
 namespace CUI {
 	public class BeheerderProgram {
-		private static Klant klant;
+		//private static Klant klant;
 		private static FitnessApp _fitnessApp = new();
+
+		// REMOVE:
+		private static Klant klant = FitnessApp.DEBUGUSER;
+		// REMOVE:
 
 		static void Main(string[] args) {
 			Console.ResetColor();

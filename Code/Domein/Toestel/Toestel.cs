@@ -10,5 +10,9 @@
 			ToestelType = toestelType;
 			InHerstelling = inHerstelling;
 		}
+
+		public override string ToString() {
+			return $"{ToestelType} - InHerstelling: {InHerstelling}";
+		}
 	}
 }

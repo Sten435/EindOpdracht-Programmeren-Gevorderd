@@ -56,25 +56,55 @@ namespace CUI {
 		}
 		#endregion
 
+		#region Public Debug Properties
+		public static Klant DEBUGUSER = _klantenRepo.GeefAlleKlanten().Single(klant => klant.Email == "stan.persoons@student.hogent.be");
+		#endregion
+
 		#region ToonAlleReservaties()
-		public void ToonAlleReservaties() => _domeinController.GeefAlleReservaties();
+		public void ToonAlleReservaties() {
+			List<Reservatie> reservaties = _domeinController.GeefAlleReservaties();
+			Utility.Table table = new();
+			table.SetHeaders("Reservaties");
+			reservaties.ForEach(reservatie => table.AddRow(reservatie.ToString()));
+			Utility.Logger.Info(table.ToString());
+		}
 		#endregion
 
 		#region ToonAlleToestellen()
 		public void ToonAlleToestellen() {
+			SelectedIndex = 0;
 			List<Toestel> toestellen = _domeinController.GeefAlleToestellen();
+			Utility.Table table = new();
+			Toestel toestel;
+			List<string> optieLijst = toestellen.Select(toestel => {
+				table.AddRow(toestel.ToString());
+				string row = table.ToString();
+				table.Clear();
+				return row;
+			}).ToList();
 
-			// Todo: Toestellen Tonen in table
-			// Todo: Toestellen kunnen veranderen en in onderhoud zetten
+			optieLijst.Add(StopOpties[1]);
+
+			int selectedIndex = Utility.OptieLijstConroller(optieLijst, "\rDruk op [ ▲ | ▼ ] om de dag te wijzigen\nDruk op [Enter] om te bevestigen\n", metPijl: false, metEinde: true);
+
+			if (selectedIndex != optieLijst.Count - 1) {
+				toestel = _domeinController.GeefAlleToestellen()[selectedIndex];
+				optieLijst.Clear();
+				optieLijst.Add("InHerstelling");
+				optieLijst.Add(StopOpties[1]);
+				selectedIndex = Utility.OptieLijstConroller(optieLijst, "", metPijl: false, metEinde: true);
+
+				if (selectedIndex != 2) {
+					Console.WriteLine(optieLijst[selectedIndex]);
+					Utility.ColorInput.ReadKnop();
+				}
+			}
+
 		}
 		#endregion
 
 		#region ToonAlleKlanten()
 		public void ToonAlleKlanten() => _domeinController.GeefAlleKlanten();
-		#endregion
-
-		#region Public Debug Properties
-		public static Klant DEBUGUSER = _klantenRepo.GeefAlleKlanten().Single(klant => klant.Email == "stan.persoons@student.hogent.be");
 		#endregion
 
 		#region RegistreerKlant(bool isBeheerder)

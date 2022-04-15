@@ -8,6 +8,10 @@ namespace CUI {
 	public abstract class Utility {
 		#region Public Static Properties
 		public static readonly string SelectPrefix = "|-> ";
+		#endregion		
+		
+		#region Private Fields
+		private static readonly string _predixSpace = "    ";
 		#endregion
 
 		#region Om Underlines te kunnen tekenen in console
@@ -22,7 +26,8 @@ namespace CUI {
 		#endregion
 
 		#region DisplayOptions
-		public static void DisplayOptions(List<string> optieLijst, bool metEinde = false) {
+		public static void DisplayOptions(List<string> optieLijst, bool metEinde = false, bool metPijl = true
+			) {
 			Console.ResetColor();
 			for (int i = 0; i < optieLijst.Count; i++) {
 				if (i == FitnessApp.SelectedIndex) {
@@ -43,7 +48,8 @@ namespace CUI {
 						Console.ForegroundColor = ConsoleColor.Red;
 					} else
 						Console.ResetColor();
-					Console.WriteLine($"    {optieLijst[i]}");
+					Console.WriteLine(@$"{_predixSpace}{optieLijst[i]}");
+
 				}
 			}
 			Console.ResetColor();
@@ -51,13 +57,13 @@ namespace CUI {
 		#endregion
 
 		#region OptieLijstConroller()
-		public static int OptieLijstConroller(List<string> optieLijst, string prompt = "", bool metEinde = false) {
+		public static int OptieLijstConroller(List<string> optieLijst, string prompt = "", bool metEinde = false, bool metPijl = true) {
 			Console.CursorVisible = false;
 			Console.Clear();
 			ConsoleKey consoleKey;
 			do {
 				Logger.Info(prompt);
-				DisplayOptions(optieLijst, metEinde: metEinde);
+				DisplayOptions(optieLijst, metEinde: metEinde, metPijl: metPijl);
 				consoleKey = Console.ReadKey().Key;
 				if (consoleKey == ConsoleKey.UpArrow) {
 					if (FitnessApp.SelectedIndex > 0)
