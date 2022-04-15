@@ -17,7 +17,7 @@ namespace CUI {
 		#endregion
 
 		#region Public Properties
-		public static readonly ConsoleColor DefaultReadLineColor = ConsoleColor.DarkCyan;
+		public static readonly ConsoleColor DefaultReadLineColor = ConsoleColor.Cyan;
 
 		public static readonly ConsoleColor DefaultInfoBackgroundPrintLineColor = ConsoleColor.DarkYellow;
 		public static readonly ConsoleColor DefaultInfoForeGrountPrintLineColor = ConsoleColor.Black;
@@ -44,15 +44,63 @@ namespace CUI {
 		#region VoegToestelToe
 		public void VoegToestelToe() {
 			string naam;
-			bool naamIsOk = true;
+			bool naamIsOk;
 			do {
-				naam = Utility.ColorInput.ReadInput(prompt: "Welk toestel wil je toevoegen ?");
+				naam = Utility.ColorInput.ReadInput(prompt: "Welk toestel wil je toevoegen:", metAchtergrond: true, promptColor: ConsoleColor.Black);
 				if (string.IsNullOrWhiteSpace(naam)) {
 					naamIsOk = false;
 					Console.Clear();
+				} else
+					naamIsOk = true;
+			} while (!naamIsOk);
+			_domeinController.VoegNieuwToestelToe(naam.Trim());
+		}
+		#endregion
+
+		#region VerwijderToestel()
+		public void VerwijderToestel() {
+			ResetPositionIndex();
+			Utility.Table table = new();
+			bool gaTerug = false;
+			do {
+				List<Toestel> toestellen = _domeinController.GeefAlleToestellen();
+				List<Toestel> gereserveerdeToestellen = _domeinController.GeefAlleReservaties()
+								.Where(reservatie => reservatie.TijdsSlot.EindTijd > DateTime.Now.ToUniversalTime().AddHours(2))
+								.Select(reservatie => reservatie.Toestel)
+								.ToList();
+
+				List<Toestel> beschikbareToestellen = toestellen.Where(toestel => !gereserveerdeToestellen.Contains(toestel)).ToList();
+
+
+				List<string> optieLijst = beschikbareToestellen.Select(toestel => {
+					table.AddRow(toestel.ToString());
+					string row = table.ToString();
+					table.Clear();
+					return row;
+				}).ToList();
+
+				optieLijst.Add(StopOpties[1]);
+
+				int selectedIndex = Utility.OptieLijstConroller(optieLijst, "Druk op [ ▲ | ▼ ] om de dag te selecteren\nDruk op [Enter] om te verwijderen\n\n", metPijl: false, metEinde: true);
+
+				if (selectedIndex == optieLijst.Count - 1)
+					gaTerug = true;
+				else {
+					Toestel toestel = beschikbareToestellen[selectedIndex];
+					string input = Utility.ColorInput.ReadInput(prompt: $"Weet je het zeker dat je: {toestel.ToestelType} wil verwijderen ! (ja/NEE):", metAchtergrond: true, promptColor: ConsoleColor.Black, color: DefaultReadLineColor);
+
+					Console.Clear();
+
+					if (input.ToLower().Trim() == "ja") {
+						_domeinController.VerwijderToestel(toestel);
+						Utility.Logger.Info($"{toestel.ToestelType} is verwijdered.");
+						Utility.ColorInput.ReadKnop(promptColor: DefaultReadLineColor);
+					} else {
+						Utility.Logger.Info("\nToestel verwijderen is geannuleerd door beheerder.");
+						Utility.ColorInput.ReadKnop(promptColor: DefaultReadLineColor);
+					}
 				}
-			} while (naamIsOk);
-			_domeinController.VoegNieuwToestelToe(naam);
+			} while (!gaTerug);
 		}
 		#endregion
 
@@ -67,44 +115,88 @@ namespace CUI {
 			table.SetHeaders("Reservaties");
 			reservaties.ForEach(reservatie => table.AddRow(reservatie.ToString()));
 			Utility.Logger.Info(table.ToString());
+			Utility.ColorInput.ReadKnop(prompt: "Druk op een knop om verder te gaan");
 		}
 		#endregion
 
 		#region ToonAlleToestellen()
 		public void ToonAlleToestellen() {
-			SelectedIndex = 0;
+			ResetPositionIndex();
 			List<Toestel> toestellen = _domeinController.GeefAlleToestellen();
 			Utility.Table table = new();
 			Toestel toestel;
-			List<string> optieLijst = toestellen.Select(toestel => {
-				table.AddRow(toestel.ToString());
-				string row = table.ToString();
-				table.Clear();
-				return row;
-			}).ToList();
+			bool gaTerug = false;
+			bool gaTerugConfig = false;
+			do {
+				List<string> optieLijst = toestellen.Select(toestel => {
+					table.AddRow(toestel.ToString());
+					string row = table.ToString();
+					table.Clear();
+					return row;
+				}).ToList();
 
-			optieLijst.Add(StopOpties[1]);
-
-			int selectedIndex = Utility.OptieLijstConroller(optieLijst, "\rDruk op [ ▲ | ▼ ] om de dag te wijzigen\nDruk op [Enter] om te bevestigen\n", metPijl: false, metEinde: true);
-
-			if (selectedIndex != optieLijst.Count - 1) {
-				toestel = _domeinController.GeefAlleToestellen()[selectedIndex];
-				optieLijst.Clear();
-				optieLijst.Add("InHerstelling");
 				optieLijst.Add(StopOpties[1]);
-				selectedIndex = Utility.OptieLijstConroller(optieLijst, "", metPijl: false, metEinde: true);
 
-				if (selectedIndex != 2) {
-					Console.WriteLine(optieLijst[selectedIndex]);
-					Utility.ColorInput.ReadKnop();
+				int selectedIndex = Utility.OptieLijstConroller(optieLijst, "\rDruk op [ ▲ | ▼ ] om de dag te wijzigen\nDruk op [Enter] om te bevestigen\n", metPijl: false, metEinde: true);
+
+				ResetPositionIndex();
+				if (selectedIndex != optieLijst.Count - 1) {
+					toestel = _domeinController.GeefAlleToestellen()[selectedIndex];
+					do {
+						optieLijst.Clear();
+						optieLijst.Add($"InHerstelling: {Utility.SchrijfUnderline(toestel.InHerstelling.ToString())}");
+						optieLijst.Add($"Naam: {Utility.SchrijfUnderline(toestel.ToestelType)}");
+						optieLijst.Add(StopOpties[1]);
+						selectedIndex = Utility.OptieLijstConroller(optieLijst, "", metEinde: true);
+
+						gaTerugConfig = false;
+						switch (selectedIndex) {
+							case 0:
+								ConsoleKey key;
+								do {
+									Utility.Logger.Info($"InHerstelling:", newLine: false);
+									Utility.Logger.Info($" {Utility.SchrijfUnderline(toestel.InHerstelling.ToString())}", metAchtergrond: false, color: ConsoleColor.Gray);
+
+									key = Utility.ColorInput.ReadKnop(prompt: "Druk op [Spactiebar] om een toestel in/uit herstelling te halen.\nDruk op [Enter] om te bevestigen", promptColor: DefaultInfoBackgroundPrintLineColor);
+									bool currentHerstelling = toestel.InHerstelling;
+
+									if (key == ConsoleKey.Spacebar)
+										toestel.InHerstelling = !currentHerstelling;
+									Console.Clear();
+								} while (key != ConsoleKey.Enter);
+								break;
+							case 1:
+								string naam;
+								do {
+									Utility.Logger.Info($"Naam op dit moment:", newLine: false);
+									Utility.Logger.Info($" {Utility.SchrijfUnderline(toestel.ToestelType)}", metAchtergrond: false, color: ConsoleColor.Gray);
+
+									naam = Utility.ColorInput.ReadInput(prompt: "Nieuwe naam:", metAchtergrond: true, promptColor: ConsoleColor.Black);
+
+									Console.Clear();
+								} while (string.IsNullOrWhiteSpace(naam));
+								toestel.ToestelType = naam.Trim();
+								break;
+							case 2:
+								gaTerugConfig = true;
+								break;
+						}
+					} while (!gaTerugConfig);
+
+					Console.Clear();
+				} else {
+					gaTerug = true;
 				}
-			}
-
+			} while (!gaTerug);
 		}
 		#endregion
 
 		#region ToonAlleKlanten()
-		public void ToonAlleKlanten() => _domeinController.GeefAlleKlanten();
+		public void ToonAlleKlanten() {
+			List<Klant> klanten = _domeinController.GeefAlleKlanten();
+			ToonKlantDetails(klanten);
+			Utility.ColorInput.ReadKnop();
+		}
 		#endregion
 
 		#region RegistreerKlant(bool isBeheerder)
@@ -358,19 +450,21 @@ namespace CUI {
 		}
 		#endregion
 
-		#region ToonKlantDetails(Klant klant)
+		#region ToonKlantDetails()
 		public void ToonKlantDetails(Klant klant) {
-			Utility.Table table = new();
-			table.SetHeaders("KlantenNummer", "Naam", "Email", "GeboorteDatum", "Abonnement", "Interesses");
-			table.AddRow(klant.KlantenNummer.ToString(), $"{klant.Voornaam} {klant.Achternaam}", klant.Email, klant.GeboorteDatum.ToShortDateString(), klant.TypeKlant.ToString(), string.Join(',', klant.Interesses));
-			Utility.Logger.Info($"{table}\n", metAchtergrond: true);
-			table.Clear();
-
-			table.SetHeaders("Adres");
-			table.AddRow("Straat", "Nr", "Plaats", "PostCode");
-			table.AddRow(klant.Adres.StraatNaam, klant.Adres.HuisNummer, klant.Adres.Plaats, klant.Adres.PostCode.ToString());
-			Utility.Logger.Info($"{table}\n\n\n", metAchtergrond: true);
+			List<Klant> klanten = new();
+			klanten.Add(klant);
+			ToonKlantDetails(klanten);
 			Utility.ColorInput.ReadKnop();
+		}
+		public void ToonKlantDetails(List<Klant> klanten) {
+			Utility.Table table = new();
+			klanten.ForEach(klant => {
+				table.SetHeaders("KlantenNummer", "Naam", "Email", "GeboorteDatum", "Abonnement", "Straat", "Huis Nr", "Plaats", "PostCode");
+				table.AddRow(klant.KlantenNummer.ToString(), $"{klant.Voornaam} {klant.Achternaam}", klant.Email, klant.GeboorteDatum.ToShortDateString(), klant.TypeKlant.ToString(), klant.Adres.StraatNaam, klant.Adres.HuisNummer, klant.Adres.Plaats, klant.Adres.PostCode.ToString());
+				Utility.Logger.Info($"{table}", metAchtergrond: true);
+				table.Clear();
+			});
 		}
 		#endregion
 

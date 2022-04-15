@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 
 namespace CUI {
 	public abstract class Utility {
 		#region Public Static Properties
 		public static readonly string SelectPrefix = "|-> ";
-		#endregion		
-		
+		#endregion
+
 		#region Private Fields
 		private static readonly string _predixSpace = "    ";
 		#endregion
@@ -26,29 +26,47 @@ namespace CUI {
 		#endregion
 
 		#region DisplayOptions
-		public static void DisplayOptions(List<string> optieLijst, bool metEinde = false, bool metPijl = true
-			) {
+		public static void DisplayOptions(List<string> optieLijst, bool metEinde = false, bool metPijl = true) {
 			Console.ResetColor();
 			for (int i = 0; i < optieLijst.Count; i++) {
 				if (i == FitnessApp.SelectedIndex) {
+					string text = $"{SelectPrefix}{optieLijst[i]}";
+					if (!metPijl)
+						text = $"{optieLijst[i]}";
 					if (FitnessApp.GaVerderOpties.Contains(optieLijst[i])) {
 						Console.ForegroundColor = ConsoleColor.Green;
+						text = $"{SelectPrefix}{optieLijst[i]}";
 					} else if (FitnessApp.StopOpties.Contains(optieLijst[i])) {
 						Console.ForegroundColor = ConsoleColor.Red;
+						text = $"{SelectPrefix}{optieLijst[i]}";
 					} else if (FitnessApp.DisabledOptie.Contains(optieLijst[i])) {
 						Console.ForegroundColor = ConsoleColor.DarkGray;
-					} else
+						text = $"{SelectPrefix}{optieLijst[i]}";
+					} else {
 						Console.ForegroundColor = FitnessApp.DefaultReadLineColor;
-					Console.WriteLine($"{SelectPrefix}{optieLijst[i]}");
+						if (!metPijl) {
+							Console.BackgroundColor = FitnessApp.DefaultInfoBackgroundPrintLineColor;
+							Console.ForegroundColor = ConsoleColor.Black;
+						}
+					}
+					Console.WriteLine(text);
 					Console.ResetColor();
 				} else {
-					if (FitnessApp.GaVerderOpties.Contains(optieLijst[i]))
+					string text = optieLijst[i];
+					if (FitnessApp.GaVerderOpties.Contains(optieLijst[i])) {
 						Console.ForegroundColor = ConsoleColor.Green;
-					else if (FitnessApp.StopOpties.Contains(optieLijst[i])) {
+						if (!metPijl)
+							text = @$"{_predixSpace}{optieLijst[i]}";
+					} else if (FitnessApp.StopOpties.Contains(optieLijst[i])) {
 						Console.ForegroundColor = ConsoleColor.Red;
+						if (!metPijl)
+							text = @$"{_predixSpace}{optieLijst[i]}";
 					} else
 						Console.ResetColor();
-					Console.WriteLine(@$"{_predixSpace}{optieLijst[i]}");
+					if (!metPijl)
+						Console.WriteLine(text);
+					else
+						Console.WriteLine(@$"{_predixSpace}{optieLijst[i]}");
 
 				}
 			}
@@ -145,27 +163,29 @@ namespace CUI {
 
 		#region Colorinput
 		public static class ColorInput {
-			public static string ReadInput(ConsoleColor color = ConsoleColor.White, string prompt = "", bool metAchtergrond = false) {
+			public static string ReadInput(ConsoleColor color = ConsoleColor.White, string prompt = "", bool metAchtergrond = false, ConsoleColor promptColor = ConsoleColor.White) {
 				Console.ForegroundColor = FitnessApp.DefaultReadLineColor;
-				Logger.Info(prompt, false, metAchtergrond: metAchtergrond);
+				Logger.Info(prompt, false, metAchtergrond: metAchtergrond, color: promptColor);
 				if (color == ConsoleColor.White)
 					Console.ForegroundColor = FitnessApp.DefaultInfoBackgroundPrintLineColor;
 				else
 					Console.ForegroundColor = color;
+				Logger.Info(" ", false, metAchtergrond: false);
 				string input = Console.ReadLine();
 				Console.ResetColor();
 				return input;
 			}
 
-			public static void ReadKnop(ConsoleColor color = ConsoleColor.White, string prompt = "Klik op een knop om verder te gaan.") {
+			public static ConsoleKey ReadKnop(ConsoleColor color = ConsoleColor.White, string prompt = "Klik op een knop om verder te gaan.", ConsoleColor promptColor = ConsoleColor.White) {
 				Console.CursorVisible = false;
 				Console.ForegroundColor = FitnessApp.DefaultReadLineColor;
-				Logger.Info(prompt, false, false);
+				Logger.Info(prompt, false, false, color: promptColor);
 				Console.ForegroundColor = color;
-				Console.ReadKey(false);
+				ConsoleKey key = Console.ReadKey(false).Key;
 				if (color != ConsoleColor.White)
 					Console.ResetColor();
 				Console.CursorVisible = true;
+				return key;
 			}
 		}
 		#endregion

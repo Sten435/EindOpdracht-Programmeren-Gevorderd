@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Persistentie {
 	public class ToestellenMapper : IToestelRepository {
-		UniekeCode _uniekeCode = UniekeCode.Instance;
+		private static UniekeCode _uniekeCode = UniekeCode.Instance;
 		private List<Toestel> _toestellen = new List<Toestel>() {
 			new Toestel(1, "Fiets", false),
 			new Toestel(2, "Loopband", false),

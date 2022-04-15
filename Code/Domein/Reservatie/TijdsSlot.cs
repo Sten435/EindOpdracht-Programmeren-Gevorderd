@@ -6,11 +6,12 @@ namespace Domein {
 		public DateTime StartTijd { get; }
 		public DateTime EindTijd { get; }
 
-		private const int slotDuurTijd = 1;
+		private const int _tijdsZone = 2;
+		private const int _slotDuurTijd = 1;
 
 		public TijdsSlot(DateTime startTijd) {
-			StartTijd = startTijd;
-			EindTijd = startTijd.AddHours(slotDuurTijd);
+			StartTijd = startTijd.ToUniversalTime().AddHours(_tijdsZone);
+			EindTijd = StartTijd.AddHours(_slotDuurTijd);
 		}
 	}
 }

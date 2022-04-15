@@ -1,17 +1,29 @@
 ﻿using Domein;
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
 namespace CUI {
 	public class BeheerderProgram {
 		//private static Klant klant;
 		private static FitnessApp _fitnessApp = new();
 
+		#region FullScreen
+		[DllImport("kernel32.dll", ExactSpelling = true)]
+		private static extern IntPtr GetConsoleWindow();
+		private static readonly IntPtr ThisConsole = GetConsoleWindow();
+		[DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+		private static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+		private const int MAXIMIZE = 3;
+		#endregion
+
 		// REMOVE:
 		private static Klant klant = FitnessApp.DEBUGUSER;
 		// REMOVE:
 
 		static void Main(string[] args) {
+			Console.SetWindowSize(Console.LargestWindowWidth, Console.LargestWindowHeight);
+			ShowWindow(ThisConsole, MAXIMIZE);
 			Console.ResetColor();
 			do {
 				try {
@@ -52,7 +64,7 @@ namespace CUI {
 			FitnessApp.SelectedIndex = 0;
 			bool heeftUitgelogd = false;
 			do {
-				List<string> optieLijst = new() { $"Voeg Toestel Toe", "Klanten Reservaties", "Toon Toestellen", "Toon Klanten\n", FitnessApp.StopOpties[2] };
+				List<string> optieLijst = new() { $"Voeg Toestel Toe", "Verwijder Toestel", "Toon Reservaties", "Toon Toestellen", "Toon Klanten\n", FitnessApp.StopOpties[2] };
 
 				int selectedIndex = Utility.OptieLijstConroller(optieLijst, "\rDruk op [ ▲ | ▼ ] om de dag te wijzigen\nDruk op [Enter] om te bevestigen\n");
 
@@ -61,15 +73,18 @@ namespace CUI {
 						_fitnessApp.VoegToestelToe();
 						break;
 					case 1:
-						_fitnessApp.ToonAlleReservaties();
+						_fitnessApp.VerwijderToestel();
 						break;
 					case 2:
-						_fitnessApp.ToonAlleToestellen();
+						_fitnessApp.ToonAlleReservaties();
 						break;
 					case 3:
-						_fitnessApp.ToonAlleKlanten();
+						_fitnessApp.ToonAlleToestellen();
 						break;
 					case 4:
+						_fitnessApp.ToonAlleKlanten();
+						break;
+					case 5:
 						heeftUitgelogd = true;
 						klant = null;
 						break;

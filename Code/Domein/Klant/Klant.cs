@@ -32,5 +32,9 @@ namespace Domein {
 		private void CheckDatumGeboorteDatum(DateTime datum) {
 			if (datum > DateTime.Now) throw new Exception("Geboortedatum mag niet in de toekomst zijn.");
 		}
+
+		public override string ToString() {
+			return $"";
+		}
 	}
 }

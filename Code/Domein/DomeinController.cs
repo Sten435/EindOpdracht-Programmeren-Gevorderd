@@ -59,9 +59,8 @@ namespace Domein {
 		#region Toestel
 		public List<string> GeefBeschikbareToestellen() => _toestselRepo.GeefAlleToestellen().Where(toestel => toestel.InHerstelling == false).Select(toestel => toestel.ToestelType).ToList();
 		public List<Toestel> GeefAlleToestellen() => _toestselRepo.GeefAlleToestellen();
-
 		public void VoegNieuwToestelToe(string naam) => _toestselRepo.VoegToestelToe(naam);
-
+		public void VerwijderToestel(Toestel toestel) => _toestselRepo.VerwijderToestel(toestel);
 		public Toestel GeefToestelOpNaam(string toestelNaam) => GeefAlleToestellen().SingleOrDefault(toestel => toestel.ToestelType.ToLower() == toestelNaam.ToLower());
 		#endregion
 	}

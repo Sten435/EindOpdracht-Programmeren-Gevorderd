@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Domein {
+﻿namespace Domein {
 
 	public class Reservatie {
 		public int ReservatieNummer { get; set; }
@@ -18,7 +16,7 @@ namespace Domein {
 		}
 
 		public override string ToString() {
-			return $" Nr: {ReservatieNummer} - {Toestel.ToestelType} - Datum: {TijdsSlot.StartTijd:d} - Tijdslot: {TijdsSlot.StartTijd:t}/uur -> {TijdsSlot.EindTijd:t}/uur ";
+			return $" Nr: {ReservatieNummer} - {Toestel.ToestelType} - Klant: {Klant.Voornaam} {Klant.Achternaam} - Datum: {TijdsSlot.StartTijd:d} - Tijdslot: {TijdsSlot.StartTijd:t}/uur -> {TijdsSlot.EindTijd:t}/uur ";
 		}
 	}
 }
