@@ -1,9 +1,12 @@
 ﻿using Domein;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Persistentie {
+
 	public class ToestellenMapper : IToestelRepository {
 		private static UniekeCode _uniekeCode = UniekeCode.Instance;
+
 		private List<Toestel> _toestellen = new List<Toestel>() {
 			new Toestel(1, "Fiets", false),
 			new Toestel(2, "Loopband", false),
@@ -12,20 +15,13 @@ namespace Persistentie {
 
 		public List<Toestel> GeefAlleToestellen() => _toestellen;
 
-		public void VoegToestelToe(string naam) {
-			Toestel toestel = new(_uniekeCode.GenereerRandomCode(), naam, false);
-			_toestellen.Add(toestel);
-		}
+		public void VoegToestelToe(string naam) => _toestellen.Add(new(_uniekeCode.GenereerRandomCode(), naam, false));
 
 		public void VerwijderToestel(Toestel toestel) => _toestellen.Remove(toestel);
 
-		public void ZetToestelInHerstelling(Toestel toestel) {
-			for (int i = 0; i < _toestellen.Count; i++) {
-				if (toestel.IdentificatieCode == _toestellen[i].IdentificatieCode) {
-					_toestellen[i].InHerstelling = true;
-					break;
-				}
-			}
+		public void ZetToestelInOfUitHerstelling(Toestel toestel) {
+			Toestel t = _toestellen.Where(t => t.IdentificatieCode == toestel.IdentificatieCode).Single();
+			t.InHerstelling = !t.InHerstelling;
 		}
 	}
 }

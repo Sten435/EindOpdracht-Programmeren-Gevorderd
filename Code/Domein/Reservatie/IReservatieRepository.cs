@@ -3,6 +3,7 @@
 namespace Domein {
 
 	public interface IReservatieRepository {
+
 		List<Reservatie> GeefAlleReservaties();
 
 		void VoegReservatieToe(Reservatie reservatie);

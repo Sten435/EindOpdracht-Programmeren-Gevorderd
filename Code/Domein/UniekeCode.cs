@@ -2,15 +2,16 @@
 using System.Collections.Generic;
 
 namespace Domein {
-	public class UniekeCode {
-		Random rnd = new();
 
-		List<int> VoorbijeCodes = new();
+	public class UniekeCode {
+		private Random rnd = new();
+
+		private List<int> VoorbijeCodes = new();
 
 		private static UniekeCode instance = null;
 		private static readonly object padlock = new();
 
-		UniekeCode() {
+		private UniekeCode() {
 		}
 
 		public static UniekeCode Instance {
@@ -26,9 +27,11 @@ namespace Domein {
 
 		public int GenereerRandomCode() {
 			int code;
+
 			do {
 				code = rnd.Next(0, 100000);
 			} while (VoorbijeCodes.Contains(code));
+
 			VoorbijeCodes.Add(code);
 			return code;
 		}

@@ -1,7 +1,9 @@
 ﻿using System;
 
 namespace Domein {
+
 	public class LoginException : Exception {
+
 		public LoginException() {
 		}
 

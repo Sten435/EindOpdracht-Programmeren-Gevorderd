@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 
 namespace Persistentie {
+
 	public class KlantenMapper : IKlantenRepository {
+
 		private List<Klant> _klanten = new List<Klant>() {
 			new Klant(1, "Stan", "Persoons", "stan.persoons@student.hogent.be",
 				new List<string>() {

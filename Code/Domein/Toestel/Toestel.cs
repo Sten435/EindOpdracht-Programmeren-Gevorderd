@@ -11,13 +11,8 @@
 			InHerstelling = inHerstelling;
 		}
 
-		public override string ToString() {
-			return $"{ToestelType} - InHerstelling: {InHerstelling}";
-		}
+		public override string ToString() => $"{ToestelType} - InHerstelling: {InHerstelling}";
 
-		public override bool Equals(object obj) {
-			return obj is Toestel toestel &&
-				   IdentificatieCode == toestel.IdentificatieCode;
-		}
+		public override bool Equals(object obj) => obj is Toestel toestel && IdentificatieCode == toestel.IdentificatieCode;
 	}
 }

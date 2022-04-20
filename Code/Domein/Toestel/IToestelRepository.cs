@@ -3,11 +3,12 @@
 namespace Domein {
 
 	public interface IToestelRepository {
+
 		List<Toestel> GeefAlleToestellen();
 
 		void VoegToestelToe(string naam);
 
-		void ZetToestelInHerstelling(Toestel toestel);
+		void ZetToestelInOfUitHerstelling(Toestel toestel);
 
 		void VerwijderToestel(Toestel toestel);
 	}
