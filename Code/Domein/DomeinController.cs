@@ -81,7 +81,11 @@ namespace Domein {
 
 		#region Toestel
 
-		public List<string> GeefBeschikbareToestellen() => _toestselRepo.GeefAlleToestellen().Where(toestel => toestel.InHerstelling == false).Select(toestel => toestel.ToestelType).ToList();
+		public List<string> GeefBeschikbareToestellen() => _toestselRepo.GeefAlleToestellen().Where(t2 => t2.InHerstelling == false).GroupBy(t1 => t1.ToestelType).Select(s => {
+			if (s.Count() > 1)
+				return $"{s.Key} [{s.Count()}]";
+			else return s.Key;
+		}).ToList();
 
 		public List<Toestel> GeefAlleToestellen() => _toestselRepo.GeefAlleToestellen();
 
@@ -89,7 +93,7 @@ namespace Domein {
 
 		public void VerwijderToestel(Toestel toestel) => _toestselRepo.VerwijderToestel(toestel);
 
-		public Toestel GeefToestelOpNaam(string toestelNaam) => GeefAlleToestellen().SingleOrDefault(toestel => toestel.ToestelType.ToLower() == toestelNaam.ToLower());
+		public Toestel GeefToestelOpNaam(string toestelNaam) => GeefAlleToestellen().First(toestel => toestel.ToestelType.ToLower() == toestelNaam.ToLower());
 
 		#endregion Toestel
 	}

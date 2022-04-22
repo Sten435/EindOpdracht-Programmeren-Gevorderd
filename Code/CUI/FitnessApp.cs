@@ -692,7 +692,16 @@ namespace CUI {
 						return;
 					}
 
-					toestel = _domeinController.GeefAlleToestellen()[selectedIndex];
+					string toestelNaamRaw = beschikbaretoestellen[selectedIndex];
+					int toestelNaamIndexOf = toestelNaamRaw.IndexOf("[");
+
+					//TODO: Als er meerdere toestellen, op dezelfde uren reservaren ?
+
+					if (toestelNaamIndexOf == -1)
+						toestel = _domeinController.GeefToestelOpNaam(toestelNaamRaw);
+					else
+						toestel = _domeinController.GeefToestelOpNaam(toestelNaamRaw[..toestelNaamIndexOf].Trim());
+
 					if (toestel == null) Console.Clear();
 				} while (toestel == null);
 
@@ -721,9 +730,6 @@ namespace CUI {
 		private DateTime TijdsDisplayPicker(Klant klant, Toestel toestel) {
 			int lowerBoundUur = 8;
 			int upperBoundUur = 22;
-			int lowerBoundMinuten = 0;
-			int upperBoundMinuten = 59;
-			int minuten = lowerBoundMinuten;
 
 			DateTime lowerBoundDag = DateTime.Now;
 			DateTime upperBoundDag = DateTime.Now.Date.AddDays(_maximumDagenReserverenToekomst);
@@ -731,118 +737,86 @@ namespace CUI {
 			DateTime datum;
 
 			List<int> beschikbareUren;
-
-			bool hasMinuten = false;
-			bool pressedRight = false;
-			bool kanNogReservaren = false;
+			bool kanNogReservaren;
 
 			ConsoleKey deafaultConsoleKey = ConsoleKey.A;
 			ConsoleKey keyPressed = deafaultConsoleKey;
 
 			Console.CursorVisible = false;
-			SelecteerDag(klant, toestel);
-			Console.CursorVisible = true;
 
-			void SelecteerUur() {
-				do {
-					keyPressed = deafaultConsoleKey;
-					datum = new DateTime(dag.Year, dag.Month, dag.Day, beschikbareUren[_domeinController.UurIndex], 0, 0);
+			Utility.Logger.Info($"\rDruk op [ ▲ | ▼ ] om de dag te wijzigen.\nDruk op [Enter] om te bevestigen.");
 
-					Utility.Logger.Info("\rKies een uur: ", newLine: false, metAchtergrond: false, color: ConsoleColor.DarkYellow);
-					Utility.Logger.Info($"{Utility.SchrijfUnderline((datum.Hour.ToString().Length == 1 ? $"0{datum.Hour}" : $"{datum.Hour}"))}", newLine: false, metAchtergrond: false);
-					Utility.Logger.Info(":00/uur", newLine: false, metAchtergrond: false, color: ConsoleColor.DarkYellow);
+			do {
+				(beschikbareUren, kanNogReservaren) = _domeinController.GeefBeschikbareUrenOpDatum(dag, klant, toestel);
+				keyPressed = deafaultConsoleKey;
 
-					keyPressed = Console.ReadKey(false).Key;
+				if (beschikbareUren.Count == 0) {
 
-					if (keyPressed == ConsoleKey.UpArrow && beschikbareUren[_domeinController.UurIndex] < upperBoundUur && beschikbareUren[_domeinController.UurIndex] != beschikbareUren[^1])
-						_domeinController.UurIndex++;
-					else if (keyPressed == ConsoleKey.DownArrow && beschikbareUren[_domeinController.UurIndex] > lowerBoundUur && beschikbareUren[_domeinController.UurIndex] != beschikbareUren[0])
-						_domeinController.UurIndex--;
-					//else if (keyPressed == ConsoleKey.RightArrow) {
-					//	pressedRight = true;
-					//	SelecteerMinuten();
-					//}
-				} while (keyPressed != ConsoleKey.Enter);
-				//if (!pressedRight) SelecteerMinuten();
-			}
+					beschikbareUren.Clear();
+					Console.SetCursorPosition(0, Console.CursorTop);
+					Utility.Logger.Info(new string(' ', Console.WindowWidth), newLine: false, metAchtergrond: false);
+					Console.SetCursorPosition(0, Console.CursorTop);
 
-			void SelecteerMinuten() {
-				do {
-					Console.Write($"\r{(dag.Hour.ToString().Length == 1 ? $"0{dag.Hour}" : $"{dag.Hour}")}:");
-					Utility.Logger.Info($"{Utility.SchrijfUnderline((minuten.ToString().Length == 1 ? $"0{minuten}" : $"{minuten}"))}", newLine: false, metAchtergrond: false);
+					Console.ResetColor();
+					Utility.Logger.Info("\rKies een dag: ", newLine: false, metAchtergrond: false, color: ConsoleColor.DarkYellow);
 
-					keyPressed = Console.ReadKey(false).Key;
-					hasMinuten = true;
+					Console.ForegroundColor = ConsoleColor.DarkRed;
+					Utility.Logger.Info($"{Utility.SchrijfUnderline(dag.Day.ToString())}", newLine: false, metAchtergrond: false);
 
-					if (keyPressed == ConsoleKey.UpArrow)
-						if (minuten < upperBoundMinuten) minuten++;
-						else if (keyPressed == ConsoleKey.DownArrow) if (minuten > lowerBoundMinuten) minuten--;
-							else if (keyPressed == ConsoleKey.LeftArrow) SelecteerUur();
-				} while (keyPressed != ConsoleKey.Enter);
-			} // Wordt niet gebruikt omdat dit niet nodig is.
+					Console.ResetColor();
+					Utility.Logger.Info($"/{dag.Month}/{dag.Year}", newLine: false, metAchtergrond: false, color: ConsoleColor.DarkYellow);
 
-			void SelecteerDag(Klant klant, Toestel toestel) {
-				//if (!hasMinuten) {
-				Utility.Logger.Info($"\rDruk op [ ▲ | ▼ ] om de dag te wijzigen.\nDruk op [Enter] om te bevestigen.");
-				do {
-					(beschikbareUren, kanNogReservaren) = _domeinController.GeefBeschikbareUrenOpDatum(dag, klant, toestel);
-					keyPressed = deafaultConsoleKey;
+					if (!kanNogReservaren)
+						Utility.Logger.Info(" [max 4 reservaties per dag]", newLine: false, metAchtergrond: false, color: DefaultInfoBackgroundPrintLineColor);
+					else
+						Utility.Logger.Info(" [geen reservaties meer beschikbaar]", newLine: false, metAchtergrond: false, color: DefaultInfoBackgroundPrintLineColor);
 
-					if (beschikbareUren.Count == 0) {
-
-						beschikbareUren.Clear();
-						Console.SetCursorPosition(0, Console.CursorTop);
-						Utility.Logger.Info(new string(' ', Console.WindowWidth), newLine: false, metAchtergrond: false);
-						Console.SetCursorPosition(0, Console.CursorTop);
-
-						Console.ResetColor();
-						Utility.Logger.Info("\rKies een dag: ", newLine: false, metAchtergrond: false, color: ConsoleColor.DarkYellow);
-
-						Console.ForegroundColor = ConsoleColor.DarkRed;
-						Utility.Logger.Info($"{Utility.SchrijfUnderline(dag.Day.ToString())}", newLine: false, metAchtergrond: false);
-
-						Console.ResetColor();
-						Utility.Logger.Info($"/{dag.Month}/{dag.Year}", newLine: false, metAchtergrond: false, color: ConsoleColor.DarkYellow);
-
-						if (!kanNogReservaren)
-							Utility.Logger.Info(" [max 4 reservaties per dag]", newLine: false, metAchtergrond: false, color: DefaultInfoBackgroundPrintLineColor);
-						else
-							Utility.Logger.Info(" [volboekt]", newLine: false, metAchtergrond: false, color: DefaultInfoBackgroundPrintLineColor);
-
-						do {
-							keyPressed = Console.ReadKey(false).Key;
-
-							if (keyPressed == ConsoleKey.UpArrow) {
-								if (dag.Day < upperBoundDag.Day) dag = dag.AddDays(1);
-							} else if (keyPressed == ConsoleKey.DownArrow)
-								if (dag.Day > lowerBoundDag.Day) dag = dag.AddDays(-1);
-						} while (keyPressed == ConsoleKey.Enter);
-					} else {
-						Console.SetCursorPosition(0, Console.CursorTop);
-						Utility.Logger.Info(new string(' ', Console.WindowWidth), newLine: false, metAchtergrond: false);
-						Console.SetCursorPosition(0, Console.CursorTop);
-
-						Console.ResetColor();
-
-						Utility.Logger.Info("\rKies een dag: ", newLine: false, metAchtergrond: false, color: ConsoleColor.DarkYellow);
-						Utility.Logger.Info($"{Utility.SchrijfUnderline(dag.Day.ToString())}", newLine: false, metAchtergrond: false);
-						Utility.Logger.Info($"/{dag.Month}/{dag.Year}", newLine: false, metAchtergrond: false, color: ConsoleColor.DarkYellow);
-
+					do {
 						keyPressed = Console.ReadKey(false).Key;
-						//hasMinuten = true;
 
 						if (keyPressed == ConsoleKey.UpArrow) {
 							if (dag.Day < upperBoundDag.Day) dag = dag.AddDays(1);
 						} else if (keyPressed == ConsoleKey.DownArrow)
 							if (dag.Day > lowerBoundDag.Day) dag = dag.AddDays(-1);
-					}
-				} while (keyPressed != ConsoleKey.Enter);
-				//}
-				Console.Clear();
-				//Utility.Logger.Info($"\rDruk op [ ‹ | › ] om het uur te wijzigen, en [Enter] om te bevestigen.\nReservaties duren telkens 1 uur.");
-				Utility.Logger.Info($"\rDruk op [ ▲ | ▼ ] om het uur te wijzigen.\nDruk op [Enter] om te bevestigen."); 
-				SelecteerUur();
-			}
+					} while (keyPressed == ConsoleKey.Enter);
+				} else {
+					Console.SetCursorPosition(0, Console.CursorTop);
+					Utility.Logger.Info(new string(' ', Console.WindowWidth), newLine: false, metAchtergrond: false);
+					Console.SetCursorPosition(0, Console.CursorTop);
+
+					Console.ResetColor();
+
+					Utility.Logger.Info("\rKies een dag: ", newLine: false, metAchtergrond: false, color: ConsoleColor.DarkYellow);
+					Utility.Logger.Info($"{Utility.SchrijfUnderline(dag.Day.ToString())}", newLine: false, metAchtergrond: false);
+					Utility.Logger.Info($"/{dag.Month}/{dag.Year}", newLine: false, metAchtergrond: false, color: ConsoleColor.DarkYellow);
+
+					keyPressed = Console.ReadKey(false).Key;
+
+					if (keyPressed == ConsoleKey.UpArrow) {
+						if (dag.Day < upperBoundDag.Day) dag = dag.AddDays(1);
+					} else if (keyPressed == ConsoleKey.DownArrow)
+						if (dag.Day > lowerBoundDag.Day) dag = dag.AddDays(-1);
+				}
+			} while (keyPressed != ConsoleKey.Enter);
+
+			Console.Clear();
+			Utility.Logger.Info($"\rDruk op [ ▲ | ▼ ] om het uur te wijzigen.\nDruk op [Enter] om te bevestigen.");
+
+			do {
+				datum = new DateTime(dag.Year, dag.Month, dag.Day, beschikbareUren[_domeinController.UurIndex], 0, 0);
+
+				Utility.Logger.Info("\rKies een uur: ", newLine: false, metAchtergrond: false, color: ConsoleColor.DarkYellow);
+				Utility.Logger.Info($"{Utility.SchrijfUnderline((datum.Hour.ToString().Length == 1 ? $"0{datum.Hour}" : $"{datum.Hour}"))}", newLine: false, metAchtergrond: false);
+				Utility.Logger.Info(":00/uur", newLine: false, metAchtergrond: false, color: ConsoleColor.DarkYellow);
+
+				keyPressed = Console.ReadKey(false).Key;
+
+				if (keyPressed == ConsoleKey.UpArrow && beschikbareUren[_domeinController.UurIndex] < upperBoundUur && beschikbareUren[_domeinController.UurIndex] != beschikbareUren[^1])
+					_domeinController.UurIndex++;
+				else if (keyPressed == ConsoleKey.DownArrow && beschikbareUren[_domeinController.UurIndex] > lowerBoundUur && beschikbareUren[_domeinController.UurIndex] != beschikbareUren[0])
+					_domeinController.UurIndex--;
+			} while (keyPressed != ConsoleKey.Enter);
+			Console.CursorVisible = true;
 
 			_domeinController.ResetUurIndex();
 			return datum;

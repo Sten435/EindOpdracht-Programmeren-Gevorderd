@@ -9,6 +9,9 @@ namespace Persistentie {
 
 		private List<Toestel> _toestellen = new List<Toestel>() {
 			new Toestel(1, "Fiets", false),
+			new Toestel(1, "Fiets", false),
+			new Toestel(1, "Fiets", false),
+			new Toestel(1, "Fiets", false),
 			new Toestel(2, "Loopband", false),
 			new Toestel(3, "Roeien", true)
 		};
