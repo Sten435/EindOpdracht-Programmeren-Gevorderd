@@ -2,8 +2,11 @@
   "ExpandedNodes": [
     "",
     "\\CUI",
-    "\\CUI\\Beheerder"
+    "\\CUI\\Beheerder",
+    "\\CUI\\Klant",
+    "\\DomeinTests1",
+    "\\DomeinTests1\\Klant"
   ],
-  "SelectedNode": "\\EindOpdracht.sln",
+  "SelectedNode": "\\DomeinTests1\\Klant\\KlantTests.cs",
   "PreviewInSolutionExplorer": false
 }

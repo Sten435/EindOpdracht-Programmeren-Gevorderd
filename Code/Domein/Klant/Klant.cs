@@ -9,7 +9,7 @@ namespace Domein {
 		public string Achternaam { get; }
 		public string Email { get; }
 		public List<string> Interesses { get; }
-		public DateTime GeboorteDatum { get; set; }
+		public DateTime GeboorteDatum { get; }
 		public Adres Adres { get; }
 		public TypeKlant TypeKlant { get; }
 

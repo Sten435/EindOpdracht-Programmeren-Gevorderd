@@ -72,7 +72,7 @@ namespace CUI {
 
 		public void VerwijderToestel() {
 			ResetPositionIndex();
-			Utility.Table table = new();
+			Table table = new();
 			bool gaTerug = false;
 			do {
 				List<Toestel> toestellen = _domeinController.GeefAlleToestellen();
@@ -130,7 +130,7 @@ namespace CUI {
 
 			List<Reservatie> reservaties = _domeinController.GeefAlleReservaties();
 
-			Utility.Table table = new();
+			Table table = new();
 			table.SetHeaders("Reservaties");
 
 			reservaties.ForEach(reservatie => table.AddRow(reservatie.ToString()));
@@ -148,7 +148,7 @@ namespace CUI {
 		public void ToonAlleToestellen() {
 			ResetPositionIndex();
 			List<Toestel> toestellen = _domeinController.GeefAlleToestellen();
-			Utility.Table table = new();
+			Table table = new();
 			Toestel toestel;
 
 			bool gaTerug = false;
@@ -545,7 +545,7 @@ namespace CUI {
 
 					switch (selectedIndex) {
 						case 0:
-							Utility.Table table = new();
+							Table table = new();
 							table.SetHeaders("Reservaties");
 
 							reservaties.ForEach(reservatie => table.AddRow(reservatie.ToString()));
@@ -585,7 +585,7 @@ namespace CUI {
 		public void VerwijderReservatie(Klant klant) {
 			ResetPositionIndex();
 
-			Utility.Table table = new();
+			Table table = new();
 			bool gaTerug = false;
 
 			do {
@@ -666,7 +666,7 @@ namespace CUI {
 		}
 
 		public void ToonKlantDetails(List<Klant> klanten) {
-			Utility.Table table = new();
+			Table table = new();
 
 			klanten.ForEach(klant => {
 				table.SetHeaders("KlantenNummer", "Naam", "Email", "GeboorteDatum", "Abonnement", "Straat", "Huis Nr", "Plaats", "PostCode");
@@ -685,7 +685,7 @@ namespace CUI {
 		public void RegistreerToestel(Klant klant) {
 			ResetPositionIndex();
 
-			Utility.Table table = new();
+			Table table = new();
 			DateTime tijdsSlotDatum;
 			Toestel toestel;
 

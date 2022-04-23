@@ -45,7 +45,7 @@ namespace Domein {
 			List<DateTime> gereserveerdeTijdssloten = GeefAlleTijdsSloten(toestel);
 
 			List<int> beschikbareUrenFitness = Enumerable.Range(8, 15).ToList();
-			HashSet<int> urenNaFilter = new();
+			List<int> urenNaFilter = new();
 
 			List<Toestel> beschikbareToestellen = GeefAlleToestellen().Where(t => t.ToestelType == toestel.ToestelType && t.InHerstelling == false).ToList();
 
