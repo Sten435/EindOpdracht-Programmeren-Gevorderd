@@ -8,20 +8,15 @@ namespace CUI {
 		private static readonly FitnessApp _fitnessApp = new();
 		//private static Klant klant;
 
-		private static string _naam = @"  ______ _ _
- |  ____(_) |
- | |__   _| |_ _ __   ___  ___ ___
- |  __| | | __| '_ \ / _ \/ __/ __|
- | |    | | |_| | | |  __/\__ \__ \
- |_|    |_|\__|_| |_|\___||___/___/
-                                    ";
-
 		// REMOVE:
 		private static Klant klant = FitnessApp.DEBUGUSER;
 
 		// REMOVE:
 
 		private static void Main(string[] args) {
+			_fitnessApp.LaadKlanten();
+			_fitnessApp.LaadToestellen();
+
 			Console.ResetColor();
 			do {
 				try {
@@ -45,7 +40,7 @@ namespace CUI {
 			do {
 				FitnessApp.SelectedIndex = 0;
 				heeftGeanuleerd = false;
-				int selectedIndex = Utility.OptieLijstConroller(optieLijst, $"{_naam}\n\nDruk op [ ▲ | ▼ ] om je keuze te wijzigen\nDruk op [Enter] om te bevestigen.\n");
+				int selectedIndex = Utility.OptieLijstConroller(optieLijst, "Druk op [ ▲ | ▼ ] om je keuze te wijzigen\nDruk op [Enter] om te bevestigen.\n");
 				switch (selectedIndex) {
 					case 0:
 						klant = _fitnessApp.Login();

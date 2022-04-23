@@ -35,34 +35,41 @@ namespace Domein {
 
 		public List<DateTime> GeefAlleTijdsSloten(Toestel toestel) => _reservatieRepo.GeefAlleReservaties()
 			.Where(rv => rv.Toestel.IdentificatieCode == toestel.IdentificatieCode)
-			.Select(reservatie => reservatie.TijdsSlot.StartTijd).ToList();
+			.Select(r => r.TijdsSlot.StartTijd).ToList();
 
 		public (List<int>, bool) GeefBeschikbareUrenOpDatum(DateTime dag, Klant klant, Toestel toestel) {
-			List<Reservatie> gemaakteReservaties = GeefAlleReservaties()
-				.Where(reservatie => reservatie.Klant.KlantenNummer == klant.KlantenNummer && reservatie.TijdsSlot.StartTijd.Day == dag.Day).ToList();
-			List<DateTime> onbeschibareTijdsSloten = GeefAlleTijdsSloten(toestel);
+			List<Reservatie> klantReservaties = GeefAlleReservaties().Where(r => r.Klant.KlantenNummer == klant.KlantenNummer).ToList();
+			List<Reservatie> klantReservatiesDag = klantReservaties.Where(r => r.TijdsSlot.StartTijd.Day == dag.Day).ToList();
+
+			List<DateTime> klantReservatiesMetGeselecteerdeToestel = klantReservaties.Where(r => r.Toestel.ToestelType == toestel.ToestelType && r.TijdsSlot.StartTijd.Day == dag.Day).Select(t => t.TijdsSlot.StartTijd).ToList();
+			List<DateTime> gereserveerdeTijdssloten = GeefAlleTijdsSloten(toestel);
 
 			List<int> beschikbareUrenFitness = Enumerable.Range(8, 15).ToList();
-			List<int> urenNaFilter = new();
+			HashSet<int> urenNaFilter = new();
 
-			if (gemaakteReservaties.Count == 4) return (urenNaFilter, false);
-			else {
-				for (int i = 0; i < beschikbareUrenFitness.Count; i++) {
-					int uur = beschikbareUrenFitness[i];
+			List<Toestel> beschikbareToestellen = GeefAlleToestellen().Where(t => t.ToestelType == toestel.ToestelType && t.InHerstelling == false).ToList();
 
-					DateTime tijdsSlot = new(dag.Year, dag.Month, dag.Day, uur, 0, 0);
+			if (klantReservatiesDag.Count == 4) return (urenNaFilter.ToList(), false);
 
-					if (!onbeschibareTijdsSloten.Contains(tijdsSlot)) urenNaFilter.Add(uur);
+			for (int i = 0; i < beschikbareUrenFitness.Count; i++) {
+				int uur = beschikbareUrenFitness[i];
 
-					if (gemaakteReservaties.Select(reservatie => reservatie.TijdsSlot.StartTijd)
-						.Contains(tijdsSlot.AddHours(-1)) && gemaakteReservaties
-						.Select(reservatie => reservatie.TijdsSlot.StartTijd)
-						.Contains(tijdsSlot.AddHours(-2))) urenNaFilter.Remove(uur);
+				DateTime tijdsSlot = new(dag.Year, dag.Month, dag.Day, uur, 0, 0);
 
-					if (tijdsSlot < DateTime.Now) urenNaFilter.Remove(uur);
-				}
-				return (urenNaFilter, true);
+				if (!gereserveerdeTijdssloten.Contains(tijdsSlot)) urenNaFilter.Add(uur);
+				else if (beschikbareToestellen.Count > gereserveerdeTijdssloten.Where(d => d == tijdsSlot).ToList().Count) urenNaFilter.Add(uur);
+
+				if (klantReservatiesMetGeselecteerdeToestel.Contains(tijdsSlot)) 
+					urenNaFilter.Remove(uur);
+
+				if (klantReservatiesDag.Select(reservatie => reservatie.TijdsSlot.StartTijd)
+					.Contains(tijdsSlot.AddHours(-1)) && klantReservatiesDag
+					.Select(reservatie => reservatie.TijdsSlot.StartTijd)
+					.Contains(tijdsSlot.AddHours(-2))) urenNaFilter.Remove(uur);
+
+				if (tijdsSlot < DateTime.Now) urenNaFilter.Remove(uur);
 			}
+			return (urenNaFilter.ToList(), true);
 		}
 
 		public void ResetUurIndex() => UurIndex = 0;
@@ -77,6 +84,8 @@ namespace Domein {
 
 		public Klant Login(string email) => _klantenRepo.Login(email);
 
+		public bool LaadKlanten() => _klantenRepo.LaadKlanten();
+
 		#endregion Klant
 
 		#region Toestel
@@ -88,6 +97,8 @@ namespace Domein {
 		}).ToList();
 
 		public List<Toestel> GeefAlleToestellen() => _toestselRepo.GeefAlleToestellen();
+
+		public bool LaadToestellen() => _toestselRepo.LaadToestellen();
 
 		public void VoegNieuwToestelToe(string naam) => _toestselRepo.VoegToestelToe(naam);
 

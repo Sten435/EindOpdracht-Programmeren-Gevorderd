@@ -216,10 +216,14 @@ namespace CUI {
 					Console.Clear();
 				} else gaTerug = true;
 			} while (!gaTerug);
-			AssignOudePositie();
+			SelectedIndex = 3;
 		}
 
 		#endregion ToonAlleToestellen()
+
+		#region LaadToestellen()
+		public bool LaadToestellen() => _domeinController.LaadToestellen();
+		#endregion
 
 		#region ToonAlleKlanten()
 
@@ -234,6 +238,10 @@ namespace CUI {
 		}
 
 		#endregion ToonAlleKlanten()
+
+		#region LaadKlanten
+		public bool LaadKlanten() => _domeinController.LaadKlanten();
+		#endregion
 
 		#region RegistreerKlant(bool isBeheerder)
 
@@ -664,7 +672,7 @@ namespace CUI {
 				table.SetHeaders("KlantenNummer", "Naam", "Email", "GeboorteDatum", "Abonnement", "Straat", "Huis Nr", "Plaats", "PostCode");
 				table.AddRow(klant.KlantenNummer.ToString(), $"{klant.Voornaam} {klant.Achternaam}", klant.Email, klant.GeboorteDatum.ToShortDateString(), klant.TypeKlant.ToString(), klant.Adres.StraatNaam, klant.Adres.HuisNummer, klant.Adres.Plaats, klant.Adres.PostCode.ToString());
 
-				Utility.Logger.Info($"{table}", metAchtergrond: true);
+				Utility.Logger.Info($"{table}", metAchtergrond: false, color: DefaultInfoBackgroundPrintLineColor);
 
 				table.Clear();
 			});
@@ -694,8 +702,6 @@ namespace CUI {
 
 					string toestelNaamRaw = beschikbaretoestellen[selectedIndex];
 					int toestelNaamIndexOf = toestelNaamRaw.IndexOf("[");
-
-					//TODO: Als er meerdere toestellen, op dezelfde uren reservaren ?
 
 					if (toestelNaamIndexOf == -1)
 						toestel = _domeinController.GeefToestelOpNaam(toestelNaamRaw);

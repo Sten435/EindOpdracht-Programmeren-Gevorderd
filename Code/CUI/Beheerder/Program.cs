@@ -15,6 +15,9 @@ namespace CUI {
 		// REMOVE:
 
 		private static void Main(string[] args) {
+			_fitnessApp.LaadKlanten();
+			_fitnessApp.LaadToestellen();
+
 			Console.ResetColor();
 			do {
 				try {

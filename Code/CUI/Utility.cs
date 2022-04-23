@@ -239,7 +239,7 @@ namespace CUI {
 			private const string VerticalLine = "│";
 
 			private string[] _headers;
-			private List<string[]> _rows = new List<string[]>();
+			private List<string[]> _rows = new();
 
 			public int Padding { get; set; } = 1;
 			public bool HeaderTextAlignRight { get; set; }

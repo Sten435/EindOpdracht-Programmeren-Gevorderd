@@ -5,7 +5,7 @@ namespace Persistentie {
 
 	public class ReservatieMapper : IReservatieRepository {
 
-		private List<Reservatie> _reservaties = new List<Reservatie>() {
+		private List<Reservatie> _reservaties = new() {
 			//new Reservatie(new Klant(1, "Stan", "Persoons", "stan.persoons@student.hogent.be",
 			//	new List<string>() {
 			//		"Programmeren",
