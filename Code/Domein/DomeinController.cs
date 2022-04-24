@@ -106,6 +106,8 @@ namespace Domein {
 
 		public Toestel GeefToestelOpNaam(string toestelNaam) => GeefAlleToestellen().First(toestel => toestel.ToestelType.ToLower() == toestelNaam.ToLower());
 
+		public void ZetToestelInOfUitHerstelling(Toestel toestel) => _toestselRepo.ZetToestelInOfUitHerstelling(toestel);
+
 		#endregion Toestel
 	}
 }

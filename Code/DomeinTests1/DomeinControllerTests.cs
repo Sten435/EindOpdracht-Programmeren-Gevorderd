@@ -17,9 +17,9 @@ namespace Domein.Tests {
 
 		[TestInitialize()]
 		public void Initialize() {
-			_reservatieRepo = new ReservatieMapper();
-			_klantenRepo = new KlantenMapper();
-			_toestselRepo = new ToestellenMapper();
+			_reservatieRepo = new ReservatieRepository();
+			_klantenRepo = new KlantenRepository();
+			_toestselRepo = new ToestellenRepository();
 
 			reservatie = new(new Klant(), new TijdsSlot(DateTime.Now), new Toestel(2, "Stantoestel", false));
 			klant = new(1, "Stan", "P", "@gmail.com", new List<string>(), DateTime.Now, new Adres(), TypeKlant.Silver);

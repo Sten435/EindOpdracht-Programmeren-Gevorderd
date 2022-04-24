@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace Persistentie {
 
-	public class ReservatieMapper : IReservatieRepository {
+	public class ReservatieMapper {
 
-		private List<Reservatie> _reservaties = new() {
+		public List<Reservatie> Reservaties = new() {
 			//new Reservatie(new Klant(1, "Stan", "Persoons", "stan.persoons@student.hogent.be",
 			//	new List<string>() {
 			//		"Programmeren",
@@ -31,11 +31,5 @@ namespace Persistentie {
 			//	new TijdsSlot(new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 10, 0, 0)),
 			//	new Toestel(3, "Roeien", false))
 		};
-
-		public List<Reservatie> GeefAlleReservaties() => _reservaties;
-
-		public void VerwijderReservatie(Reservatie reservatie) => _reservaties.Remove(reservatie);
-
-		public void VoegReservatieToe(Reservatie reservatie) => _reservaties.Add(reservatie);
 	}
 }

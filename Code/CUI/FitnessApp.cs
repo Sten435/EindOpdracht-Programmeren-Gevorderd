@@ -1,5 +1,4 @@
 ﻿using Domein;
-using Persistentie;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,16 +7,15 @@ namespace CUI {
 
 	public class FitnessApp {
 
-		#region Private Fields
+		public FitnessApp(DomeinController d) {
+			_domeinController = d;
+		}
 
-		private static readonly IKlantenRepository _klantenRepo = new KlantenMapper();
-		private static readonly IReservatieRepository _reservatienRepo = new ReservatieMapper();
-		private static readonly IToestelRepository _toestellenRepo = new ToestellenMapper();
-		private static readonly UniekeCode _uniekeCode = UniekeCode.Instance;
-		private readonly DomeinController _domeinController = new(_reservatienRepo, _klantenRepo, _toestellenRepo);
+		#region Private Fields
+		private readonly UniekeCode _uniekeCode = UniekeCode.Instance;
+		private readonly DomeinController _domeinController;
 		private const char _requiredCharacter = '#';
 		private const int _maximumDagenReserverenToekomst = 7;
-
 		#endregion Private Fields
 
 		#region Public Properties
@@ -117,12 +115,6 @@ namespace CUI {
 
 		#endregion VerwijderToestel()
 
-		#region Public Debug Properties
-
-		public static Klant DEBUGUSER = _klantenRepo.GeefAlleKlanten().Single(klant => klant.Email == "stan.persoons@student.hogent.be");
-
-		#endregion Public Debug Properties
-
 		#region ToonAlleReservaties()
 
 		public void ToonAlleReservaties() {
@@ -144,7 +136,6 @@ namespace CUI {
 		#endregion ToonAlleReservaties()
 
 		#region ToonAlleToestellen()
-
 		public void ToonAlleToestellen() {
 			ResetPositionIndex();
 			List<Toestel> toestellen = _domeinController.GeefAlleToestellen();
@@ -189,7 +180,7 @@ namespace CUI {
 									key = Utility.AskUser.ReadKnop(prompt: "Druk op [Spactiebar] om een toestel in/uit herstelling te halen.\nDruk op [Enter] om te bevestigen", promptColor: DefaultInfoBackgroundPrintLineColor);
 									bool currentHerstelling = toestel.InHerstelling;
 
-									if (key == ConsoleKey.Spacebar) _toestellenRepo.ZetToestelInOfUitHerstelling(toestel);
+									if (key == ConsoleKey.Spacebar) _domeinController.ZetToestelInOfUitHerstelling(toestel);
 									Console.Clear();
 								} while (key != ConsoleKey.Enter);
 								break;
@@ -218,7 +209,6 @@ namespace CUI {
 			} while (!gaTerug);
 			SelectedIndex = 3;
 		}
-
 		#endregion ToonAlleToestellen()
 
 		#region LaadToestellen()
@@ -745,8 +735,7 @@ namespace CUI {
 			List<int> beschikbareUren;
 			bool kanNogReservaren;
 
-			ConsoleKey deafaultConsoleKey = ConsoleKey.A;
-			ConsoleKey keyPressed = deafaultConsoleKey;
+			ConsoleKey keyPressed;
 
 			Console.CursorVisible = false;
 
@@ -754,7 +743,6 @@ namespace CUI {
 
 			do {
 				(beschikbareUren, kanNogReservaren) = _domeinController.GeefBeschikbareUrenOpDatum(dag, klant, toestel);
-				keyPressed = deafaultConsoleKey;
 
 				if (beschikbareUren.Count == 0) {
 
@@ -767,10 +755,10 @@ namespace CUI {
 					Utility.Logger.Info("\rKies een dag: ", newLine: false, metAchtergrond: false, color: ConsoleColor.DarkYellow);
 
 					Console.ForegroundColor = ConsoleColor.DarkRed;
-					Utility.Logger.Info($"{Utility.SchrijfUnderline(dag.Day.ToString())}", newLine: false, metAchtergrond: false);
+					Utility.Logger.Info($"{Utility.SchrijfUnderline(dag.Day.ToString("00"))}", newLine: false, metAchtergrond: false);
 
 					Console.ResetColor();
-					Utility.Logger.Info($"/{dag.Month}/{dag.Year}", newLine: false, metAchtergrond: false, color: ConsoleColor.DarkYellow);
+					Utility.Logger.Info($"/{dag.Month:00}/{dag.Year}", newLine: false, metAchtergrond: false, color: ConsoleColor.DarkYellow);
 
 					if (!kanNogReservaren)
 						Utility.Logger.Info(" [max 4 reservaties per dag]", newLine: false, metAchtergrond: false, color: DefaultInfoBackgroundPrintLineColor);
@@ -781,9 +769,9 @@ namespace CUI {
 						keyPressed = Console.ReadKey(false).Key;
 
 						if (keyPressed == ConsoleKey.UpArrow) {
-							if (dag.Day < upperBoundDag.Day) dag = dag.AddDays(1);
+							if (dag < upperBoundDag) dag = dag.AddDays(1);
 						} else if (keyPressed == ConsoleKey.DownArrow)
-							if (dag.Day > lowerBoundDag.Day) dag = dag.AddDays(-1);
+							if (dag > lowerBoundDag) dag = dag.AddDays(-1);
 					} while (keyPressed == ConsoleKey.Enter);
 				} else {
 					Console.SetCursorPosition(0, Console.CursorTop);
@@ -793,15 +781,15 @@ namespace CUI {
 					Console.ResetColor();
 
 					Utility.Logger.Info("\rKies een dag: ", newLine: false, metAchtergrond: false, color: ConsoleColor.DarkYellow);
-					Utility.Logger.Info($"{Utility.SchrijfUnderline(dag.Day.ToString())}", newLine: false, metAchtergrond: false);
-					Utility.Logger.Info($"/{dag.Month}/{dag.Year}", newLine: false, metAchtergrond: false, color: ConsoleColor.DarkYellow);
+					Utility.Logger.Info($"{Utility.SchrijfUnderline(dag.Day.ToString("00"))}", newLine: false, metAchtergrond: false);
+					Utility.Logger.Info($"/{dag.Month:00}/{dag.Year}", newLine: false, metAchtergrond: false, color: ConsoleColor.DarkYellow);
 
 					keyPressed = Console.ReadKey(false).Key;
 
 					if (keyPressed == ConsoleKey.UpArrow) {
-						if (dag.Day < upperBoundDag.Day) dag = dag.AddDays(1);
+						if (dag < upperBoundDag) dag = dag.AddDays(1);
 					} else if (keyPressed == ConsoleKey.DownArrow)
-						if (dag.Day > lowerBoundDag.Day) dag = dag.AddDays(-1);
+						if (dag > lowerBoundDag) dag = dag.AddDays(-1);
 				}
 			} while (keyPressed != ConsoleKey.Enter);
 

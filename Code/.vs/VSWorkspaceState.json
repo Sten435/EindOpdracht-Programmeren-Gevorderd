@@ -4,9 +4,10 @@
     "\\CUI",
     "\\CUI\\Beheerder",
     "\\CUI\\Klant",
+    "\\Domein",
     "\\DomeinTests1",
     "\\DomeinTests1\\Klant"
   ],
-  "SelectedNode": "\\DomeinTests1\\Klant\\KlantTests.cs",
+  "SelectedNode": "\\CUI\\FitnessApp.cs",
   "PreviewInSolutionExplorer": false
 }
