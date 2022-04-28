@@ -12,7 +12,11 @@ namespace Persistentie {
 		private static UniekeCode _uniekeCode = UniekeCode.Instance;
 		private ToestellenMapper _mapper = new();
 
-		public bool LaadToestellen() {
+		public ToestellenRepository() {
+			LaadToestellen();
+		}
+
+		private bool LaadToestellen() {
 			string sCurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
 			string sFile = Path.Combine(sCurrentDirectory, @"Data\FitnessToestellen.txt");
 			string sFilePath = Path.GetFullPath(sFile);

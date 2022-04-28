@@ -11,7 +11,5 @@ namespace Domein {
 		void ZetToestelInOfUitHerstelling(Toestel toestel);
 
 		void VerwijderToestel(Toestel toestel);
-
-		bool LaadToestellen();
 	}
 }

@@ -211,28 +211,6 @@ namespace CUI {
 		}
 		#endregion ToonAlleToestellen()
 
-		#region LaadToestellen()
-		public bool LaadToestellen() => _domeinController.LaadToestellen();
-		#endregion
-
-		#region ToonAlleKlanten()
-
-		public void ToonAlleKlanten() {
-			ResetPositionIndex();
-
-			List<Klant> klanten = _domeinController.GeefAlleKlanten();
-			ToonKlantDetails(klanten);
-
-			Utility.AskUser.ReadKnop();
-			AssignOudePositie();
-		}
-
-		#endregion ToonAlleKlanten()
-
-		#region LaadKlanten
-		public bool LaadKlanten() => _domeinController.LaadKlanten();
-		#endregion
-
 		#region RegistreerKlant(bool isBeheerder)
 
 		public (Klant, bool) RegistreerKlant(bool isBeheerder = false) {
@@ -669,6 +647,20 @@ namespace CUI {
 		}
 
 		#endregion ToonKlantDetails()
+
+		#region ToonAlleKlanten()
+
+		public void ToonAlleKlanten() {
+			ResetPositionIndex();
+
+			List<Klant> klanten = _domeinController.GeefAlleKlanten();
+			ToonKlantDetails(klanten);
+
+			Utility.AskUser.ReadKnop();
+			AssignOudePositie();
+		}
+
+		#endregion
 
 		#region RegistreerToestel()
 

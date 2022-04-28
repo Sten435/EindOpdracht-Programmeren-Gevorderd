@@ -84,8 +84,6 @@ namespace Domein {
 
 		public Klant Login(string email) => _klantenRepo.Login(email);
 
-		public bool LaadKlanten() => _klantenRepo.LaadKlanten();
-
 		#endregion Klant
 
 		#region Toestel
@@ -97,8 +95,6 @@ namespace Domein {
 		}).ToList();
 
 		public List<Toestel> GeefAlleToestellen() => _toestselRepo.GeefAlleToestellen();
-
-		public bool LaadToestellen() => _toestselRepo.LaadToestellen();
 
 		public void VoegNieuwToestelToe(string naam) => _toestselRepo.VoegToestelToe(naam);
 

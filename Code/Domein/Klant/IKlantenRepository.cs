@@ -11,7 +11,5 @@ namespace Domein {
 		Klant Login(string email);
 
 		void VerwijderKlant(Klant klant);
-
-		bool LaadKlanten();
 	}
 }

@@ -19,9 +19,6 @@ namespace CUI {
 			klant = _domeinController.Login("stan.persoons@student.hogent.be");
 			// REMOVE:
 
-			_fitnessApp.LaadKlanten();
-			_fitnessApp.LaadToestellen();
-
 			Console.ResetColor();
 			do {
 				try {

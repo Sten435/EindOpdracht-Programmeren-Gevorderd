@@ -11,7 +11,11 @@ namespace Persistentie {
 	public class KlantenRepository : IKlantenRepository {
 		private KlantenMapper _mapper = new();
 
-		public bool LaadKlanten() {
+		public KlantenRepository() {
+			LaadKlanten();
+		}
+
+		private bool LaadKlanten() {
 			string sCurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
 			string sFile = Path.Combine(sCurrentDirectory, @"Data\Klanten.txt");
 			string sFilePath = Path.GetFullPath(sFile);
