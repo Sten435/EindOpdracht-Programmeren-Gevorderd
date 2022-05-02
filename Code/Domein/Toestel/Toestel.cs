@@ -1,7 +1,9 @@
-﻿namespace Domein {
+﻿using System;
+
+namespace Domein {
 
 	public class Toestel {
-		public int IdentificatieCode { get; }
+		public long IdentificatieCode { get; }
 		public string ToestelType { get; set; }
 		public bool InHerstelling { get; set; }
 
@@ -13,6 +15,15 @@
 
 		public override string ToString() => $"{ToestelType} - InHerstelling: {InHerstelling}";
 
-		public override bool Equals(object obj) => obj is Toestel toestel && IdentificatieCode == toestel.IdentificatieCode;
+		public override bool Equals(object obj) {
+			return obj is Toestel toestel &&
+				   IdentificatieCode == toestel.IdentificatieCode &&
+				   ToestelType == toestel.ToestelType &&
+				   InHerstelling == toestel.InHerstelling;
+		}
+
+		public override int GetHashCode() {
+			return HashCode.Combine(IdentificatieCode, ToestelType, InHerstelling);
+		}
 	}
 }

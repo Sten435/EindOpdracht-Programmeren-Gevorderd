@@ -1,7 +1,7 @@
 ﻿namespace Domein {
 
 	public class Reservatie {
-		public int ReservatieNummer { get; set; }
+		public long ReservatieNummer { get; set; }
 		public Klant Klant { get; }
 		public TijdsSlot TijdsSlot { get; }
 		public Toestel Toestel { get; }

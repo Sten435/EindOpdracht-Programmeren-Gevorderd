@@ -48,9 +48,20 @@ namespace Persistentie {
 
 		public void VerwijderToestel(Toestel toestel) => _mapper.Toestellen.Remove(toestel);
 
-		public void ZetToestelInOfUitHerstelling(Toestel toestel) {
-			Toestel t = _mapper.Toestellen.Where(t => t.IdentificatieCode == toestel.IdentificatieCode).Single();
-			t.InHerstelling = !t.InHerstelling;
+		public void UpdateToestelOpId(long toestelId, string toestelNaam) {
+			_mapper.Toestellen = _mapper.Toestellen.Select(t => {
+				if (t.IdentificatieCode == toestelId) t.ToestelType = toestelNaam;
+				return t;
+			}).ToList();
 		}
+
+		public void ZetToestelInOfUitHerstelling(long toestelId, bool nieuweHerstellingValue) {
+			_mapper.Toestellen = _mapper.Toestellen.Select(t => {
+				if (t.IdentificatieCode == toestelId) t.InHerstelling = nieuweHerstellingValue;
+				return t;
+			}).ToList();
+		}
+
+		public bool GeefToestelHerstelStatusOpId(long toestelId) => _mapper.Toestellen.Find(t => t.IdentificatieCode == toestelId).InHerstelling;
 	}
 }

@@ -8,8 +8,11 @@ namespace Domein {
 
 		void VoegToestelToe(string naam);
 
-		void ZetToestelInOfUitHerstelling(Toestel toestel);
+		void ZetToestelInOfUitHerstelling(long toestelId, bool nieuweHerstellingValue);
 
 		void VerwijderToestel(Toestel toestel);
+
+		void UpdateToestelOpId(long toestelId, string toestelNaam);
+		bool GeefToestelHerstelStatusOpId(long toestelId);
 	}
 }

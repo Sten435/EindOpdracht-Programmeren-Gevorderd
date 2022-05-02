@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace Domein {
 
 	public class Klant {
-		public int KlantenNummer { get; }
+		public long KlantenNummer { get; }
 		public string Voornaam { get; }
 		public string Achternaam { get; }
 		public string Email { get; }
@@ -13,7 +13,7 @@ namespace Domein {
 		public Adres Adres { get; }
 		public TypeKlant TypeKlant { get; }
 
-		public Klant(int klantenNummer, string voornaam, string achternaam, string email, List<string> interesses, DateTime geboorteDatum, Adres adres, TypeKlant typeKlant) {
+		public Klant(long klantenNummer, string voornaam, string achternaam, string email, List<string> interesses, DateTime geboorteDatum, Adres adres, TypeKlant typeKlant) {
 			CheckDatumGeboorteDatum(geboorteDatum);
 			GeboorteDatum = geboorteDatum;
 			KlantenNummer = klantenNummer;
@@ -30,6 +30,10 @@ namespace Domein {
 
 		private void CheckDatumGeboorteDatum(DateTime datum) {
 			if (datum > DateTime.Now) throw new Exception("Geboortedatum mag niet in de toekomst zijn.");
+		}
+
+		public override string ToString() {
+			return $"{KlantenNummer} | {Voornaam} {Achternaam} | {Email} | {GeboorteDatum.ToString("d")} | {TypeKlant} | {Adres.StraatNaam} {Adres.HuisNummer} {Adres.PostCode}";
 		}
 	}
 }

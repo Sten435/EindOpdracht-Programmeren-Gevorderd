@@ -12,19 +12,17 @@ namespace CUI {
 
 		private static DomeinController _domeinController = new(_reservatieRepository, _klantenRepository, _toestelRepository);
 		private static readonly FitnessApp _fitnessApp = new(_domeinController);
-		private static Klant klant;
 
 		private static void Main(string[] args) {
 			// REMOVE:
-			klant = _domeinController.Login("stan.persoons@student.hogent.be");
+			_domeinController.Login("stan.persoons@student.hogent.be");
 			// REMOVE:
 
 			Console.ResetColor();
 			do {
 				try {
-					if (klant == null)
-						LoginOrRegisterScreen();
-					Dashboard();
+					if (!_domeinController.LoggedIn) LoginOrRegisterScreen();
+					else Dashboard();
 				} catch (LoginException error) {
 					Utility.Logger.Error(error, clearConsole: true);
 				} catch (Exception error) {
@@ -45,11 +43,11 @@ namespace CUI {
 				int selectedIndex = Utility.OptieLijstConroller(optieLijst, "Druk op [ ▲ | ▼ ] om je keuze te wijzigen\nDruk op [Enter] om te bevestigen.\n");
 				switch (selectedIndex) {
 					case 0:
-						klant = _fitnessApp.Login();
+						_fitnessApp.Login();
 						break;
 
 					case 1:
-						(klant, heeftGeanuleerd) = _fitnessApp.RegistreerKlant();
+						heeftGeanuleerd = _fitnessApp.RegistreerKlant();
 						break;
 				}
 			} while (heeftGeanuleerd);
@@ -61,36 +59,37 @@ namespace CUI {
 
 		private static void Dashboard() {
 			FitnessApp.SelectedIndex = 0;
-			bool heeftUitgelogd = false;
 			do {
 				List<string> beschikbaretoestellen = _fitnessApp.GeefBeschikbareToestellen();
 				List<string> optieLijst;
 
-				int aantalKlantReservaties = _fitnessApp.GeefKlantReservaties(klant).Count;
+				if (_fitnessApp.LoggedIn) {
+					int aantalKlantReservaties = _fitnessApp.GeefKlantReservaties().Count;
 
-				optieLijst = new() { $"{(beschikbaretoestellen.Count > 0 ? "Reserveer Toestel" : FitnessApp.DisabledOptie[0])}", $"{(aantalKlantReservaties > 0 ? "Mijn Reservaties" : FitnessApp.DisabledOptie[1])}", "Toon User Details\n", FitnessApp.StopOpties[2] };
-				int selectedIndex = Utility.OptieLijstConroller(optieLijst, "\rDruk op [ ▲ | ▼ ] om de dag te wijzigen\nDruk op [Enter] om te bevestigen\n");
+					optieLijst = new() { $"{(beschikbaretoestellen.Count > 0 ? "Reserveer Toestel" : FitnessApp.DisabledOptie[0])}", $"{(aantalKlantReservaties > 0 ? "Mijn Reservaties" : FitnessApp.DisabledOptie[1])}", "Toon User Details\n", FitnessApp.StopOpties[2] };
+					int selectedIndex = Utility.OptieLijstConroller(optieLijst, "\rDruk op [ ▲ | ▼ ] om de dag te wijzigen\nDruk op [Enter] om te bevestigen\n");
 
-				switch (selectedIndex) {
-					case 0:
-						if (beschikbaretoestellen.Count > 0)
-							_fitnessApp.RegistreerToestel(klant);
-						break;
+					switch (selectedIndex) {
+						case 0:
+							if (beschikbaretoestellen.Count > 0)
+								_fitnessApp.RegistreerToestel();
+							break;
 
-					case 1:
-						_fitnessApp.ToonKlantReservaties(klant);
-						break;
+						case 1:
+							_fitnessApp.ToonKlantReservaties();
+							break;
 
-					case 2:
-						_fitnessApp.ToonKlantDetails(klant);
-						break;
+						case 2:
+							_fitnessApp.ToonKlantDetails();
+							break;
 
-					case 3:
-						heeftUitgelogd = true;
-						klant = null;
-						break;
+						case 3:
+							_fitnessApp.Logout();
+
+							break;
+					}
 				}
-			} while (!heeftUitgelogd);
+			} while (_fitnessApp.LoggedIn);
 		}
 
 		#endregion Dashboard()

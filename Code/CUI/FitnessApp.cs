@@ -12,21 +12,21 @@ namespace CUI {
 		}
 
 		#region Private Fields
-		private readonly UniekeCode _uniekeCode = UniekeCode.Instance;
 		private readonly DomeinController _domeinController;
 		private const char _requiredCharacter = '#';
 		private const int _maximumDagenReserverenToekomst = 7;
 		#endregion Private Fields
 
 		#region Public Properties
+		public static ConsoleColor DefaultReadLineColor { get => ConsoleColor.Cyan; }
 
-		public static readonly ConsoleColor DefaultReadLineColor = ConsoleColor.Cyan;
+		public static ConsoleColor DefaultInfoBackgroundPrintLineColor { get => ConsoleColor.DarkYellow; }
+		public static ConsoleColor DefaultInfoForeGrountPrintLineColor { get => ConsoleColor.Black; }
 
-		public static readonly ConsoleColor DefaultInfoBackgroundPrintLineColor = ConsoleColor.DarkYellow;
-		public static readonly ConsoleColor DefaultInfoForeGrountPrintLineColor = ConsoleColor.Black;
+		public static ConsoleColor DefaultErrorBackgroundPrintLineColor { get => ConsoleColor.DarkRed; }
+		public static ConsoleColor DefaultErrorForeGrountPrintLineColor { get => ConsoleColor.White; }
 
-		public static readonly ConsoleColor DefaultErrorBackgroundPrintLineColor = ConsoleColor.DarkRed;
-		public static readonly ConsoleColor DefaultErrorForeGrountPrintLineColor = ConsoleColor.White;
+		public bool LoggedIn { get => _domeinController.LoggedIn; }
 
 		public static readonly List<string> GaVerderOpties = new() {
 			Utility.SchrijfUnderline("Ga Verder"),
@@ -72,37 +72,35 @@ namespace CUI {
 			ResetPositionIndex();
 			Table table = new();
 			bool gaTerug = false;
+
 			do {
-				List<Toestel> toestellen = _domeinController.GeefAlleToestellen();
-				List<Toestel> gereserveerdeToestellen = _domeinController.GeefAlleReservaties()
-								.Where(reservatie => reservatie.TijdsSlot.EindTijd > DateTime.Now.ToUniversalTime().AddHours(2))
-								.Select(reservatie => reservatie.Toestel)
-								.ToList();
+				List<string> toestellen = _domeinController.GeefAlleToestellen();
+				List<string> gereserveerdeToestellen = _domeinController.GeefGereserveerdeToestellen();
 
-				List<Toestel> beschikbareToestellen = toestellen.Where(toestel => !gereserveerdeToestellen.Contains(toestel)).ToList();
-
+				List<string> beschikbareToestellen = toestellen.Where(toestel => !gereserveerdeToestellen.Contains(toestel)).ToList();
 				List<string> optieLijst = beschikbareToestellen.Select(toestel => {
-					table.AddRow(toestel.ToString());
+					table.AddRow(toestel);
 					string row = table.ToString();
 					table.Clear();
 					return row;
 				}).ToList();
 
 				optieLijst.Add(StopOpties[1]);
-
 				int selectedIndex = Utility.OptieLijstConroller(optieLijst, "Druk op [ ▲ | ▼ ] om de dag te selecteren\nDruk op [Enter] om te verwijderen\n\n", metPijl: false, metEinde: true);
 
 				if (selectedIndex == optieLijst.Count - 1)
 					gaTerug = true;
 				else {
-					Toestel toestel = beschikbareToestellen[selectedIndex];
-					string input = Utility.AskUser.ReadInput(prompt: $"Weet je het zeker dat je: {toestel.ToestelType} wil verwijderen ! (ja/NEE):", metAchtergrond: true, promptColor: ConsoleColor.Black, color: DefaultReadLineColor);
+					string toestelNaam = _domeinController.GeefToestelNaamOpIndex(selectedIndex);
+					long toestelId = _domeinController.GeefToestelIdOpIndex(selectedIndex);
+
+					string input = Utility.AskUser.ReadInput(prompt: $"Weet je het zeker dat je: {toestelNaam} wil verwijderen ! (ja/NEE):", metAchtergrond: true, promptColor: ConsoleColor.Black, color: DefaultReadLineColor);
 
 					Console.Clear();
 
 					if (input.ToLower().Trim() == "ja") {
-						_domeinController.VerwijderToestel(toestel);
-						Utility.Logger.Info($"{toestel.ToestelType} is verwijdered.");
+						_domeinController.VerwijderToestelOpId(toestelId);
+						Utility.Logger.Info($"{toestelNaam} is verwijdered.");
 						Utility.AskUser.ReadKnop(promptColor: DefaultReadLineColor);
 					} else {
 						Utility.Logger.Info("\nToestel verwijderen is geannuleerd door beheerder.");
@@ -120,12 +118,12 @@ namespace CUI {
 		public void ToonAlleReservaties() {
 			ResetPositionIndex();
 
-			List<Reservatie> reservaties = _domeinController.GeefAlleReservaties();
+			List<string> reservaties = _domeinController.GeefAlleReservaties();
 
 			Table table = new();
 			table.SetHeaders("Reservaties");
 
-			reservaties.ForEach(reservatie => table.AddRow(reservatie.ToString()));
+			reservaties.ForEach(reservatie => table.AddRow(reservatie));
 
 			Utility.Logger.Info(table.ToString());
 			Utility.AskUser.ReadKnop(prompt: "Druk op een knop om verder te gaan");
@@ -138,70 +136,79 @@ namespace CUI {
 		#region ToonAlleToestellen()
 		public void ToonAlleToestellen() {
 			ResetPositionIndex();
-			List<Toestel> toestellen = _domeinController.GeefAlleToestellen();
 			Table table = new();
-			Toestel toestel;
 
 			bool gaTerug = false;
 			bool gaTerugConfig = false;
 
 			do {
+				List<string> toestellen = _domeinController.GeefAlleToestellen();
+
 				List<string> optieLijst = toestellen.Select(toestel => {
-					table.AddRow(toestel.ToString());
+					table.AddRow(toestel);
 					string row = table.ToString();
 					table.Clear();
 					return row;
 				}).ToList();
 
 				optieLijst.Add(StopOpties[1]);
-				int selectedIndex = Utility.OptieLijstConroller(optieLijst, "\rDruk op [ ▲ | ▼ ] om de dag te wijzigen\nDruk op [Enter] om te bevestigen\n", metPijl: false, metEinde: true);
+				int selectedIndexToestel = Utility.OptieLijstConroller(optieLijst, "\rDruk op [ ▲ | ▼ ] om de dag te wijzigen\nDruk op [Enter] om te bevestigen\n", metPijl: false, metEinde: true);
 
 				ResetPositionIndex();
 
-				if (selectedIndex != optieLijst.Count - 1) {
-					toestel = _domeinController.GeefAlleToestellen()[selectedIndex];
-
+				if (selectedIndexToestel != optieLijst.Count - 1) {
 					do {
+						string toestelNaam = _domeinController.GeefAlleToestellen()[selectedIndexToestel];
+
+						bool toestelInHerstelling = _domeinController.GeefToestelHerstelStatusOpIndex(selectedIndexToestel);
+
 						optieLijst.Clear();
-						optieLijst.Add($"InHerstelling: {Utility.SchrijfUnderline(toestel.InHerstelling.ToString())}");
-						optieLijst.Add($"Naam: {Utility.SchrijfUnderline(toestel.ToestelType)}");
+						optieLijst.Add($"InHerstelling: {Utility.SchrijfUnderline(toestelInHerstelling.ToString())}");
+						optieLijst.Add($"Naam: {Utility.SchrijfUnderline(toestelNaam.Split("-")[0].Trim())}");
 						optieLijst.Add(StopOpties[1]);
 
-						selectedIndex = Utility.OptieLijstConroller(optieLijst, "", metEinde: true);
+						int selectedIndexToestelInfo = Utility.OptieLijstConroller(optieLijst, "", metEinde: true);
 						gaTerugConfig = false;
 
-						switch (selectedIndex) {
+						switch (selectedIndexToestelInfo) {
 							case 0:
 								ConsoleKey key;
+								toestelInHerstelling = _domeinController.GeefToestelHerstelStatusOpIndex(selectedIndexToestel);
+
+								bool currentHerstelling = toestelInHerstelling;
 								do {
 									Utility.Logger.Info($"InHerstelling:", newLine: false);
-									Utility.Logger.Info($" {Utility.SchrijfUnderline(toestel.InHerstelling.ToString())}", metAchtergrond: false, color: ConsoleColor.Gray);
+									Utility.Logger.Info($" {Utility.SchrijfUnderline(currentHerstelling.ToString())}", metAchtergrond: false, color: ConsoleColor.Gray);
 
 									key = Utility.AskUser.ReadKnop(prompt: "Druk op [Spactiebar] om een toestel in/uit herstelling te halen.\nDruk op [Enter] om te bevestigen", promptColor: DefaultInfoBackgroundPrintLineColor);
-									bool currentHerstelling = toestel.InHerstelling;
 
-									if (key == ConsoleKey.Spacebar) _domeinController.ZetToestelInOfUitHerstelling(toestel);
+									if (key == ConsoleKey.Spacebar)
+										currentHerstelling = !currentHerstelling;
 									Console.Clear();
 								} while (key != ConsoleKey.Enter);
+
+								_domeinController.ZetToestelInOfUitHerstelling(selectedIndexToestel, currentHerstelling);
 								break;
 
 							case 1:
 								string naam;
 								do {
+									toestelNaam = _domeinController.GeefAlleToestellen()[selectedIndexToestel];
 									Utility.Logger.Info($"Naam op dit moment:", newLine: false);
-									Utility.Logger.Info($" {Utility.SchrijfUnderline(toestel.ToestelType)}", metAchtergrond: false, color: ConsoleColor.Gray);
+									Utility.Logger.Info($" {Utility.SchrijfUnderline(toestelNaam.Split("-")[0].Trim())}", metAchtergrond: false, color: ConsoleColor.Gray);
 
 									naam = Utility.AskUser.ReadInput(prompt: "Nieuwe naam:", metAchtergrond: true, promptColor: ConsoleColor.Black);
 
 									Console.Clear();
 								} while (string.IsNullOrWhiteSpace(naam));
-								toestel.ToestelType = naam.Trim();
+								_domeinController.UpdateToestelNaamOpIndex(selectedIndexToestel, naam);
 								break;
 
 							case 2:
 								gaTerugConfig = true;
 								break;
 						}
+						ResetPositionIndex();
 					} while (!gaTerugConfig);
 
 					Console.Clear();
@@ -213,7 +220,7 @@ namespace CUI {
 
 		#region RegistreerKlant(bool isBeheerder)
 
-		public (Klant, bool) RegistreerKlant(bool isBeheerder = false) {
+		public bool RegistreerKlant(bool isBeheerder = false) {
 			ResetPositionIndex();
 
 			string voornaam = string.Empty;
@@ -407,7 +414,6 @@ namespace CUI {
 								AdrOk = true;
 							}
 						} while (!gaTerug);
-						adres = new Adres(straatNaam, huisNummer, plaats, postCode);
 
 						AssignOudePositie();
 						SchuifIndexPositieOp();
@@ -472,7 +478,7 @@ namespace CUI {
 					#region |=> Stop Registratie
 
 					case 7:
-						return (null, true);
+						return true;
 
 					#endregion |=> Stop Registratie
 
@@ -486,27 +492,26 @@ namespace CUI {
 				}
 			} while (!CompleetOk);
 
-			Klant klant = new(_uniekeCode.GenereerRandomCode(), voornaam, achternaam, email, interesses, geboorteDatum, adres, type);
-			_domeinController.RegistreerKlant(klant);
+			_domeinController.RegistreerKlant(voornaam, achternaam, email, geboorteDatum, interesses, type.ToString(), straatNaam, plaats, huisNummer, postCode);
 
-			return (klant, false);
+			return false;
 		}
 
 		#endregion RegistreerKlant(bool isBeheerder)
 
 		#region ToonKlantReservaties(Klant klant)
 
-		public void ToonKlantReservaties(Klant klant) {
+		public void ToonKlantReservaties() {
 			ResetPositionIndex();
 
 			bool heeftUitgelogd = false;
 
-			List<Reservatie> reservaties;
+			List<string> reservaties;
 			List<string> optieLijst;
 
 			optieLijst = new() { $"Bekijken", "Verwijderen", StopOpties[1] };
 			do {
-				reservaties = GeefKlantReservaties(klant);
+				reservaties = GeefKlantReservaties();
 
 				if (reservaties.Count != 0) {
 					int selectedIndex = Utility.OptieLijstConroller(optieLijst, "\rDruk op [ ▲ | ▼ ] om de dag te wijzigen\nDruk op [Enter] om te bevestigen");
@@ -516,14 +521,14 @@ namespace CUI {
 							Table table = new();
 							table.SetHeaders("Reservaties");
 
-							reservaties.ForEach(reservatie => table.AddRow(reservatie.ToString()));
+							reservaties.ForEach(reservatie => table.AddRow(reservatie));
 
 							Utility.Logger.Info(table.ToString());
 							Utility.AskUser.ReadKnop();
 							break;
 
 						case 1:
-							VerwijderReservatie(klant);
+							VerwijderReservatie();
 							break;
 
 						case 2:
@@ -544,13 +549,15 @@ namespace CUI {
 
 		#region GeefKlantReservaties(Klant klant)
 
-		public List<Reservatie> GeefKlantReservaties(Klant klant) => _domeinController.GeefKlantReservaties(klant);
+		public List<string> GeefKlantReservaties() => _domeinController.GeefKlantReservaties()
+																				.Select(k => k.ToString())
+																				.ToList();
 
 		#endregion GeefKlantReservaties(Klant klant)
 
 		#region VerwijderReservatie(klant klant)
 
-		public void VerwijderReservatie(Klant klant) {
+		public void VerwijderReservatie() {
 			ResetPositionIndex();
 
 			Table table = new();
@@ -559,9 +566,9 @@ namespace CUI {
 			do {
 				table.Clear();
 
-				List<Reservatie> reservaties = _domeinController.GeefKlantReservaties(klant);
+				List<string> reservaties = _domeinController.GeefKlantReservaties();
 				List<string> optieLijst = reservaties.Select(toestel => {
-					table.AddRow(toestel.ToString());
+					table.AddRow(toestel);
 					string row = table.ToString();
 					table.Clear();
 					return row;
@@ -573,16 +580,17 @@ namespace CUI {
 					int selectedIndex = Utility.OptieLijstConroller(optieLijst, "Druk op [ ▲ | ▼ ] om de dag te selecteren\nDruk op [Enter] om te verwijderen\n\n", metPijl: false, metEinde: true);
 					if (selectedIndex == optieLijst.Count - 1) gaTerug = true;
 					else {
-						Reservatie reservatie = reservaties[selectedIndex];
+
+						long reservatieId = _domeinController.GeefReservatieIdOpIndex(selectedIndex);
 
 						table.Clear();
-						table.AddRow(reservatie.ToString());
+						table.AddRow(_domeinController.GeefReservatieStringOpId(reservatieId));
 
 						string input = Utility.AskUser.ReadInput(prompt: $"Weet je het zeker dat je onderstaande reservatie wil verwijderen !\n\n{table}\n\n(ja/NEE):", metAchtergrond: true, promptColor: ConsoleColor.Black, color: DefaultReadLineColor);
 						Console.Clear();
 
 						if (input.ToLower().Trim() == "ja") {
-							_domeinController.VerwijderReservatie(reservatie);
+							_domeinController.VerwijderReservatieOpId(reservatieId);
 
 							Utility.Logger.Info($"\nReservatie is verwijdered.");
 							Utility.AskUser.ReadKnop(promptColor: DefaultReadLineColor);
@@ -608,42 +616,38 @@ namespace CUI {
 
 		#region Login()
 
-		public Klant Login(bool isBeheerder = false) {
-			string email;
-
+		public void Login(bool isBeheerder = false) {
 			Utility.Logger.Info("Wat is je E-mailAdres:");
-			email = Utility.AskUser.ReadInput(color: DefaultInfoBackgroundPrintLineColor, prompt: Utility.SelectPrefix).ToLower();
+			string email = Utility.AskUser.ReadInput(color: DefaultInfoBackgroundPrintLineColor, prompt: Utility.SelectPrefix).ToLower();
 
-			Klant klant = _domeinController.Login(email);
-			if (isBeheerder && klant.TypeKlant != TypeKlant.Beheerder) throw new LoginException($"{klant.Voornaam} {klant.Achternaam} is geen beheerder.");
-
-			return klant;
+			if (isBeheerder) {
+				isBeheerder = _domeinController.Login(email, true);
+				if (!isBeheerder) throw new LoginException($"{email} is geen beheerder account.");
+			} else _domeinController.Login(email);
 		}
 
 		#endregion Login()
 
+		#region Logout()
+		public void Logout() => _domeinController.Logout();
+		#endregion
+
 		#region ToonKlantDetails()
 
-		public void ToonKlantDetails(Klant klant) {
-			List<Klant> klanten = new();
+		public void ToonKlantDetails() => ToonKlantDetails(new List<string>() { _domeinController.KlantOmschrijving });
 
-			klanten.Add(klant);
-			ToonKlantDetails(klanten);
-
-			Utility.AskUser.ReadKnop();
-		}
-
-		public void ToonKlantDetails(List<Klant> klanten) {
+		public void ToonKlantDetails(List<string> klanten) {
 			Table table = new();
 
 			klanten.ForEach(klant => {
-				table.SetHeaders("KlantenNummer", "Naam", "Email", "GeboorteDatum", "Abonnement", "Straat", "Huis Nr", "Plaats", "PostCode");
-				table.AddRow(klant.KlantenNummer.ToString(), $"{klant.Voornaam} {klant.Achternaam}", klant.Email, klant.GeboorteDatum.ToShortDateString(), klant.TypeKlant.ToString(), klant.Adres.StraatNaam, klant.Adres.HuisNummer, klant.Adres.Plaats, klant.Adres.PostCode.ToString());
+				table.AddRow(klant);
 
 				Utility.Logger.Info($"{table}", metAchtergrond: false, color: DefaultInfoBackgroundPrintLineColor);
 
 				table.Clear();
 			});
+
+			Utility.AskUser.ReadKnop();
 		}
 
 		#endregion ToonKlantDetails()
@@ -653,7 +657,7 @@ namespace CUI {
 		public void ToonAlleKlanten() {
 			ResetPositionIndex();
 
-			List<Klant> klanten = _domeinController.GeefAlleKlanten();
+			List<string> klanten = _domeinController.GeefAlleKlanten();
 			ToonKlantDetails(klanten);
 
 			Utility.AskUser.ReadKnop();
@@ -664,44 +668,27 @@ namespace CUI {
 
 		#region RegistreerToestel()
 
-		public void RegistreerToestel(Klant klant) {
+		public void RegistreerToestel() {
 			ResetPositionIndex();
 
 			Table table = new();
 			DateTime tijdsSlotDatum;
-			Toestel toestel;
 
 			List<string> beschikbaretoestellen = _domeinController.GeefBeschikbareToestellen();
 			beschikbaretoestellen.Add(StopOpties[1]);
 
 			if (beschikbaretoestellen.Count > 0) {
-				do {
-					int selectedIndex = Utility.OptieLijstConroller(beschikbaretoestellen, prompt: "Welk toestel wil je gebruiken.");
-					if (selectedIndex == beschikbaretoestellen.Count - 1) {
-						AssignOudePositie();
-						return;
-					}
+				int selectedIndex = Utility.OptieLijstConroller(beschikbaretoestellen, prompt: "Welk toestel wil je gebruiken.");
+				if (selectedIndex == beschikbaretoestellen.Count - 1) {
+					AssignOudePositie();
+					return;
+				}
 
-					string toestelNaamRaw = beschikbaretoestellen[selectedIndex];
-					int toestelNaamIndexOf = toestelNaamRaw.IndexOf("[");
-
-					if (toestelNaamIndexOf == -1)
-						toestel = _domeinController.GeefToestelOpNaam(toestelNaamRaw);
-					else
-						toestel = _domeinController.GeefToestelOpNaam(toestelNaamRaw[..toestelNaamIndexOf].Trim());
-
-					if (toestel == null) Console.Clear();
-				} while (toestel == null);
-
-				tijdsSlotDatum = TijdsDisplayPicker(klant, toestel);
-
-				TijdsSlot tijdsSlot = new(tijdsSlotDatum);
-				Reservatie reservatie = new(klant, tijdsSlot, toestel);
-
-				_domeinController.VoegReservatieToe(reservatie);
+				tijdsSlotDatum = TijdsDisplayPicker(_domeinController.GeefToestelIdOpIndex(selectedIndex));
+				string reservatieString = _domeinController.VoegReservatieToe(tijdsSlotDatum, _domeinController.GeefToestelIdOpIndex(selectedIndex));
 
 				table.SetHeaders("Reservatie");
-				table.AddRow(reservatie.ToString());
+				table.AddRow(reservatieString);
 
 				Console.Clear();
 
@@ -715,7 +702,7 @@ namespace CUI {
 
 		#region Functionaliteit TijdsDisplayControl()
 
-		private DateTime TijdsDisplayPicker(Klant klant, Toestel toestel) {
+		private DateTime TijdsDisplayPicker(long toestelId) {
 			int lowerBoundUur = 8;
 			int upperBoundUur = 22;
 
@@ -734,7 +721,7 @@ namespace CUI {
 			Utility.Logger.Info($"\rDruk op [ ▲ | ▼ ] om de dag te wijzigen.\nDruk op [Enter] om te bevestigen.");
 
 			do {
-				(beschikbareUren, kanNogReservaren) = _domeinController.GeefBeschikbareUrenOpDatum(dag, klant, toestel);
+				(beschikbareUren, kanNogReservaren) = _domeinController.GeefBeschikbareUrenOpDatum(dag, toestelId);
 
 				if (beschikbareUren.Count == 0) {
 
@@ -818,16 +805,16 @@ namespace CUI {
 
 		#region ConsoleIndexPostion()
 
-		private void ResetPositionIndex() {
+		private static void ResetPositionIndex() {
 			OudeselectedIndex = SelectedIndex;
 			SelectedIndex = 0;
 		}
 
-		private void AssignOudePositie() {
+		private static void AssignOudePositie() {
 			SelectedIndex = OudeselectedIndex;
 		}
 
-		private void SchuifIndexPositieOp() {
+		private static void SchuifIndexPositieOp() {
 			SelectedIndex++;
 		}
 
