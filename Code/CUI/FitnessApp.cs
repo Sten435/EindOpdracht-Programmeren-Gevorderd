@@ -684,8 +684,10 @@ namespace CUI {
 					return;
 				}
 
-				tijdsSlotDatum = TijdsDisplayPicker(_domeinController.GeefToestelIdOpIndex(selectedIndex));
-				string reservatieString = _domeinController.VoegReservatieToe(tijdsSlotDatum, _domeinController.GeefToestelIdOpIndex(selectedIndex));
+				string naam = _domeinController.GeefBeschikbareToestellen()[selectedIndex];
+				long toestelId = _domeinController.GeefRandomToestelIdOpNaam(naam);
+				tijdsSlotDatum = TijdsDisplayPicker(naam);
+				string reservatieString = _domeinController.VoegReservatieToe(tijdsSlotDatum, toestelId);
 
 				table.SetHeaders("Reservatie");
 				table.AddRow(reservatieString);
@@ -702,7 +704,7 @@ namespace CUI {
 
 		#region Functionaliteit TijdsDisplayControl()
 
-		private DateTime TijdsDisplayPicker(long toestelId) {
+		private DateTime TijdsDisplayPicker(string toestelNaam) {
 			int lowerBoundUur = 8;
 			int upperBoundUur = 22;
 
@@ -721,7 +723,7 @@ namespace CUI {
 			Utility.Logger.Info($"\rDruk op [ ▲ | ▼ ] om de dag te wijzigen.\nDruk op [Enter] om te bevestigen.");
 
 			do {
-				(beschikbareUren, kanNogReservaren) = _domeinController.GeefBeschikbareUrenOpDatum(dag, toestelId);
+				(beschikbareUren, kanNogReservaren) = _domeinController.GeefBeschikbareUrenOpDatum(dag, toestelNaam);
 
 				if (beschikbareUren.Count == 0) {
 

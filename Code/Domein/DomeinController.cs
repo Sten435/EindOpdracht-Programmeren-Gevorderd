@@ -123,8 +123,8 @@ namespace Domein {
 		/// <param name="dag">Dag van reservatie</param>
 		/// <param name="toestelId">Toestel die je met de reservatie wil koppelen</param>
 		/// <returns>List int waarbij elke daarvan een uur voorsteld, bool steld voor of de klant nog kan reservaren op die datetime</returns>
-		public (List<int>, bool) GeefBeschikbareUrenOpDatum(DateTime dag, long toestelId) {
-			Toestel toestel = GeefToestelOpId(toestelId);
+		public (List<int>, bool) GeefBeschikbareUrenOpDatum(DateTime dag, string naam) {
+			Toestel toestel = GeefRandomToestelOpNaam(naam);
 
 			List<Reservatie> klantReservaties = _reservatieRepo.GeefAlleReservaties().Where(r => r.Klant.KlantenNummer == _klant.KlantenNummer).ToList();
 			List<Reservatie> klantReservatiesDag = klantReservaties.Where(r => r.TijdsSlot.StartTijd.Day == dag.Day).ToList();
@@ -169,7 +169,23 @@ namespace Domein {
 		/// <param name="toestelId">ToestelId van toestel dat je terug wil.</param>
 		/// <returns>Toestel dat je op toestelId meegeeft</returns>
 		private Toestel GeefToestelOpId(long toestelId) => _toestselRepo.GeefAlleToestellen()
-																.Find(t => t.IdentificatieCode != toestelId);
+																.Find(t => t.IdentificatieCode == toestelId);
+
+		/// <summary>
+		/// Geef toestelId op toestelNaam;
+		/// </summary>
+		/// <param name="toestelNaam">ToestelNaam van toestel dat je terug wil.</param>
+		/// <returns>Toestel dat je op toestelNaam meegeeft</returns>
+		public long GeefRandomToestelIdOpNaam(string toestelNaam) => _toestselRepo.GeefAlleToestellen()
+																.Find(t => t.ToestelType == toestelNaam).IdentificatieCode;
+
+		/// <summary>
+		/// Geef toestel op toestelNaam.
+		/// </summary>
+		/// <param name="toestelNaam">ToestelNaam van toestel dat je terug wil.</param>
+		/// <returns>Toestel dat je op toestelNaam meegeeft</returns>
+		private Toestel GeefRandomToestelOpNaam(string toestelNaam) => _toestselRepo.GeefAlleToestellen()
+																.Find(t => t.ToestelType == toestelNaam);
 
 		/// <summary>
 		/// Reset uur index.
