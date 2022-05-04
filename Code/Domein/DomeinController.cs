@@ -22,10 +22,11 @@ namespace Domein {
 
 		private Klant _klant;
 
-		public DomeinController(IReservatieRepository reservatieRepo, IKlantenRepository klantenRepo, IToestelRepository toestselRepo) {
+		public DomeinController(IReservatieRepository reservatieRepo, IKlantenRepository klantenRepo, IToestelRepository toestselRepo, IConfigRepository configRepo) {
 			_reservatieRepo = reservatieRepo;
 			_klantenRepo = klantenRepo;
 			_toestselRepo = toestselRepo;
+			configRepo.LoadConfig();
 		}
 
 		#region Reservatie
@@ -72,7 +73,7 @@ namespace Domein {
 		/// <param name="tijdsSlotDatum">De datetime wanneer je wil reserveren</param>
 		/// <param name="toestelId">ToestelId van toestel dat je wil reserveren</param>
 		/// <returns>Geeft de reservatie terug in string representatie</returns>
-		public string VoegReservatieToe(DateTime tijdsSlotDatum, long toestelId) {
+		public string VoegReservatieToe(DateTime tijdsSlotDatum, int toestelId) {
 			Reservatie reservatie = new(_klant, new TijdsSlot(tijdsSlotDatum), GeefToestelOpId(toestelId));
 			_reservatieRepo.VoegReservatieToe(reservatie);
 			return reservatie.ToString();
@@ -82,7 +83,7 @@ namespace Domein {
 		/// Verwijder reservatie op reservatieId.
 		/// </summary>
 		/// <param name="reservatieId">ReservatieId van toestel dat u wil verwijderen.</param>
-		public void VerwijderReservatieOpId(long reservatieId) {
+		public void VerwijderReservatieOpId(int reservatieId) {
 			Reservatie reservatie = _reservatieRepo.GeefAlleReservaties()
 												.Find(r => r.ReservatieNummer == reservatieId);
 
@@ -94,14 +95,14 @@ namespace Domein {
 		/// </summary>
 		/// <param name="reservatieIndex">ReservatieIndex van toestel dat je de Id van wil krijgen.</param>
 		/// <returns>ReservatieId van respectieve reservatieIndex</returns>
-		public long GeefReservatieIdOpIndex(int reservatieIndex) => _reservatieRepo.GeefAlleReservaties()[reservatieIndex].ReservatieNummer;
+		public int GeefReservatieIdOpIndex(int reservatieIndex) => _reservatieRepo.GeefAlleReservaties()[reservatieIndex].ReservatieNummer;
 
 		/// <summary>
 		/// Geef reservatie in string vorm op reservatieId.
 		/// </summary>
 		/// <param name="reservatieId">ReservatieId van reservatie waar je een string vorm van wil.</param>
 		/// <returns>Reservatie in string vorm</returns>
-		public string GeefReservatieStringOpId(long reservatieId) => _reservatieRepo.GeefAlleReservaties()
+		public string GeefReservatieStringOpId(int reservatieId) => _reservatieRepo.GeefAlleReservaties()
 																				.First(r => r.ReservatieNummer == reservatieId)
 																				.ToString();
 		#endregion Reservatie
@@ -168,7 +169,7 @@ namespace Domein {
 		/// </summary>
 		/// <param name="toestelId">ToestelId van toestel dat je terug wil.</param>
 		/// <returns>Toestel dat je op toestelId meegeeft</returns>
-		private Toestel GeefToestelOpId(long toestelId) => _toestselRepo.GeefAlleToestellen()
+		private Toestel GeefToestelOpId(int toestelId) => _toestselRepo.GeefAlleToestellen()
 																.Find(t => t.IdentificatieCode == toestelId);
 
 		/// <summary>
@@ -176,7 +177,7 @@ namespace Domein {
 		/// </summary>
 		/// <param name="toestelNaam">ToestelNaam van toestel dat je terug wil.</param>
 		/// <returns>Toestel dat je op toestelNaam meegeeft</returns>
-		public long GeefRandomToestelIdOpNaam(string toestelNaam) => _toestselRepo.GeefAlleToestellen()
+		public int GeefRandomToestelIdOpNaam(string toestelNaam) => _toestselRepo.GeefAlleToestellen()
 																.Find(t => t.ToestelType == toestelNaam).IdentificatieCode;
 
 		/// <summary>
@@ -210,7 +211,7 @@ namespace Domein {
 		/// <param name="klant"></param>
 		public void RegistreerKlant(string voornaam, string achternaam, string email, DateTime geboorteDatum, List<string> interesses, string typeKlant, string straat, string plaats, string huisNummer, int postCode) {
 			UniekeCode uniekeCode = UniekeCode.Instance;
-			long klantenNummer = uniekeCode.GenereerRandomCode();
+			int klantenNummer = uniekeCode.GenereerRandomCode();
 
 			TypeKlant _typeKlant = typeKlant switch {
 				"Bronze" => TypeKlant.Bronze,
@@ -282,7 +283,7 @@ namespace Domein {
 		/// </summary>
 		/// <param name="toestelIndex"></param>
 		/// <returns>ToestelId van toestel op megegeven index</returns>
-		public long GeefToestelIdOpIndex(int toestelIndex) => _toestselRepo.GeefAlleToestellen()[toestelIndex].IdentificatieCode;
+		public int GeefToestelIdOpIndex(int toestelIndex) => _toestselRepo.GeefAlleToestellen()[toestelIndex].IdentificatieCode;
 
 		/// <summary>
 		/// Voeg nieuw toestel toe op naam.
@@ -291,7 +292,7 @@ namespace Domein {
 		public void VoegNieuwToestelToe(string naam) => _toestselRepo.VoegToestelToe(naam);
 
 		public void UpdateToestelNaamOpIndex(int toestelIndex, string toestelNaam) {
-			long toestelId = GeefToestelIdOpIndex(toestelIndex);
+			int toestelId = GeefToestelIdOpIndex(toestelIndex);
 			_toestselRepo.UpdateToestelOpId(toestelId, toestelNaam);
 		}
 
@@ -301,7 +302,7 @@ namespace Domein {
 		/// <param name="selectedIndex"></param>
 		/// <returns>Herstel status van toestel op index</returns>
 		public bool GeefToestelHerstelStatusOpIndex(int selectedIndex) {
-			long toestelId = GeefToestelIdOpIndex(selectedIndex);
+			int toestelId = GeefToestelIdOpIndex(selectedIndex);
 			return _toestselRepo.GeefToestelHerstelStatusOpId(toestelId);
 		}
 
@@ -310,11 +311,11 @@ namespace Domein {
 		/// </summary>
 		/// <param name="toestelId"></param>
 		/// <exception cref="VerkeerdToestelIdException">Wanneer een id niet bestaat.</exception>
-		public void VerwijderToestelOpId(long toestelId) {
+		public void VerwijderToestelOpId(int toestelId) {
 			Toestel toestel = _toestselRepo.GeefAlleToestellen()
 										.Find(t => t.IdentificatieCode == toestelId);
 
-			if (toestel == null) throw new ToestelIdException("Toestel Id bestaat niet !");
+			if (toestel == null) throw new ToestelException("Toestel Id bestaat niet !");
 			_toestselRepo.VerwijderToestel(toestel);
 		}
 

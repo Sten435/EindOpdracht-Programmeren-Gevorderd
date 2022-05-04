@@ -6,9 +6,9 @@ namespace Domein.Tests {
 	[TestClass()]
 	public class ReservatieTests {
 		Reservatie reservatie;
-		TijdsSlot tijdsSlot = new(new DateTime(2022, 4, 1));
-		Klant klant = new(1, "Stan", "P", "@stan.P.be", new List<string>(), DateTime.Now, new Adres(), TypeKlant.Silver);
-		Toestel toestel = new(4, "Fiets", false);
+		TijdsSlot tijdsSlot = new(DateTime.Now.AddHours(5));
+		Klant klant = new(1, "Stan", "Persoons", "stan.persoons@student.hogent.be", new List<string>(), DateTime.Now, new Adres(), TypeKlant.Silver);
+		Toestel toestel = new("Fiets", false);
 
 		[TestInitialize()]
 		public void Initialize() {

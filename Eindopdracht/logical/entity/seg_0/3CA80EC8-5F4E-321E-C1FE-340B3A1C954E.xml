@@ -1,0 +1,85 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Entity class="oracle.dbtools.crest.model.design.logical.Entity" directorySegmentName="seg_0" id="3CA80EC8-5F4E-321E-C1FE-340B3A1C954E" name="TijdsSlot">
+<createdBy>stanp</createdBy>
+<createdTime>2022-05-03 19:25:30 UTC</createdTime>
+<ownerDesignName>Eindopdracht</ownerDesignName>
+<engineerTo>
+<item key="25575414-A2C2-293D-8E56-AD59572B2021" value="true"/>
+</engineerTo>
+<adequatelyNormalized>NO</adequatelyNormalized>
+<expectedVolumes>0</expectedVolumes>
+<fwdEngineeringStrategyName>Single Table</fwdEngineeringStrategyName>
+<growthPercent>0</growthPercent>
+<growthType>Year</growthType>
+<maxVolumes>9999999</maxVolumes>
+<minVolumes>0</minVolumes>
+<normalForm>Third</normalForm>
+<attributes itemClass="oracle.dbtools.crest.model.design.logical.Attribute">
+<Attribute name="Id" id="A0A97D87-311F-D550-8233-A7E937081B96">
+<createdBy>stanp</createdBy>
+<createdTime>2022-05-03 20:03:09 UTC</createdTime>
+<ownerDesignName>Eindopdracht</ownerDesignName>
+<engineerTo>
+<item key="25575414-A2C2-293D-8E56-AD59572B2021" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="StartTijd" id="ECD974B1-31EA-72AC-ADC6-0D6DC8E42646">
+<createdBy>stanp</createdBy>
+<createdTime>2022-05-03 20:02:14 UTC</createdTime>
+<ownerDesignName>Eindopdracht</ownerDesignName>
+<engineerTo>
+<item key="25575414-A2C2-293D-8E56-AD59572B2021" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT008</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="EindTijd" id="A83E5561-FA3D-060C-30BA-B0DABCBDCF8A">
+<createdBy>stanp</createdBy>
+<createdTime>2022-05-03 20:02:34 UTC</createdTime>
+<ownerDesignName>Eindopdracht</ownerDesignName>
+<engineerTo>
+<item key="25575414-A2C2-293D-8E56-AD59572B2021" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT008</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="ReservatieNummer" id="B89E9F5C-A180-2C95-61A9-9A1E10A5337F">
+<createdBy>stanp</createdBy>
+<createdTime>2022-05-04 09:17:19 UTC</createdTime>
+<generatorID>74E1A7FB-4F9A-724A-FCA0-55F93568E064</generatorID>
+<ownerDesignName>Eindopdracht</ownerDesignName>
+<engineerTo>
+<item key="25575414-A2C2-293D-8E56-AD59572B2021" value="true"/>
+</engineerTo>
+<referedAttribute>98C76F41-BC94-CD03-47E9-C87A67AC2417</referedAttribute>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+</attributes>
+<identifiers itemClass="oracle.dbtools.crest.model.design.logical.CandidateKey">
+<identifier id="FFF97611-121B-6D75-DB7F-41386C2C9BAA" name="TijdsSlot PK">
+<createdBy>stanp</createdBy>
+<createdTime>2022-05-03 20:03:16 UTC</createdTime>
+<ownerDesignName>Eindopdracht</ownerDesignName>
+<shouldEngineer>false</shouldEngineer>
+<engineerTo>
+<item key="25575414-A2C2-293D-8E56-AD59572B2021" value="false"/>
+</engineerTo>
+<pk>true</pk>
+<usedAttributes>
+<attributeRef>A0A97D87-311F-D550-8233-A7E937081B96</attributeRef>
+<attributeRef>B89E9F5C-A180-2C95-61A9-9A1E10A5337F</attributeRef>
+</usedAttributes>
+</identifier>
+</identifiers>
+</Entity>

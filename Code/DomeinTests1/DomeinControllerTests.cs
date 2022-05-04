@@ -21,8 +21,8 @@ namespace Domein.Tests {
 			_klantenRepo = new KlantenRepository();
 			_toestselRepo = new ToestellenRepository();
 
-			reservatie = new(new Klant(), new TijdsSlot(DateTime.Now), new Toestel(2, "Stantoestel", false));
-			klant = new(1, "Stan", "P", "@gmail.com", new List<string>(), DateTime.Now, new Adres(), TypeKlant.Silver);
+			reservatie = new(new Klant(), new TijdsSlot(DateTime.Now.AddHours(5)), new Toestel("Stantoestel", false));
+			klant = new(1, "Stan", "Persoons", "stan.persoons1@student.hogent.be", new List<string>(), DateTime.Now, new Adres(), TypeKlant.Silver);
 		}
 
 		[TestMethod()]
@@ -46,25 +46,25 @@ namespace Domein.Tests {
 		[TestMethod()]
 		public void RegistreerKlantTest() {
 			_klantenRepo.RegistreerKlant(klant);
-			bool isOk = _klantenRepo.GeefAlleKlanten().Any(klant => klant.Email == "@gmail.com");
+			bool isOk = _klantenRepo.GeefAlleKlanten().Any(klant => klant.Email == "stan.persoons1@student.hogent.be");
 			Assert.IsTrue(isOk);
 		}
 
 		[TestMethod()]
 		public void VerwijderKlantTest() {
 			_klantenRepo.RegistreerKlant(klant);
-			Klant klant1 = _klantenRepo.GeefAlleKlanten().FirstOrDefault(klant => klant.Email == "@gmail.com");
+			Klant klant1 = _klantenRepo.GeefAlleKlanten().FirstOrDefault(klant => klant.Email == "stan.persoons1@student.hogent.be");
 			Assert.IsNotNull(klant1);
 
 			_klantenRepo.VerwijderKlant(klant);
-			klant1 = _klantenRepo.GeefAlleKlanten().FirstOrDefault(klant => klant.Email == "@gmail.com");
+			klant1 = _klantenRepo.GeefAlleKlanten().FirstOrDefault(klant => klant.Email == "stan.persoons1@student.hogent.be");
 			Assert.IsNull(klant1);
 		}
 
 		[TestMethod()]
 		public void LoginTest() {
 			_klantenRepo.RegistreerKlant(klant);
-			Klant klant1 = _klantenRepo.Login("@gmail.com");
+			Klant klant1 = _klantenRepo.Login("stan.persoons1@student.hogent.be");
 			Assert.IsNotNull(klant1);
 		}
 

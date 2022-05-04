@@ -48,7 +48,7 @@ namespace CUI {
 
 		#endregion Public Properties
 
-		#region VoegToestelToe
+		#region VoegToestelToe()
 
 		public void VoegToestelToe() {
 			string naam;
@@ -92,7 +92,7 @@ namespace CUI {
 					gaTerug = true;
 				else {
 					string toestelNaam = _domeinController.GeefToestelNaamOpIndex(selectedIndex);
-					long toestelId = _domeinController.GeefToestelIdOpIndex(selectedIndex);
+					int toestelId = _domeinController.GeefToestelIdOpIndex(selectedIndex);
 
 					string input = Utility.AskUser.ReadInput(prompt: $"Weet je het zeker dat je: {toestelNaam} wil verwijderen ! (ja/NEE):", metAchtergrond: true, promptColor: ConsoleColor.Black, color: DefaultReadLineColor);
 
@@ -499,7 +499,7 @@ namespace CUI {
 
 		#endregion RegistreerKlant(bool isBeheerder)
 
-		#region ToonKlantReservaties(Klant klant)
+		#region ToonKlantReservaties()
 
 		public void ToonKlantReservaties() {
 			ResetPositionIndex();
@@ -545,17 +545,17 @@ namespace CUI {
 			AssignOudePositie();
 		}
 
-		#endregion ToonKlantReservaties(Klant klant)
+		#endregion ToonKlantReservaties
 
-		#region GeefKlantReservaties(Klant klant)
+		#region GeefKlantReservaties()
 
 		public List<string> GeefKlantReservaties() => _domeinController.GeefKlantReservaties()
 																				.Select(k => k.ToString())
 																				.ToList();
 
-		#endregion GeefKlantReservaties(Klant klant)
+		#endregion GeefKlantReservaties
 
-		#region VerwijderReservatie(klant klant)
+		#region VerwijderReservatie()
 
 		public void VerwijderReservatie() {
 			ResetPositionIndex();
@@ -581,7 +581,7 @@ namespace CUI {
 					if (selectedIndex == optieLijst.Count - 1) gaTerug = true;
 					else {
 
-						long reservatieId = _domeinController.GeefReservatieIdOpIndex(selectedIndex);
+						int reservatieId = _domeinController.GeefReservatieIdOpIndex(selectedIndex);
 
 						table.Clear();
 						table.AddRow(_domeinController.GeefReservatieStringOpId(reservatieId));
@@ -685,7 +685,7 @@ namespace CUI {
 				}
 
 				string naam = _domeinController.GeefBeschikbareToestellen()[selectedIndex];
-				long toestelId = _domeinController.GeefRandomToestelIdOpNaam(naam);
+				int toestelId = _domeinController.GeefRandomToestelIdOpNaam(naam);
 				tijdsSlotDatum = TijdsDisplayPicker(naam);
 				string reservatieString = _domeinController.VoegReservatieToe(tijdsSlotDatum, toestelId);
 

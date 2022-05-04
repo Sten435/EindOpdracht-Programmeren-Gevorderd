@@ -1,0 +1,98 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="F4F87F57-F70F-4304-7A1E-0B8C5D5A8ABA" name="TijdSloten">
+<createdBy>stanp</createdBy>
+<createdTime>2022-05-04 07:51:24 UTC</createdTime>
+<generatorID>3CA80EC8-5F4E-321E-C1FE-340B3A1C954E</generatorID>
+<ownerDesignName>Eindopdracht</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="Id" id="E8D9D95D-C4EC-D478-1C28-43D90165975F">
+<createdBy>stanp</createdBy>
+<createdTime>2022-05-04 07:51:24 UTC</createdTime>
+<generatorID>A0A97D87-311F-D550-8233-A7E937081B96</generatorID>
+<ownerDesignName>Eindopdracht</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementColumn>true</autoIncrementColumn>
+<identityColumn>true</identityColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="StartTijd" id="100847FC-C237-1E2C-8D8F-734CAC6B2F13">
+<createdBy>stanp</createdBy>
+<createdTime>2022-05-04 07:51:24 UTC</createdTime>
+<generatorID>ECD974B1-31EA-72AC-ADC6-0D6DC8E42646</generatorID>
+<ownerDesignName>Eindopdracht</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT008</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="EindTijd" id="8693781C-7FAA-EF8F-8A3B-D0157AA47C41">
+<createdBy>stanp</createdBy>
+<createdTime>2022-05-04 07:51:24 UTC</createdTime>
+<generatorID>A83E5561-FA3D-060C-30BA-B0DABCBDCF8A</generatorID>
+<ownerDesignName>Eindopdracht</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT008</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Reservatie_ReservatieNummer" id="39770C31-B092-D2DD-1F98-A4EE0621F39E">
+<createdBy>stanp</createdBy>
+<createdTime>2022-05-04 15:28:38 UTC</createdTime>
+<generatorID>B89E9F5C-A180-2C95-61A9-9A1E10A5337F</generatorID>
+<ownerDesignName>Eindopdracht</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="3FE7EAB8-A71A-BF50-7080-410802A2EC34" referredColumn="74163E8D-4029-A83C-6F31-0FB476DB6AD3"/>
+</associations>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="AC9B5BE2-BB25-9EE1-6BBA-00114921279A" name="TijdsSlot_PK">
+<createdBy>stanp</createdBy>
+<createdTime>2022-05-04 07:51:24 UTC</createdTime>
+<generatorID>FFF97611-121B-6D75-DB7F-41386C2C9BAA</generatorID>
+<ownerDesignName>Eindopdracht</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="E8D9D95D-C4EC-D478-1C28-43D90165975F"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="7168301F-8B1C-5CA8-6793-4DDD350F72A2" name="TijdsSlot__IDX">
+<createdBy>stanp</createdBy>
+<createdTime>2022-05-04 15:28:38 UTC</createdTime>
+<ownerDesignName>Eindopdracht</ownerDesignName>
+<indexState>Unique Plain Index</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<relationGeneratorID>74E1A7FB-4F9A-724A-FCA0-55F93568E064</relationGeneratorID>
+<indexColumnUsage>
+<colUsage columnID="39770C31-B092-D2DD-1F98-A4EE0621F39E"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="1E352D7F-592E-ABA0-476E-67F44F4D1B85" name="TijdsSlot_Reservatie_FK">
+<createdBy>stanp</createdBy>
+<createdTime>2022-05-04 15:28:38 UTC</createdTime>
+<generatorID>74E1A7FB-4F9A-724A-FCA0-55F93568E064</generatorID>
+<ownerDesignName>Eindopdracht</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="39770C31-B092-D2DD-1F98-A4EE0621F39E"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

@@ -14,13 +14,12 @@ namespace Domein.Tests {
 
 		[TestInitialize()]
 		public void Initialize() {
-			toestel = new(4, "Fiets", false);
-			toestelCopy = new(4, "Fiets", false);
+			toestel = new("Fiets", false);
+			toestelCopy = toestel;
 		}
 
 		[TestMethod()]
 		public void ToestelTest() {
-			Assert.AreEqual(4, toestel.IdentificatieCode);
 			Assert.AreEqual("Fiets", toestel.ToestelType);
 			Assert.AreEqual(false, toestel.InHerstelling);
 		}
@@ -33,6 +32,12 @@ namespace Domein.Tests {
 		[TestMethod()]
 		public void EqualsTest() {
 			Assert.AreEqual(toestel, toestelCopy);
+		}
+
+		[TestMethod()]
+		public void ToestelNaamTest() {
+			Assert.ThrowsException<ToestelTypeException>(() => new Toestel("S", true));
+			Assert.ThrowsException<ToestelTypeException>(() => new Toestel("", true));
 		}
 	}
 }

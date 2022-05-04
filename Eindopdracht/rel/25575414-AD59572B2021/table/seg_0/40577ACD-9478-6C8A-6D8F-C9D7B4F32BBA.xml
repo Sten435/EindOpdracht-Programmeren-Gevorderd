@@ -1,0 +1,64 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="40577ACD-9478-6C8A-6D8F-C9D7B4F32BBA" name="Config">
+<createdBy>stanp</createdBy>
+<createdTime>2022-05-04 15:28:38 UTC</createdTime>
+<generatorID>2805B1D3-78BA-D2A6-AC34-EC6B4869A5D0</generatorID>
+<ownerDesignName>Eindopdracht</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="Id" id="260D9507-CB66-4FC3-5F20-D0354A9E2EAF">
+<createdBy>stanp</createdBy>
+<createdTime>2022-05-04 15:28:38 UTC</createdTime>
+<generatorID>7EABE1E0-99CA-7FAB-0540-DD58C9A1C8D6</generatorID>
+<ownerDesignName>Eindopdracht</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementColumn>true</autoIncrementColumn>
+<identityColumn>true</identityColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="SlotTijdUur" id="D898CA27-FE40-7DC9-4F1A-B593029AAD84">
+<createdBy>stanp</createdBy>
+<createdTime>2022-05-04 15:28:38 UTC</createdTime>
+<generatorID>D8631F59-0E5B-A963-E030-8F49E6B53A72</generatorID>
+<ownerDesignName>Eindopdracht</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT020</logicalDatatype>
+<dataTypePrecision>2</dataTypePrecision>
+<ownDataTypeParameters>,2,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="StandaardInherstelling" id="23A94637-4BFA-F1E5-E093-B6D7154667F0">
+<createdBy>stanp</createdBy>
+<createdTime>2022-05-04 15:28:38 UTC</createdTime>
+<generatorID>65C81341-BF10-7759-8E5B-D19DE21C7763</generatorID>
+<ownerDesignName>Eindopdracht</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT034</logicalDatatype>
+<dataTypeSize>0</dataTypeSize>
+<ownDataTypeParameters>0,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="A21EE961-CB56-78AA-1E89-7409122D0CC5" name="Config_PK">
+<createdBy>stanp</createdBy>
+<createdTime>2022-05-04 15:28:38 UTC</createdTime>
+<generatorID>547028ED-1A2A-D7E4-23F5-C8DB3D2A4328</generatorID>
+<ownerDesignName>Eindopdracht</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="260D9507-CB66-4FC3-5F20-D0354A9E2EAF"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

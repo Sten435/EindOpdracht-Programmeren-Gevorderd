@@ -1,0 +1,77 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="D17E1B1F-17EA-316B-257A-955CA752D05F" name="Interesses">
+<createdBy>stanp</createdBy>
+<createdTime>2022-05-04 07:51:24 UTC</createdTime>
+<generatorID>D986E14F-61FE-27CB-ECEB-70CCE0D2A14D</generatorID>
+<ownerDesignName>Eindopdracht</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="Id" id="FE30E089-ED09-59B9-6355-9A03F4C5AF3A">
+<createdBy>stanp</createdBy>
+<createdTime>2022-05-04 15:28:38 UTC</createdTime>
+<generatorID>7278DF0F-52A9-F11B-AB8F-E361DD085329</generatorID>
+<ownerDesignName>Eindopdracht</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementColumn>true</autoIncrementColumn>
+<identityColumn>true</identityColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Klant_KlantenNummer" id="E777E9B3-3EBF-E98E-64CF-F2C0C828C127">
+<createdBy>stanp</createdBy>
+<createdTime>2022-05-04 15:28:38 UTC</createdTime>
+<generatorID>52810960-55D2-3CEB-3F79-D12B8EE37B89</generatorID>
+<ownerDesignName>Eindopdracht</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="D779034E-1C6C-C4E7-7590-ED3CD76AD5BB" referredColumn="C3474EE9-061B-E49C-32F6-2A2C66668585"/>
+</associations>
+</Column>
+<Column name="InteresseNaam" id="7B2F0F7E-DC0A-CE74-C5B4-EA5314D69E9F">
+<createdBy>stanp</createdBy>
+<createdTime>2022-05-04 15:28:38 UTC</createdTime>
+<generatorID>248C03C3-440D-CC24-B069-C4140F88E423</generatorID>
+<ownerDesignName>Eindopdracht</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>255</dataTypeSize>
+<ownDataTypeParameters>255,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="218A6864-0B8A-D4FA-4CF0-72E2D4710702" name="Interesses_PK">
+<createdBy>stanp</createdBy>
+<createdTime>2022-05-04 15:28:38 UTC</createdTime>
+<generatorID>3F29ECB4-4AAE-ADDD-4268-E88BDD50D9AB</generatorID>
+<ownerDesignName>Eindopdracht</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="FE30E089-ED09-59B9-6355-9A03F4C5AF3A"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="9C998919-BA2B-4CF8-0E57-DE72E4F3CB82" name="Interesses_Klant_FK">
+<createdBy>stanp</createdBy>
+<createdTime>2022-05-04 15:28:38 UTC</createdTime>
+<generatorID>80FFA0AC-B917-6CB3-1EB3-880C8032294F</generatorID>
+<ownerDesignName>Eindopdracht</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="E777E9B3-3EBF-E98E-64CF-F2C0C828C127"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

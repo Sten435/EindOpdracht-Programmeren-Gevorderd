@@ -1,0 +1,110 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="7CEE2FA0-919E-FAE9-1EEA-5513F0F5DCEE" name="Klanten">
+<createdBy>stanp</createdBy>
+<createdTime>2022-05-04 07:51:24 UTC</createdTime>
+<generatorID>AD3A3697-28B1-1F11-9030-FD077DBD7265</generatorID>
+<ownerDesignName>Eindopdracht</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="KlantenNummer" id="C3474EE9-061B-E49C-32F6-2A2C66668585">
+<createdBy>stanp</createdBy>
+<createdTime>2022-05-04 07:51:24 UTC</createdTime>
+<generatorID>BF21FB26-6AF3-BAC4-4DA4-976234793885</generatorID>
+<ownerDesignName>Eindopdracht</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementColumn>true</autoIncrementColumn>
+<identityColumn>true</identityColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Voornaam" id="222CD0A9-8F4D-E158-BCC0-53E636B225CF">
+<createdBy>stanp</createdBy>
+<createdTime>2022-05-04 07:51:24 UTC</createdTime>
+<generatorID>EA6F68AF-A32D-E9E8-4756-F59F7BF65616</generatorID>
+<ownerDesignName>Eindopdracht</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>255</dataTypeSize>
+<ownDataTypeParameters>255,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Achternaam" id="2D4CD290-5E4F-FFAE-45B5-8D20C58ACC4D">
+<createdBy>stanp</createdBy>
+<createdTime>2022-05-04 07:51:24 UTC</createdTime>
+<generatorID>5710FE7D-DEA5-84C9-6E15-500E9B64ADB5</generatorID>
+<ownerDesignName>Eindopdracht</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>255</dataTypeSize>
+<ownDataTypeParameters>255,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Email" id="A8837E34-F452-2400-3952-2F5165F90390">
+<createdBy>stanp</createdBy>
+<createdTime>2022-05-04 07:51:24 UTC</createdTime>
+<generatorID>98F51D1F-E285-B121-38C0-1B510594D2EA</generatorID>
+<ownerDesignName>Eindopdracht</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>255</dataTypeSize>
+<ownDataTypeParameters>255,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="GeboorteDatum" id="48580031-D1C4-32C7-8E13-29FC8D504B74">
+<createdBy>stanp</createdBy>
+<createdTime>2022-05-04 07:51:24 UTC</createdTime>
+<generatorID>3478FDEA-F3E7-2E97-9394-06A19338769F</generatorID>
+<ownerDesignName>Eindopdracht</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT008</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="InsertedTimestamp" id="802452A8-F317-434F-FA9B-593944F24ACB">
+<createdBy>stanp</createdBy>
+<createdTime>2022-05-04 15:28:38 UTC</createdTime>
+<generatorID>559B297F-C0FC-4E98-DE44-006CC981EA81</generatorID>
+<ownerDesignName>Eindopdracht</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT015</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="ABONNEMENT" id="A67952DF-4D1E-B21F-93D7-BEC4911C8E35">
+<createdBy>stanp</createdBy>
+<createdTime>2022-05-04 19:41:41 UTC</createdTime>
+<generatorID>DA403888-BA85-FCAB-44D4-17E3A4F83DA2</generatorID>
+<ownerDesignName>Eindopdracht</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>255</dataTypeSize>
+<ownDataTypeParameters>255,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="95418EA2-A771-C2EA-1081-D4E22E481BD1" name="Klant_PK">
+<createdBy>stanp</createdBy>
+<createdTime>2022-05-04 07:51:24 UTC</createdTime>
+<generatorID>997E0466-87DE-C4F7-7552-2290D75A0E86</generatorID>
+<ownerDesignName>Eindopdracht</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="C3474EE9-061B-E49C-32F6-2A2C66668585"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

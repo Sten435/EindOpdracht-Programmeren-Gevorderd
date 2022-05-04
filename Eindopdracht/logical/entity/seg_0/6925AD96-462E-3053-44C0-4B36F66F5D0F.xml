@@ -1,0 +1,99 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Entity class="oracle.dbtools.crest.model.design.logical.Entity" directorySegmentName="seg_0" id="6925AD96-462E-3053-44C0-4B36F66F5D0F" name="Adres">
+<createdBy>stanp</createdBy>
+<createdTime>2022-05-03 18:56:08 UTC</createdTime>
+<ownerDesignName>Eindopdracht</ownerDesignName>
+<engineerTo>
+<item key="25575414-A2C2-293D-8E56-AD59572B2021" value="true"/>
+</engineerTo>
+<adequatelyNormalized>NO</adequatelyNormalized>
+<expectedVolumes>0</expectedVolumes>
+<fwdEngineeringStrategyName>Single Table</fwdEngineeringStrategyName>
+<growthPercent>0</growthPercent>
+<growthType>Year</growthType>
+<maxVolumes>9999999</maxVolumes>
+<minVolumes>0</minVolumes>
+<normalForm>Third</normalForm>
+<attributes itemClass="oracle.dbtools.crest.model.design.logical.Attribute">
+<Attribute name="StraatNaam" id="8D49731F-8148-54D4-46FC-1FF231D5FE17">
+<createdBy>stanp</createdBy>
+<createdTime>2022-05-03 20:03:53 UTC</createdTime>
+<ownerDesignName>Eindopdracht</ownerDesignName>
+<engineerTo>
+<item key="25575414-A2C2-293D-8E56-AD59572B2021" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>255</dataTypeSize>
+<ownDataTypeParameters>255,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="HuisNummer" id="E92CF2EA-74C4-1141-EF3C-4BD3D2A75328">
+<createdBy>stanp</createdBy>
+<createdTime>2022-05-03 20:05:29 UTC</createdTime>
+<ownerDesignName>Eindopdracht</ownerDesignName>
+<engineerTo>
+<item key="25575414-A2C2-293D-8E56-AD59572B2021" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>255</dataTypeSize>
+<ownDataTypeParameters>255,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="Plaats" id="E4FDB1FC-3357-2F28-835C-C10E599A9AB3">
+<createdBy>stanp</createdBy>
+<createdTime>2022-05-03 20:05:29 UTC</createdTime>
+<ownerDesignName>Eindopdracht</ownerDesignName>
+<engineerTo>
+<item key="25575414-A2C2-293D-8E56-AD59572B2021" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>255</dataTypeSize>
+<ownDataTypeParameters>255,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="PostCode" id="69C952E0-B0FD-A014-4A52-CE9FB6AA99DA">
+<createdBy>stanp</createdBy>
+<createdTime>2022-05-03 20:05:51 UTC</createdTime>
+<ownerDesignName>Eindopdracht</ownerDesignName>
+<engineerTo>
+<item key="25575414-A2C2-293D-8E56-AD59572B2021" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="KlantenNummer" id="5DD48B40-8838-E9D1-161D-CCCC45D9AA23">
+<createdBy>stanp</createdBy>
+<createdTime>2022-05-04 09:05:06 UTC</createdTime>
+<generatorID>DCC4B5E5-CA2D-921B-19E6-7A58051BC352</generatorID>
+<ownerDesignName>Eindopdracht</ownerDesignName>
+<engineerTo>
+<item key="25575414-A2C2-293D-8E56-AD59572B2021" value="true"/>
+</engineerTo>
+<referedAttribute>BF21FB26-6AF3-BAC4-4DA4-976234793885</referedAttribute>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+</attributes>
+<identifiers itemClass="oracle.dbtools.crest.model.design.logical.CandidateKey">
+<identifier id="B95B6248-B10B-EA81-F841-385A549DCB70" name="Adres PK">
+<createdBy>stanp</createdBy>
+<createdTime>2022-05-04 09:05:00 UTC</createdTime>
+<ownerDesignName>Eindopdracht</ownerDesignName>
+<shouldEngineer>false</shouldEngineer>
+<engineerTo>
+<item key="25575414-A2C2-293D-8E56-AD59572B2021" value="false"/>
+</engineerTo>
+<pk>true</pk>
+<usedAttributes>
+<attributeRef>5DD48B40-8838-E9D1-161D-CCCC45D9AA23</attributeRef>
+</usedAttributes>
+</identifier>
+</identifiers>
+</Entity>

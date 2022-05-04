@@ -1,0 +1,73 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Entity class="oracle.dbtools.crest.model.design.logical.Entity" directorySegmentName="seg_0" id="D986E14F-61FE-27CB-ECEB-70CCE0D2A14D" name="Interesses">
+<createdBy>stanp</createdBy>
+<createdTime>2022-05-03 20:11:19 UTC</createdTime>
+<ownerDesignName>Eindopdracht</ownerDesignName>
+<engineerTo>
+<item key="25575414-A2C2-293D-8E56-AD59572B2021" value="true"/>
+</engineerTo>
+<adequatelyNormalized>NO</adequatelyNormalized>
+<expectedVolumes>0</expectedVolumes>
+<fwdEngineeringStrategyName>Single Table</fwdEngineeringStrategyName>
+<growthPercent>0</growthPercent>
+<growthType>Year</growthType>
+<maxVolumes>9999999</maxVolumes>
+<minVolumes>0</minVolumes>
+<normalForm>Third</normalForm>
+<attributes itemClass="oracle.dbtools.crest.model.design.logical.Attribute">
+<Attribute name="Id" id="7278DF0F-52A9-F11B-AB8F-E361DD085329">
+<createdBy>stanp</createdBy>
+<createdTime>2022-05-04 10:20:06 UTC</createdTime>
+<ownerDesignName>Eindopdracht</ownerDesignName>
+<engineerTo>
+<item key="25575414-A2C2-293D-8E56-AD59572B2021" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="KlantenNummer" id="52810960-55D2-3CEB-3F79-D12B8EE37B89">
+<createdBy>stanp</createdBy>
+<createdTime>2022-05-04 07:56:10 UTC</createdTime>
+<generatorID>80FFA0AC-B917-6CB3-1EB3-880C8032294F</generatorID>
+<ownerDesignName>Eindopdracht</ownerDesignName>
+<engineerTo>
+<item key="25575414-A2C2-293D-8E56-AD59572B2021" value="true"/>
+</engineerTo>
+<referedAttribute>BF21FB26-6AF3-BAC4-4DA4-976234793885</referedAttribute>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="InteresseNaam" id="248C03C3-440D-CC24-B069-C4140F88E423">
+<createdBy>stanp</createdBy>
+<createdTime>2022-05-04 09:07:50 UTC</createdTime>
+<ownerDesignName>Eindopdracht</ownerDesignName>
+<engineerTo>
+<item key="25575414-A2C2-293D-8E56-AD59572B2021" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>255</dataTypeSize>
+<ownDataTypeParameters>255,,</ownDataTypeParameters>
+</Attribute>
+</attributes>
+<identifiers itemClass="oracle.dbtools.crest.model.design.logical.CandidateKey">
+<identifier id="3F29ECB4-4AAE-ADDD-4268-E88BDD50D9AB" name="Interesses PK">
+<createdBy>stanp</createdBy>
+<createdTime>2022-05-04 09:07:36 UTC</createdTime>
+<ownerDesignName>Eindopdracht</ownerDesignName>
+<shouldEngineer>false</shouldEngineer>
+<engineerTo>
+<item key="25575414-A2C2-293D-8E56-AD59572B2021" value="false"/>
+</engineerTo>
+<pk>true</pk>
+<usedAttributes>
+<attributeRef>7278DF0F-52A9-F11B-AB8F-E361DD085329</attributeRef>
+</usedAttributes>
+</identifier>
+</identifiers>
+</Entity>

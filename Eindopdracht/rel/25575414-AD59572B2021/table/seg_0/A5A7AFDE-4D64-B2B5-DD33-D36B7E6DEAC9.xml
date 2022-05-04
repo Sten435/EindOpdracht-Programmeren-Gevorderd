@@ -1,0 +1,123 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="A5A7AFDE-4D64-B2B5-DD33-D36B7E6DEAC9" name="Adressen">
+<createdBy>stanp</createdBy>
+<createdTime>2022-05-04 07:51:24 UTC</createdTime>
+<generatorID>6925AD96-462E-3053-44C0-4B36F66F5D0F</generatorID>
+<ownerDesignName>Eindopdracht</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="Id" id="80C4349B-F32A-D2E4-94A9-372E1929D18C">
+<createdBy>stanp</createdBy>
+<createdTime>2022-05-04 07:51:24 UTC</createdTime>
+<generatorID>51E26605-EED8-1218-7271-74CB6A1307BF</generatorID>
+<ownerDesignName>Eindopdracht</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementColumn>true</autoIncrementColumn>
+<identityColumn>true</identityColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="StraatNaam" id="73972371-552A-3E7C-3054-9CF3D5D66558">
+<createdBy>stanp</createdBy>
+<createdTime>2022-05-04 07:51:24 UTC</createdTime>
+<generatorID>8D49731F-8148-54D4-46FC-1FF231D5FE17</generatorID>
+<ownerDesignName>Eindopdracht</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>255</dataTypeSize>
+<ownDataTypeParameters>255,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="HuisNummer" id="1CF25F23-22AE-F5CA-0155-050ECB5D15B6">
+<createdBy>stanp</createdBy>
+<createdTime>2022-05-04 07:51:24 UTC</createdTime>
+<generatorID>E92CF2EA-74C4-1141-EF3C-4BD3D2A75328</generatorID>
+<ownerDesignName>Eindopdracht</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>255</dataTypeSize>
+<ownDataTypeParameters>255,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Plaats" id="B8193237-4BB2-6D43-91FE-629AE7698B1D">
+<createdBy>stanp</createdBy>
+<createdTime>2022-05-04 07:51:24 UTC</createdTime>
+<generatorID>E4FDB1FC-3357-2F28-835C-C10E599A9AB3</generatorID>
+<ownerDesignName>Eindopdracht</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>255</dataTypeSize>
+<ownDataTypeParameters>255,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="PostCode" id="31359D76-6391-D758-A884-99C86863009F">
+<createdBy>stanp</createdBy>
+<createdTime>2022-05-04 07:51:24 UTC</createdTime>
+<generatorID>69C952E0-B0FD-A014-4A52-CE9FB6AA99DA</generatorID>
+<ownerDesignName>Eindopdracht</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Klant_KlantenNummer" id="4A66A2FB-E165-BD8C-3396-BD800BF38F95">
+<createdBy>stanp</createdBy>
+<createdTime>2022-05-04 15:28:38 UTC</createdTime>
+<generatorID>5DD48B40-8838-E9D1-161D-CCCC45D9AA23</generatorID>
+<ownerDesignName>Eindopdracht</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="0B343939-195E-A4E1-74CC-D7F37841D727" referredColumn="C3474EE9-061B-E49C-32F6-2A2C66668585"/>
+</associations>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="7CE5EF03-1EC0-D8C8-34D2-C42F20A39D79" name="Adressen_PK">
+<createdBy>stanp</createdBy>
+<createdTime>2022-05-04 15:28:38 UTC</createdTime>
+<generatorID>B95B6248-B10B-EA81-F841-385A549DCB70</generatorID>
+<ownerDesignName>Eindopdracht</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="4A66A2FB-E165-BD8C-3396-BD800BF38F95"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="E76D9968-3CE7-D7AE-D264-727090A4D0CF" name="Adres_PK">
+<createdBy>stanp</createdBy>
+<createdTime>2022-05-04 07:51:24 UTC</createdTime>
+<generatorID>A266DDDC-2725-49BA-31DF-02A5685F7D88</generatorID>
+<ownerDesignName>Eindopdracht</ownerDesignName>
+<indexState>Unique Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="80C4349B-F32A-D2E4-94A9-372E1929D18C"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="96945924-899A-60AD-A488-C5C11F503429" name="Adres_Klant_FK">
+<createdBy>stanp</createdBy>
+<createdTime>2022-05-04 15:28:38 UTC</createdTime>
+<generatorID>DCC4B5E5-CA2D-921B-19E6-7A58051BC352</generatorID>
+<ownerDesignName>Eindopdracht</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="4A66A2FB-E165-BD8C-3396-BD800BF38F95"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

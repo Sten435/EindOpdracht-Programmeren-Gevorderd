@@ -1,0 +1,76 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="0975722D-A6AB-E63E-4AF2-18E3762DC26A" name="Toestellen">
+<createdBy>stanp</createdBy>
+<createdTime>2022-05-04 07:51:24 UTC</createdTime>
+<generatorID>9321EB72-0A7B-B650-2BDD-EB28AD1EA602</generatorID>
+<ownerDesignName>Eindopdracht</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="IdentificatieCode" id="0F097080-A91F-F9EF-E246-D8E578798429">
+<createdBy>stanp</createdBy>
+<createdTime>2022-05-04 07:51:24 UTC</createdTime>
+<generatorID>79133435-8442-436D-5B59-82598B16B0A2</generatorID>
+<ownerDesignName>Eindopdracht</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementColumn>true</autoIncrementColumn>
+<identityColumn>true</identityColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="ToestelType" id="7A78933A-3B2A-CBFA-F742-C23B296EB6BA">
+<createdBy>stanp</createdBy>
+<createdTime>2022-05-04 07:51:24 UTC</createdTime>
+<generatorID>3759E730-9091-5DFB-4F4F-7A9D751A84F3</generatorID>
+<ownerDesignName>Eindopdracht</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>255</dataTypeSize>
+<ownDataTypeParameters>255,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="InHerstelling" id="78253F82-E4C0-7F47-DA37-F47E0B315036">
+<createdBy>stanp</createdBy>
+<createdTime>2022-05-04 07:51:24 UTC</createdTime>
+<generatorID>35475F25-DAF8-FDFE-2449-ED669C1D3BC2</generatorID>
+<ownerDesignName>Eindopdracht</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT006</logicalDatatype>
+<dataTypeSize>0</dataTypeSize>
+<ownDataTypeParameters>0,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="InsertedTimestamp" id="FC047FA9-FF6F-6192-69C6-1F464BAE5059">
+<createdBy>stanp</createdBy>
+<createdTime>2022-05-04 15:28:38 UTC</createdTime>
+<generatorID>F0948166-AD49-E8B7-3434-4840372BDABD</generatorID>
+<ownerDesignName>Eindopdracht</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT015</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="B337C5B8-3017-E269-CEEE-F4D75E866B5C" name="Toestel_PK">
+<createdBy>stanp</createdBy>
+<createdTime>2022-05-04 07:51:24 UTC</createdTime>
+<generatorID>32C5C846-B2F9-AD42-F851-558E33DB9FDD</generatorID>
+<ownerDesignName>Eindopdracht</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="0F097080-A91F-F9EF-E246-D8E578798429"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

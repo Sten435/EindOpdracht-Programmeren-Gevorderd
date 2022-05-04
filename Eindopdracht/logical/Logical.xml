@@ -1,0 +1,7 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<LogicalDesign class="oracle.dbtools.crest.model.design.logical.LogicalDesign" name="Logical" id="9F62D55A-900A-6DBB-D005-E2ADE9A2CE6C" mainViewID="4ADA69F2-5FE5-EB9D-DD1B-5F4B9B488205">
+<createdBy>stanp</createdBy>
+<createdTime>2022-05-03 18:54:31 UTC</createdTime>
+<ownerDesignName>Eindopdracht</ownerDesignName>
+<shouldBeOpen>false</shouldBeOpen>
+</LogicalDesign>

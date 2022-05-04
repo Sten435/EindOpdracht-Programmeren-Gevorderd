@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<cwd_glossary name="Eindopdracht" description="generated from logical model of design Eindopdracht" id="17F91FEF-A83C-E206-4B50-A56393B01A0A" incomplete_modifiers="true" separator_type="Character" mw_separator=" " >
+
+   <glossaryWord name="Achternaam" plural="" abbreviation="" alt_abbreviation="" id="2571A481-DDC3-41EC-5F36-A5F356FA09A6" import_id="" description="" />
+   <glossaryWord name="Adres" plural="Adressen" abbreviation="" alt_abbreviation="" id="24080F75-8AFA-D2B1-0EAD-91B66CD657AD" import_id="" description="" />
+   <glossaryWord name="Config" plural="" abbreviation="" alt_abbreviation="" id="6C26262D-12A8-D641-4DE2-CE5730BFDE98" import_id="" description="" />
+   <glossaryWord name="EindTijd" plural="" abbreviation="" alt_abbreviation="" id="84BFDE17-E4A4-E848-D398-3130E6E0D548" import_id="" description="" />
+   <glossaryWord name="Email" plural="" abbreviation="" alt_abbreviation="" id="809ED73B-7942-ECB8-6963-D3DFA33EE5AB" import_id="" description="" />
+   <glossaryWord name="GeboorteDatum" plural="" abbreviation="" alt_abbreviation="" id="4382CEBB-EA24-08CC-4529-0D8D2943B558" import_id="" description="" />
+   <glossaryWord name="HuisNummer" plural="" abbreviation="" alt_abbreviation="" id="9ECCF822-C6CB-152F-B2F5-A928C1333AEB" import_id="" description="" />
+   <glossaryWord name="Id" plural="" abbreviation="" alt_abbreviation="" id="22B8F387-7900-141A-E932-CC454335CD70" import_id="" description="" />
+   <glossaryWord name="IdentificatieCode" plural="" abbreviation="" alt_abbreviation="" id="68410A22-7CF6-374E-874D-AF835554C8E0" import_id="" description="" />
+   <glossaryWord name="InHerstelling" plural="" abbreviation="" alt_abbreviation="" id="09EEF67C-B789-8839-6EEB-C14A36795511" import_id="" description="" />
+   <glossaryWord name="InsertedTimestamp" plural="" abbreviation="" alt_abbreviation="" id="FA5D3FDF-F35C-0F0A-7F49-E3425ABABEDF" import_id="" description="" />
+   <glossaryWord name="InteresseNaam" plural="" abbreviation="" alt_abbreviation="" id="76C93CF0-C5C5-AAAE-1794-8094ED979F5C" import_id="" description="" />
+   <glossaryWord name="Interesses" plural="" abbreviation="" alt_abbreviation="" id="31C471B5-66AA-D64D-C202-5172D2B082DB" import_id="" description="" />
+   <glossaryWord name="Klant" plural="Klanten" abbreviation="" alt_abbreviation="" id="A926BA34-5E85-C122-7E7F-D1951621990B" import_id="" description="" />
+   <glossaryWord name="Klant_Interesses" plural="" abbreviation="" alt_abbreviation="" id="E18B2B3A-5D02-2D4A-FF93-09652B357A44" import_id="" description="" />
+   <glossaryWord name="KlantenNummer" plural="" abbreviation="" alt_abbreviation="" id="DA409216-ECEA-6DD6-494A-E5B2DCEE6002" import_id="" description="" />
+   <glossaryWord name="PK" plural="" abbreviation="" alt_abbreviation="" id="5E43E4D9-C0C4-C924-6D05-2623CB41D5E9" import_id="" description="" />
+   <glossaryWord name="Plaats" plural="" abbreviation="" alt_abbreviation="" id="F14E287C-D62C-6591-436C-AABC26053331" import_id="" description="" />
+   <glossaryWord name="PostCode" plural="" abbreviation="" alt_abbreviation="" id="D2859237-AC10-E4DB-9F4D-C1B769491A58" import_id="" description="" />
+   <glossaryWord name="Reservatie" plural="Reservaties" abbreviation="" alt_abbreviation="" id="A3A61EA8-4AA0-A2CA-C612-A7A1766B99E8" import_id="" description="" />
+   <glossaryWord name="ReservatieNummer" plural="" abbreviation="" alt_abbreviation="" id="69EB48FF-9BB3-AC16-A9A0-3CBF78D7ECF7" import_id="" description="" />
+   <glossaryWord name="SlotTijdUur" plural="" abbreviation="" alt_abbreviation="" id="EE249A1D-A590-9CD9-D20A-D89125BAED15" import_id="" description="" />
+   <glossaryWord name="StandaardInherstelling" plural="" abbreviation="" alt_abbreviation="" id="0C01013D-9C5C-AB16-00C4-93F31828FED5" import_id="" description="" />
+   <glossaryWord name="StartTijd" plural="" abbreviation="" alt_abbreviation="" id="27A3BB62-994C-F6A5-896A-A0FBC61065CB" import_id="" description="" />
+   <glossaryWord name="StraatNaam" plural="" abbreviation="" alt_abbreviation="" id="DF687E2E-B2B0-20DB-3EBA-E0B4C9E4F4AF" import_id="" description="" />
+   <glossaryWord name="TijdsSlot" plural="TijdSloten" abbreviation="" alt_abbreviation="" id="283535B9-0BF0-72AA-4E86-DD856824F0FF" import_id="" description="" />
+   <glossaryWord name="Toestel" plural="Toestellen" abbreviation="" alt_abbreviation="" id="DDD48149-CDFE-1167-1AD6-868EC18B80F0" import_id="" description="" />
+   <glossaryWord name="ToestelType" plural="" abbreviation="" alt_abbreviation="" id="91F49500-D296-8AD1-430E-D83E6F4F8E56" import_id="" description="" />
+   <glossaryWord name="Voornaam" plural="" abbreviation="" alt_abbreviation="" id="4FED0F85-86A5-044A-C127-92431577FF0B" import_id="" description="" />
+
+</cwd_glossary>

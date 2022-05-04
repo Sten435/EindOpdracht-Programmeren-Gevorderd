@@ -1,0 +1,87 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Entity class="oracle.dbtools.crest.model.design.logical.Entity" directorySegmentName="seg_0" id="BB4A9FF2-D4BD-F5C1-B81E-CB54F0210F70" name="Reservatie">
+<createdBy>stanp</createdBy>
+<createdTime>2022-05-03 19:24:57 UTC</createdTime>
+<ownerDesignName>Eindopdracht</ownerDesignName>
+<engineerTo>
+<item key="25575414-A2C2-293D-8E56-AD59572B2021" value="true"/>
+</engineerTo>
+<adequatelyNormalized>NO</adequatelyNormalized>
+<expectedVolumes>0</expectedVolumes>
+<fwdEngineeringStrategyName>Single Table</fwdEngineeringStrategyName>
+<growthPercent>0</growthPercent>
+<growthType>Year</growthType>
+<maxVolumes>9999999</maxVolumes>
+<minVolumes>0</minVolumes>
+<normalForm>Third</normalForm>
+<attributes itemClass="oracle.dbtools.crest.model.design.logical.Attribute">
+<Attribute name="KlantenNummer" id="DB09F47F-4AB9-8871-3E96-2EA5435B89F7">
+<createdBy>stanp</createdBy>
+<createdTime>2022-05-04 09:10:11 UTC</createdTime>
+<generatorID>958385A5-FC97-F552-AC48-74A8EF4E8AD1</generatorID>
+<ownerDesignName>Eindopdracht</ownerDesignName>
+<engineerTo>
+<item key="25575414-A2C2-293D-8E56-AD59572B2021" value="true"/>
+</engineerTo>
+<referedAttribute>BF21FB26-6AF3-BAC4-4DA4-976234793885</referedAttribute>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="ReservatieNummer" id="98C76F41-BC94-CD03-47E9-C87A67AC2417">
+<createdBy>stanp</createdBy>
+<createdTime>2022-05-04 09:11:25 UTC</createdTime>
+<ownerDesignName>Eindopdracht</ownerDesignName>
+<engineerTo>
+<item key="25575414-A2C2-293D-8E56-AD59572B2021" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="IdentificatieCode" id="4C404E81-8190-4D07-EE06-CF4042765F5D">
+<createdBy>stanp</createdBy>
+<createdTime>2022-05-04 09:12:22 UTC</createdTime>
+<generatorID>459F40B6-5022-A1E5-5483-2D37DA4DE1C1</generatorID>
+<ownerDesignName>Eindopdracht</ownerDesignName>
+<engineerTo>
+<item key="25575414-A2C2-293D-8E56-AD59572B2021" value="true"/>
+</engineerTo>
+<referedAttribute>79133435-8442-436D-5B59-82598B16B0A2</referedAttribute>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="InsertedTimestamp" id="1998C242-F07F-8EEF-AA41-9B8EB310C44A">
+<createdBy>stanp</createdBy>
+<createdTime>2022-05-04 10:21:45 UTC</createdTime>
+<ownerDesignName>Eindopdracht</ownerDesignName>
+<engineerTo>
+<item key="25575414-A2C2-293D-8E56-AD59572B2021" value="true"/>
+</engineerTo>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT015</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+</attributes>
+<identifiers itemClass="oracle.dbtools.crest.model.design.logical.CandidateKey">
+<identifier id="391B89EC-5FF1-201A-6459-AC53AA79AB64" name="Reservatie PK">
+<createdBy>stanp</createdBy>
+<createdTime>2022-05-04 09:10:23 UTC</createdTime>
+<ownerDesignName>Eindopdracht</ownerDesignName>
+<shouldEngineer>false</shouldEngineer>
+<engineerTo>
+<item key="25575414-A2C2-293D-8E56-AD59572B2021" value="false"/>
+</engineerTo>
+<pk>true</pk>
+<usedAttributes>
+<attributeRef>98C76F41-BC94-CD03-47E9-C87A67AC2417</attributeRef>
+</usedAttributes>
+</identifier>
+</identifiers>
+</Entity>

@@ -1,0 +1,21 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Relation class="oracle.dbtools.crest.model.design.logical.Relation" name="Interesses" directorySegmentName="seg_0" id="80FFA0AC-B917-6CB3-1EB3-880C8032294F">
+<createdBy>stanp</createdBy>
+<createdTime>2022-05-04 07:56:10 UTC</createdTime>
+<ownerDesignName>Eindopdracht</ownerDesignName>
+<engineerTo>
+<item key="25575414-A2C2-293D-8E56-AD59572B2021" value="true"/>
+</engineerTo>
+<sourcePk>997E0466-87DE-C4F7-7552-2290D75A0E86</sourcePk>
+<identifying>false</identifying>
+<nameOnSource>May have</nameOnSource>
+<nameOnTarget>Belong to</nameOnTarget>
+<optionalSource>true</optionalSource>
+<optionalTarget>false</optionalTarget>
+<sourceCardinality>1</sourceCardinality>
+<sourceEntity>AD3A3697-28B1-1F11-9030-FD077DBD7265</sourceEntity>
+<targetCardinalityString>*</targetCardinalityString>
+<targetEntity>D986E14F-61FE-27CB-ECEB-70CCE0D2A14D</targetEntity>
+<transferable>true</transferable>
+<deleteRule>CASCADE</deleteRule>
+</Relation>

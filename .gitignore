@@ -1,3 +1,7 @@
 .vs
 bin
 obj
+**/*.localz
+**/*.local
+**/*.git
+**/*.DS_Store

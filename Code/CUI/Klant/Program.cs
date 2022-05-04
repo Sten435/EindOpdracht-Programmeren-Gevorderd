@@ -9,8 +9,9 @@ namespace CUI {
 		private static IKlantenRepository _klantenRepository = new KlantenRepository();
 		private static IReservatieRepository _reservatieRepository = new ReservatieRepository();
 		private static IToestelRepository _toestelRepository = new ToestellenRepository();
+		private static IConfigRepository _configRepository = new ConfigRepository();
 
-		private static DomeinController _domeinController = new(_reservatieRepository, _klantenRepository, _toestelRepository);
+		private static DomeinController _domeinController = new(_reservatieRepository, _klantenRepository, _toestelRepository, _configRepository);
 		private static readonly FitnessApp _fitnessApp = new(_domeinController);
 
 		private static void Main(string[] args) {

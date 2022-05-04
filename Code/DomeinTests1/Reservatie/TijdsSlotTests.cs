@@ -5,7 +5,7 @@ namespace Domein.Tests {
 	[TestClass()]
 	public class TijdsSlotTests {
 		TijdsSlot tijdsSlot;
-		DateTime StartTijd = DateTime.Now;
+		DateTime StartTijd = DateTime.Now.AddHours(5);
 		DateTime EindTijd;
 
 		[TestInitialize()]
@@ -15,8 +15,9 @@ namespace Domein.Tests {
 		}
 
 		[TestMethod()]
-		public void TijdsSlotTest() {
-			Assert.AreEqual(EindTijd, tijdsSlot.EindTijd);
-		}
+		public void TijdsSlotTest() => Assert.AreEqual(EindTijd, tijdsSlot.EindTijd);
+
+		[TestMethod()]
+		public void TijdsSlotTestDateTime() => Assert.ThrowsException<TijdsSlotException>(() => new TijdsSlot(DateTime.Now.AddDays(-15)));
 	}
 }
