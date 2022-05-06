@@ -43,7 +43,7 @@
 <ownDataTypeParameters>,,</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
-<Column name="Reservatie_ReservatieNummer" id="39770C31-B092-D2DD-1F98-A4EE0621F39E">
+<Column name="Reservaties_ReservatieNummer" id="39770C31-B092-D2DD-1F98-A4EE0621F39E">
 <createdBy>stanp</createdBy>
 <createdTime>2022-05-04 15:28:38 UTC</createdTime>
 <generatorID>B89E9F5C-A180-2C95-61A9-9A1E10A5337F</generatorID>
@@ -83,7 +83,7 @@
 <colUsage columnID="39770C31-B092-D2DD-1F98-A4EE0621F39E"/>
 </indexColumnUsage>
 </ind_PK_UK>
-<ind_PK_UK id="1E352D7F-592E-ABA0-476E-67F44F4D1B85" name="TijdsSlot_Reservatie_FK">
+<ind_PK_UK id="1E352D7F-592E-ABA0-476E-67F44F4D1B85" name="TijdSloten_Reservaties_FK">
 <createdBy>stanp</createdBy>
 <createdTime>2022-05-04 15:28:38 UTC</createdTime>
 <generatorID>74E1A7FB-4F9A-724A-FCA0-55F93568E064</generatorID>

@@ -8,7 +8,7 @@ namespace Domein.Tests {
 		Reservatie reservatie;
 		TijdsSlot tijdsSlot = new(DateTime.Now.AddHours(5));
 		Klant klant = new(1, "Stan", "Persoons", "stan.persoons@student.hogent.be", new List<string>(), DateTime.Now, new Adres(), TypeKlant.Silver);
-		Toestel toestel = new("Fiets", false);
+		Toestel toestel = new("Fiets");
 
 		[TestInitialize()]
 		public void Initialize() {

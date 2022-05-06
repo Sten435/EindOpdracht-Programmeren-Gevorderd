@@ -15,12 +15,12 @@ namespace CUI {
 		private static readonly FitnessApp _fitnessApp = new(_domeinController);
 
 		private static void Main(string[] args) {
-			// REMOVE:
-			_domeinController.Login("stan.persoons@student.hogent.be");
-			// REMOVE:
-
-			Console.ResetColor();
 			do {
+				// REMOVE:
+				_domeinController.Login("stan.persoons@student.hogent.be");
+				// REMOVE:
+
+				Console.ResetColor();
 				try {
 					if (!_domeinController.LoggedIn) LoginOrRegisterScreen();
 					else Dashboard();

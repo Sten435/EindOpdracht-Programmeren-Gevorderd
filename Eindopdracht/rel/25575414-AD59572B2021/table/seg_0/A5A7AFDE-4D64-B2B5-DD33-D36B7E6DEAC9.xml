@@ -68,7 +68,7 @@
 <ownDataTypeParameters>,,</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
-<Column name="Klant_KlantenNummer" id="4A66A2FB-E165-BD8C-3396-BD800BF38F95">
+<Column name="Klanten_KlantenNummer" id="4A66A2FB-E165-BD8C-3396-BD800BF38F95">
 <createdBy>stanp</createdBy>
 <createdTime>2022-05-04 15:28:38 UTC</createdTime>
 <generatorID>5DD48B40-8838-E9D1-161D-CCCC45D9AA23</generatorID>
@@ -108,7 +108,7 @@
 <colUsage columnID="80C4349B-F32A-D2E4-94A9-372E1929D18C"/>
 </indexColumnUsage>
 </ind_PK_UK>
-<ind_PK_UK id="96945924-899A-60AD-A488-C5C11F503429" name="Adres_Klant_FK">
+<ind_PK_UK id="96945924-899A-60AD-A488-C5C11F503429" name="Adressen_Klanten_FK">
 <createdBy>stanp</createdBy>
 <createdTime>2022-05-04 15:28:38 UTC</createdTime>
 <generatorID>DCC4B5E5-CA2D-921B-19E6-7A58051BC352</generatorID>

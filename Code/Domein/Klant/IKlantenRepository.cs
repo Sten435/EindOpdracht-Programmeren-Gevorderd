@@ -9,7 +9,5 @@ namespace Domein {
 		void RegistreerKlant(Klant klant);
 
 		Klant Login(string email);
-
-		void VerwijderKlant(Klant klant);
 	}
 }

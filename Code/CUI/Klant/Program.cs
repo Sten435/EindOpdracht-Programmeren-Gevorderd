@@ -6,21 +6,21 @@ using System.Collections.Generic;
 namespace CUI {
 
 	public class KlantProgram {
-		private static IKlantenRepository _klantenRepository = new KlantenRepository();
-		private static IReservatieRepository _reservatieRepository = new ReservatieRepository();
-		private static IToestelRepository _toestelRepository = new ToestellenRepository();
-		private static IConfigRepository _configRepository = new ConfigRepository();
+		private static readonly IKlantenRepository _klantenRepository = new KlantenRepository();
+		private static readonly IReservatieRepository _reservatieRepository = new ReservatieRepository();
+		private static readonly IToestelRepository _toestelRepository = new ToestellenRepository();
+		private static readonly IConfigRepository _configRepository = new ConfigRepository();
 
-		private static DomeinController _domeinController = new(_reservatieRepository, _klantenRepository, _toestelRepository, _configRepository);
+		private static readonly DomeinController _domeinController = new(_reservatieRepository, _klantenRepository, _toestelRepository, _configRepository);
 		private static readonly FitnessApp _fitnessApp = new(_domeinController);
 
 		private static void Main(string[] args) {
-			// REMOVE:
-			_domeinController.Login("stan.persoons@student.hogent.be");
-			// REMOVE:
-
-			Console.ResetColor();
 			do {
+				// REMOVE:
+				//_domeinController.Login("stan.persoons@student.hogent.be");
+				// REMOVE:
+
+				Console.ResetColor();
 				try {
 					if (!_domeinController.LoggedIn) LoginOrRegisterScreen();
 					else Dashboard();

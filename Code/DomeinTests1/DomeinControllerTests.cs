@@ -21,7 +21,7 @@ namespace Domein.Tests {
 			_klantenRepo = new KlantenRepository();
 			_toestselRepo = new ToestellenRepository();
 
-			reservatie = new(new Klant(), new TijdsSlot(DateTime.Now.AddHours(5)), new Toestel("Stantoestel", false));
+			reservatie = new(new Klant(), new TijdsSlot(DateTime.Now.AddHours(5)), new Toestel(1, "Stantoestel"));
 			klant = new(1, "Stan", "Persoons", "stan.persoons1@student.hogent.be", new List<string>(), DateTime.Now, new Adres(), TypeKlant.Silver);
 		}
 
@@ -48,17 +48,6 @@ namespace Domein.Tests {
 			_klantenRepo.RegistreerKlant(klant);
 			bool isOk = _klantenRepo.GeefAlleKlanten().Any(klant => klant.Email == "stan.persoons1@student.hogent.be");
 			Assert.IsTrue(isOk);
-		}
-
-		[TestMethod()]
-		public void VerwijderKlantTest() {
-			_klantenRepo.RegistreerKlant(klant);
-			Klant klant1 = _klantenRepo.GeefAlleKlanten().FirstOrDefault(klant => klant.Email == "stan.persoons1@student.hogent.be");
-			Assert.IsNotNull(klant1);
-
-			_klantenRepo.VerwijderKlant(klant);
-			klant1 = _klantenRepo.GeefAlleKlanten().FirstOrDefault(klant => klant.Email == "stan.persoons1@student.hogent.be");
-			Assert.IsNull(klant1);
 		}
 
 		[TestMethod()]

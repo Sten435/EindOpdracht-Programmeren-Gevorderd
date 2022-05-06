@@ -21,7 +21,7 @@
 <identityColumn>true</identityColumn>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
-<Column name="Klant_KlantenNummer" id="E777E9B3-3EBF-E98E-64CF-F2C0C828C127">
+<Column name="Klanten_KlantenNummer" id="E777E9B3-3EBF-E98E-64CF-F2C0C828C127">
 <createdBy>stanp</createdBy>
 <createdTime>2022-05-04 15:28:38 UTC</createdTime>
 <generatorID>52810960-55D2-3CEB-3F79-D12B8EE37B89</generatorID>
@@ -62,7 +62,7 @@
 <colUsage columnID="FE30E089-ED09-59B9-6355-9A03F4C5AF3A"/>
 </indexColumnUsage>
 </ind_PK_UK>
-<ind_PK_UK id="9C998919-BA2B-4CF8-0E57-DE72E4F3CB82" name="Interesses_Klant_FK">
+<ind_PK_UK id="9C998919-BA2B-4CF8-0E57-DE72E4F3CB82" name="Interesses_Klanten_FK">
 <createdBy>stanp</createdBy>
 <createdTime>2022-05-04 15:28:38 UTC</createdTime>
 <generatorID>80FFA0AC-B917-6CB3-1EB3-880C8032294F</generatorID>

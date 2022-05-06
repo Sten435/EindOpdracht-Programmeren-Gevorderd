@@ -10,18 +10,16 @@ namespace Domein {
 		//Config
 		public static bool? StandaardInherstelling { get; set; } = false;
 
-
-		private UniekeCode uniekeCode = UniekeCode.Instance;
-
-		public Toestel(string toestelType) {
+		public Toestel(int identificatieCode, string toestelType, bool? inHerstelling = null) {
 			ControlleerStandaardherstelling();
-			int identificatieCode = uniekeCode.GenereerRandomCode();
 			ControlleerIdentificatieCode(identificatieCode);
 			ControlleerToestelNaam(toestelType);
 			ControlleerToestelNaam(toestelType);
 			IdentificatieCode = identificatieCode;
 			ToestelType = toestelType;
-			InHerstelling = (bool)StandaardInherstelling;
+			if (inHerstelling == null) {
+				InHerstelling = (bool)StandaardInherstelling;
+			} else InHerstelling = (bool)inHerstelling;
 		}
 
 		public override string ToString() => $"{ToestelType} - InHerstelling: {InHerstelling}";

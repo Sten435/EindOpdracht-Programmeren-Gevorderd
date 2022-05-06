@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace Domein {
 
 	public class Klant {
-		public int KlantenNummer { get; }
+		public int? KlantenNummer { get; }
 		public string Voornaam { get; }
 		public string Achternaam { get; }
 		public string Email { get; }
@@ -13,7 +13,7 @@ namespace Domein {
 		public Adres Adres { get; }
 		public TypeKlant TypeKlant { get; }
 
-		public Klant(int klantenNummer, string voornaam, string achternaam, string email, List<string> interesses, DateTime geboorteDatum, Adres adres, TypeKlant typeKlant) {
+		public Klant(int? klantenNummer, string voornaam, string achternaam, string email, List<string> interesses, DateTime geboorteDatum, Adres adres, TypeKlant typeKlant) {
 			CheckKlantenNummer(klantenNummer);
 			CheckDatumGeboorte(geboorteDatum);
 			CheckVoorNaam(voornaam);
@@ -34,13 +34,15 @@ namespace Domein {
 		}
 
 		public override string ToString() {
-			return $"{KlantenNummer} | {Voornaam} {Achternaam} | {Email} | {GeboorteDatum.ToString("d")} | {TypeKlant} | {Adres.StraatNaam} {Adres.HuisNummer} {Adres.PostCode}";
+			return $"{KlantenNummer} | {Voornaam} {Achternaam} | {Email} | {GeboorteDatum.ToString("d")} | {string.Join(" - ", Interesses)} | {TypeKlant} | {Adres.StraatNaam} {Adres.HuisNummer} {Adres.PostCode}";
 		}
 
-		private void CheckKlantenNummer(int klantenNummer) {
-			string _klantenNummer = klantenNummer.ToString().Trim();
-			if (string.IsNullOrEmpty(_klantenNummer)) throw new KlantenNummerException("KlantenNummer niet leeg zijn.");
-			if (klantenNummer <= 0) throw new KlantenNummerException("Klanten nummer moet groter dan 0 zijn.");
+		private void CheckKlantenNummer(int? klantenNummer) {
+			if(klantenNummer != null) {
+				string _klantenNummer = klantenNummer.ToString().Trim();
+				if (string.IsNullOrWhiteSpace(_klantenNummer)) throw new KlantenNummerException("KlantenNummer niet leeg zijn.");
+				if (klantenNummer <= 0) throw new KlantenNummerException("Klanten nummer moet groter dan 0 zijn.");
+			}
 		}
 
 		private void CheckDatumGeboorte(DateTime datum) {

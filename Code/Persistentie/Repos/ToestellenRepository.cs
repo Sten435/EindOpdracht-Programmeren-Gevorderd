@@ -10,69 +10,33 @@ using System.Threading.Tasks;
 
 namespace Persistentie {
 	public class ToestellenRepository : IToestelRepository {
-		private static UniekeCode _uniekeCode = UniekeCode.Instance;
-		private ToestellenMapper _mapper = new();
 
-		public ToestellenRepository() {
-			LaadToestellen();
-		}
+		public List<Toestel> GeefAlleToestellen() => ToestellenMapper.GeefToestellen();
 
-		private bool LaadToestellen() {
-			string sCurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
-			string sFile = Path.Combine(sCurrentDirectory, @"Data\FitnessToestellen.txt");
-			string sFilePath = Path.GetFullPath(sFile);
+		public void VoegToestelToe(string naam) => ToestellenMapper.VoegToestelToe(new(naam[0].ToString().ToUpper() + naam.ToLower().Substring(1)));
 
-			try {
-				using TextFieldParser parser = new(sFilePath);
-				parser.TextFieldType = FieldType.Delimited;
-				parser.SetDelimiters(",");
+		public void VerwijderToestel(Toestel toestel) => ToestellenMapper.VerwijderToestel(toestel);
 
-				int klantenNr = (int)parser.LineNumber + 3;
+		public void UpdateToestelNaamOpId(int toestelId, string toestelNaam) {
+			Toestel huidigToestel = GeefAlleToestellen().Find(t => t.IdentificatieCode == toestelId);
 
-				while (!parser.EndOfData) {
-					List<string> fields = parser.ReadFields().ToList();
-					fields = fields.Select(field => field.Replace("\'", "")).ToList();
+			if (huidigToestel != null) {
+				huidigToestel.ToestelType = toestelNaam;
 
-					VoegToestelToe(fields[1]);
-
-					//using (SqlConnection connection = new(ConfigRepository.ConnectionString)) {
-					//	connection.Open();
-					//	SqlCommand commandSQL = new("INSERT INTO Toestellen (ToestelType, InHerstelling) VALUES (@ToestelType, @InHerstelling);", connection);
-
-					//	commandSQL.Parameters.AddWithValue("@ToestelType", fields[1]);
-					//	commandSQL.Parameters.AddWithValue("@InHerstelling", Toestel.StandaardInherstelling);
-
-					//	commandSQL.ExecuteNonQuery();
-					//}
-				}
-			} catch (Exception err) {
-				Console.WriteLine(err.StackTrace);
-				return false;
+				ToestellenMapper.UpdateToestelNaam(huidigToestel);
 			}
-
-			return true;
-		}
-
-		public List<Toestel> GeefAlleToestellen() => _mapper.Toestellen;
-
-		public void VoegToestelToe(string naam) => _mapper.Toestellen.Add(new(naam[0].ToString().ToUpper() + naam.ToLower().Substring(1)));
-
-		public void VerwijderToestel(Toestel toestel) => _mapper.Toestellen.Remove(toestel);
-
-		public void UpdateToestelOpId(int toestelId, string toestelNaam) {
-			_mapper.Toestellen = _mapper.Toestellen.Select(t => {
-				if (t.IdentificatieCode == toestelId) t.ToestelType = toestelNaam;
-				return t;
-			}).ToList();
 		}
 
 		public void ZetToestelInOfUitHerstelling(int toestelId, bool nieuweHerstellingValue) {
-			_mapper.Toestellen = _mapper.Toestellen.Select(t => {
-				if (t.IdentificatieCode == toestelId) t.InHerstelling = nieuweHerstellingValue;
-				return t;
-			}).ToList();
+			Toestel huidigToestel = GeefAlleToestellen().Find(t => t.IdentificatieCode == toestelId);
+
+			if (huidigToestel != null) {
+				huidigToestel.InHerstelling = nieuweHerstellingValue;
+
+				ToestellenMapper.UpdateToestelInHerstelling(huidigToestel);
+			}
 		}
 
-		public bool GeefToestelHerstelStatusOpId(int toestelId) => _mapper.Toestellen.Find(t => t.IdentificatieCode == toestelId).InHerstelling;
+		public bool GeefToestelHerstelStatusOpId(int toestelId) => GeefAlleToestellen().Find(t => t.IdentificatieCode == toestelId).InHerstelling;
 	}
 }

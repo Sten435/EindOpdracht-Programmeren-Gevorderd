@@ -14,7 +14,7 @@ namespace Domein.Tests {
 
 		[TestInitialize()]
 		public void Initialize() {
-			toestel = new("Fiets", false);
+			toestel = new("Fiets");
 			toestelCopy = toestel;
 		}
 
@@ -36,8 +36,8 @@ namespace Domein.Tests {
 
 		[TestMethod()]
 		public void ToestelNaamTest() {
-			Assert.ThrowsException<ToestelTypeException>(() => new Toestel("S", true));
-			Assert.ThrowsException<ToestelTypeException>(() => new Toestel("", true));
+			Assert.ThrowsException<ToestelTypeException>(() => new Toestel(1, "S"));
+			Assert.ThrowsException<ToestelTypeException>(() => new Toestel(1, ""));
 		}
 	}
 }

@@ -74,7 +74,7 @@ namespace Domein {
 		/// <param name="toestelId">ToestelId van toestel dat je wil reserveren</param>
 		/// <returns>Geeft de reservatie terug in string representatie</returns>
 		public string VoegReservatieToe(DateTime tijdsSlotDatum, int toestelId) {
-			Reservatie reservatie = new(_klant, new TijdsSlot(tijdsSlotDatum), GeefToestelOpId(toestelId));
+			Reservatie reservatie = new(null, _klant, new TijdsSlot(tijdsSlotDatum), GeefToestelOpId(toestelId));
 			_reservatieRepo.VoegReservatieToe(reservatie);
 			return reservatie.ToString();
 		}
@@ -95,7 +95,7 @@ namespace Domein {
 		/// </summary>
 		/// <param name="reservatieIndex">ReservatieIndex van toestel dat je de Id van wil krijgen.</param>
 		/// <returns>ReservatieId van respectieve reservatieIndex</returns>
-		public int GeefReservatieIdOpIndex(int reservatieIndex) => _reservatieRepo.GeefAlleReservaties()[reservatieIndex].ReservatieNummer;
+		public int GeefReservatieIdOpIndex(int reservatieIndex) => (int)_reservatieRepo.GeefAlleReservaties()[reservatieIndex].ReservatieNummer;
 
 		/// <summary>
 		/// Geef reservatie in string vorm op reservatieId.
@@ -114,7 +114,7 @@ namespace Domein {
 		/// </summary>
 		/// <param name="toestel">Toestel van waar je de Datetime's van terug wil.</param>
 		/// <returns>List van DateTime start tijden</returns>
-		private List<DateTime> GeefAlleTijdsSloten(Toestel toestel) => _reservatieRepo.GeefAlleReservaties()
+		private List<DateTime> GeefAlleTijdSloten(Toestel toestel) => _reservatieRepo.GeefAlleReservaties()
 			.Where(rv => rv.Toestel.IdentificatieCode == toestel.IdentificatieCode)
 			.Select(r => r.TijdsSlot.StartTijd).ToList();
 
@@ -131,7 +131,7 @@ namespace Domein {
 			List<Reservatie> klantReservatiesDag = klantReservaties.Where(r => r.TijdsSlot.StartTijd.Day == dag.Day).ToList();
 
 			List<DateTime> klantReservatiesMetGeselecteerdeToestel = klantReservaties.Where(r => r.Toestel.ToestelType == toestel.ToestelType && r.TijdsSlot.StartTijd.Day == dag.Day).Select(t => t.TijdsSlot.StartTijd).ToList();
-			List<DateTime> gereserveerdeTijdssloten = GeefAlleTijdsSloten(toestel);
+			List<DateTime> gereserveerdeTijdSloten = GeefAlleTijdSloten(toestel);
 
 			int beginUur = 8;
 			int eindUur = 22;
@@ -148,8 +148,8 @@ namespace Domein {
 
 				DateTime tijdsSlot = new(dag.Year, dag.Month, dag.Day, uur, 0, 0);
 
-				if (!gereserveerdeTijdssloten.Contains(tijdsSlot)) urenNaFilter.Add(uur);
-				else if (beschikbareToestellen.Count > gereserveerdeTijdssloten.Where(d => d == tijdsSlot).ToList().Count) urenNaFilter.Add(uur);
+				if (!gereserveerdeTijdSloten.Contains(tijdsSlot)) urenNaFilter.Add(uur);
+				else if (beschikbareToestellen.Count > gereserveerdeTijdSloten.Where(d => d == tijdsSlot).ToList().Count) urenNaFilter.Add(uur);
 
 				if (klantReservatiesMetGeselecteerdeToestel.Contains(tijdsSlot))
 					urenNaFilter.Remove(uur);
@@ -210,8 +210,6 @@ namespace Domein {
 		/// </summary>
 		/// <param name="klant"></param>
 		public void RegistreerKlant(string voornaam, string achternaam, string email, DateTime geboorteDatum, List<string> interesses, string typeKlant, string straat, string plaats, string huisNummer, int postCode) {
-			UniekeCode uniekeCode = UniekeCode.Instance;
-			int klantenNummer = uniekeCode.GenereerRandomCode();
 
 			TypeKlant _typeKlant = typeKlant switch {
 				"Bronze" => TypeKlant.Bronze,
@@ -222,7 +220,7 @@ namespace Domein {
 			};
 
 			Adres adres = new(straat, huisNummer, plaats, postCode);
-			Klant klant = new(klantenNummer, voornaam, achternaam, email, interesses, geboorteDatum, adres, _typeKlant);
+			Klant klant = new(null, voornaam, achternaam, email, interesses, geboorteDatum, adres, _typeKlant);
 
 			_klantenRepo.RegistreerKlant(klant);
 		}
@@ -293,7 +291,7 @@ namespace Domein {
 
 		public void UpdateToestelNaamOpIndex(int toestelIndex, string toestelNaam) {
 			int toestelId = GeefToestelIdOpIndex(toestelIndex);
-			_toestselRepo.UpdateToestelOpId(toestelId, toestelNaam);
+			_toestselRepo.UpdateToestelNaamOpId(toestelId, toestelNaam);
 		}
 
 		/// <summary>

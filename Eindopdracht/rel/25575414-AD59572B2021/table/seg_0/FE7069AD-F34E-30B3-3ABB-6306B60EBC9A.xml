@@ -8,7 +8,7 @@
 <existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
 <parsed>true</parsed>
 <columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
-<Column name="Klant_KlantenNummer" id="219D8673-C163-9B4A-5E4E-971BE700163E">
+<Column name="Klanten_KlantenNummer" id="219D8673-C163-9B4A-5E4E-971BE700163E">
 <createdBy>stanp</createdBy>
 <createdTime>2022-05-04 15:28:38 UTC</createdTime>
 <generatorID>DB09F47F-4AB9-8871-3E96-2EA5435B89F7</generatorID>
@@ -34,7 +34,7 @@
 <ownDataTypeParameters>,,</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
-<Column name="Toestel_IdentificatieCode" id="0A748A34-04D4-81B3-C885-829134C1BC6E">
+<Column name="Toestellen_IdentificatieCode" id="0A748A34-04D4-81B3-C885-829134C1BC6E">
 <createdBy>stanp</createdBy>
 <createdTime>2022-05-04 15:28:38 UTC</createdTime>
 <generatorID>4C404E81-8190-4D07-EE06-CF4042765F5D</generatorID>
@@ -75,7 +75,7 @@
 <colUsage columnID="74163E8D-4029-A83C-6F31-0FB476DB6AD3"/>
 </indexColumnUsage>
 </ind_PK_UK>
-<ind_PK_UK id="7A84E2AC-036D-7ADA-3001-710340853238" name="Reservatie_Klant_FK">
+<ind_PK_UK id="7A84E2AC-036D-7ADA-3001-710340853238" name="Reservaties_Klanten_FK">
 <createdBy>stanp</createdBy>
 <createdTime>2022-05-04 15:28:38 UTC</createdTime>
 <generatorID>958385A5-FC97-F552-AC48-74A8EF4E8AD1</generatorID>
@@ -86,7 +86,7 @@
 <colUsage columnID="219D8673-C163-9B4A-5E4E-971BE700163E"/>
 </indexColumnUsage>
 </ind_PK_UK>
-<ind_PK_UK id="56D22FA4-3C91-21A4-933F-7E10FBFF33E0" name="Reservatie_Toestel_FK">
+<ind_PK_UK id="56D22FA4-3C91-21A4-933F-7E10FBFF33E0" name="Reservaties_Toestellen_FK">
 <createdBy>stanp</createdBy>
 <createdTime>2022-05-04 15:28:38 UTC</createdTime>
 <generatorID>459F40B6-5022-A1E5-5483-2D37DA4DE1C1</generatorID>
