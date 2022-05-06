@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace Persistentie {
+namespace Domein {
 	internal class KlantenExeption : Exception {
 		public KlantenExeption() {
 		}

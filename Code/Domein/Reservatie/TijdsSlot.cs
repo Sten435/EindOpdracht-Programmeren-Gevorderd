@@ -6,12 +6,14 @@ namespace Domein {
 		public DateTime StartTijd { get; }
 		public DateTime EindTijd { get; }
 		public static double SlotTijdUur { get; set; } = -1;
+		public static int LowerBoundUurReservatie { get; set; } = -1;
+		public static int UpperBoundUurReservatie { get; set; } = -1;
 
-		private const int _tijdsZone = 2;
+		private const int tijdsZone = 2;
 
 		public TijdsSlot(DateTime startTijd) {
-			ControlleerStartTijd(startTijd);
-			StartTijd = startTijd.ToUniversalTime().AddHours(_tijdsZone);
+			ControlleerTijd(startTijd);
+			StartTijd = startTijd.ToUniversalTime().AddHours(tijdsZone);
 			EindTijd = StartTijd.AddHours(SlotTijdUur);
 		}
 
@@ -20,8 +22,10 @@ namespace Domein {
 			EindTijd = eindTijd;
 		}
 
-		private void ControlleerStartTijd(DateTime startTijd) {
-			if (SlotTijdUur == -1) throw new TijdsSlotException("Het SlotTijdUur is nog niet correct ingesteld.");
+		private void ControlleerTijd(DateTime startTijd) {
+			if (SlotTijdUur == -1) throw new ConfigException("Het SlotTijdUur is nog niet correct ingesteld.");
+			if (LowerBoundUurReservatie == -1) throw new ConfigException("Het LowerBoundUurReservatie is nog niet correct ingesteld.");
+			if (UpperBoundUurReservatie == -1) throw new ConfigException("Het UpperBoundUurReservatie is nog niet correct ingesteld.");
 			if (startTijd < DateTime.Now) throw new TijdsSlotException($"Het TijdsSlot: {startTijd.ToString("f")} mag niet in het verleden zijn.");
 		}
 	}

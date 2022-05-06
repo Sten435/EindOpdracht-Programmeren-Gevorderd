@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace Persistentie {
+namespace Domein {
 	public class ToestellenToeVoegenException : Exception {
 		public ToestellenToeVoegenException() {
 		}

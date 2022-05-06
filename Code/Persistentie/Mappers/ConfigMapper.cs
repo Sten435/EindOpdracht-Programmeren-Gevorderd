@@ -1,10 +1,6 @@
 ﻿using Domein;
 using System;
-using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Persistentie {
 	public class ConfigMapper {
@@ -17,19 +13,22 @@ namespace Persistentie {
 				using SqlConnection connection = new(ConfigRepository.ConnectionString);
 				connection.Open();
 
-				SqlCommand command = new("SELECT SlotTijdUur, StandaardInherstelling FROM Config;", connection);
+				SqlCommand command = new("SELECT SlotTijdUur, StandaardInherstelling, LowerBoundUurReservatie, UpperBoundUurReservatie FROM Config;", connection);
 				using SqlDataReader dataFromQuery = command.ExecuteReader();
 
 				if (dataFromQuery.HasRows) {
 					while (dataFromQuery.Read()) {
-						double SlotTijdUur = (Int64)dataFromQuery["SlotTijdUur"];
-						bool StandaardInherstelling = (bool)dataFromQuery["StandaardInherstelling"];
-						TijdsSlot.SlotTijdUur = SlotTijdUur;
-						Toestel.StandaardInherstelling = StandaardInherstelling;
+						double slotTijdUur = (long)dataFromQuery["SlotTijdUur"];
+						bool standaardInherstelling = (bool)dataFromQuery["StandaardInherstelling"];
+						int lowerBoundUurReservatie = (int)(double)dataFromQuery["LowerBoundUurReservatie"];
+						int upperBoundUurReservatie = (int)(double)dataFromQuery["UpperBoundUurReservatie"];
+
+						TijdsSlot.SlotTijdUur = slotTijdUur;
+						Toestel.StandaardInherstelling = standaardInherstelling;
 					}
-				} else throw new NoDataInDbException("Geen data in de databank.");
+				} else throw new NoConfigDataInDbException("Er bevind zich geen config data in de databank.");
 			} catch (Exception err) {
-				throw new SelectFromDbException($"Fout bij select config data uit DB: {err.Message}");
+				throw new SelectConfigFromDbException($"Fout bij select config data uit DB: {err.Message}");
 			}
 		}
 	}
