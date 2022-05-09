@@ -9,11 +9,11 @@ namespace Domein {
 		public static int LowerBoundUurReservatie { get; set; } = -1;
 		public static int UpperBoundUurReservatie { get; set; } = -1;
 
-		private const int tijdsZone = 2;
+		public const int TijdsZone = 2;
 
 		public TijdsSlot(DateTime startTijd) {
 			ControlleerTijd(startTijd);
-			StartTijd = startTijd.ToUniversalTime().AddHours(tijdsZone);
+			StartTijd = startTijd.ToUniversalTime().AddHours(TijdsZone);
 			EindTijd = StartTijd.AddHours(SlotTijdUur);
 		}
 

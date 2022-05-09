@@ -34,8 +34,8 @@ namespace Domein {
 		/// <summary>
 		/// Geef alle reservaties in string vorm.
 		/// </summary>
-		/// <returns>Geef een List van string's van reservaties terug</returns>
-		public List<string> GeefAlleReservaties() => _reservatieRepo.GeefAlleReservaties()
+		/// <returns>Geef een List van string's van reservaties</returns>
+		public List<string> GeefAlleReservaties() => _reservatieRepo.GeefAlleReservaties(true).Union(_reservatieRepo.GeefAlleReservaties(false))
 															.Select(r => r.ToString())
 															.ToList();
 
@@ -44,7 +44,7 @@ namespace Domein {
 		/// </summary>
 		/// <returns>Geef een List van string's van geresveerde toestellen terug.</returns>
 		public List<string> GeefGereserveerdeToestellen() => _reservatieRepo.GeefAlleReservaties()
-																		.Where(r => r.TijdsSlot.EindTijd > DateTime.Now.ToUniversalTime().AddHours(2))
+																		.Where(r => r.TijdsSlot.EindTijd > DateTime.Now.ToUniversalTime().AddHours(TijdsSlot.TijdsZone))
 																		.Select(r => r.Toestel)
 																		.Select(t => t.ToString())
 																		.ToList();
@@ -53,19 +53,10 @@ namespace Domein {
 		/// </summary>
 		/// <param name="klantId">De klantId van waar je de reservatie van wil</param>
 		/// <returns>Geeft een List van klanten reservaties terug</returns>
-		public List<string> GeefKlantReservaties() {
-			//if (klantId == -1)
-			//	return _reservatieRepo.GeefAlleReservaties()
-			//					.Where(reservatie => reservatie.Klant.KlantenNummer == klantId)
-			//					.Select(r => r.ToString())
-			//					.ToList();
-			//else
-			return _reservatieRepo.GeefAlleReservaties()
+		public List<string> GeefKlantReservaties() => _reservatieRepo.GeefAlleReservaties(true).Union(_reservatieRepo.GeefAlleReservaties(false))
 							.Where(reservatie => reservatie.Klant.KlantenNummer == _klant.KlantenNummer)
 							.Select(r => r.ToString())
 							.ToList();
-
-		}
 
 		/// <summary>
 		/// Voeg reservatie toe aan database op tijdsSlotdatum en op toestelid.

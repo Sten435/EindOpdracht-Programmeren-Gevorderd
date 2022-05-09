@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace Persistentie {
 	public class ReservatieRepository : IReservatieRepository {
 
-		public List<Reservatie> GeefAlleReservaties() => ReservatieMapper.GeefAlleReservaties();
+		public List<Reservatie> GeefAlleReservaties(bool metVerwijderedeToestellen = false) => ReservatieMapper.GeefAlleReservaties(metVerwijderedeToestellen);
 
 		public void VerwijderReservatie(Reservatie reservatie) => ReservatieMapper.VerwijderReservatie(reservatie);
 

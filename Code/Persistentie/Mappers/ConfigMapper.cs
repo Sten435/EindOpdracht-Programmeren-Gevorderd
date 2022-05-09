@@ -20,11 +20,13 @@ namespace Persistentie {
 					while (dataFromQuery.Read()) {
 						double slotTijdUur = (long)dataFromQuery["SlotTijdUur"];
 						bool standaardInherstelling = (bool)dataFromQuery["StandaardInherstelling"];
-						int lowerBoundUurReservatie = (int)(double)dataFromQuery["LowerBoundUurReservatie"];
-						int upperBoundUurReservatie = (int)(double)dataFromQuery["UpperBoundUurReservatie"];
+						int lowerBoundUurReservatie = (int)dataFromQuery["LowerBoundUurReservatie"];
+						int upperBoundUurReservatie = (int)dataFromQuery["UpperBoundUurReservatie"];
 
 						TijdsSlot.SlotTijdUur = slotTijdUur;
 						Toestel.StandaardInherstelling = standaardInherstelling;
+						TijdsSlot.LowerBoundUurReservatie = lowerBoundUurReservatie;
+						TijdsSlot.UpperBoundUurReservatie = upperBoundUurReservatie;
 					}
 				} else throw new NoConfigDataInDbException("Er bevind zich geen config data in de databank.");
 			} catch (Exception err) {

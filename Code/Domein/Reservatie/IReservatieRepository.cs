@@ -4,7 +4,7 @@ namespace Domein {
 
 	public interface IReservatieRepository {
 
-		List<Reservatie> GeefAlleReservaties();
+		List<Reservatie> GeefAlleReservaties(bool metVerwijderedeToestellen = false);
 
 		void VoegReservatieToe(Reservatie reservatie);
 

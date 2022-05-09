@@ -6,15 +6,26 @@ using System.Collections.Generic;
 namespace CUI {
 
 	public class BeheerderProgram {
-		private static IKlantenRepository _klantenRepository = new KlantenRepository();
-		private static IReservatieRepository _reservatieRepository = new ReservatieRepository();
-		private static IToestelRepository _toestelRepository = new ToestellenRepository();
-		private static IConfigRepository _configRepository = new ConfigRepository();
+		private static IKlantenRepository _klantenRepository;
+		private static IReservatieRepository _reservatieRepository;
+		private static IToestelRepository _toestelRepository;
+		private static IConfigRepository _configRepository;
 
-		private static DomeinController _domeinController = new(_reservatieRepository, _klantenRepository, _toestelRepository, _configRepository);
-		private static readonly FitnessApp _fitnessApp = new(_domeinController);
+		private static DomeinController _domeinController;
+		private static FitnessApp _fitnessApp;
 
 		private static void Main(string[] args) {
+			try {
+				_klantenRepository = new KlantenRepository();
+				_reservatieRepository = new ReservatieRepository();
+				_toestelRepository = new ToestellenRepository();
+				_configRepository = new ConfigRepository();
+
+				_domeinController = new(_reservatieRepository, _klantenRepository, _toestelRepository, _configRepository);
+				_fitnessApp = new(_domeinController);
+			} catch (Exception error) {
+				Utility.Logger.Error(error, clearConsole: true);
+			}
 			do {
 				// REMOVE:
 				_domeinController.Login("stan.persoons@student.hogent.be");

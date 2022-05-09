@@ -10,14 +10,20 @@ namespace Persistentie {
 
 	public static class ToestellenMapper {
 
-		public static List<Toestel> GeefToestellen() {
+		public static List<Toestel> GeefToestellen(bool metVerwijderedeToestellen = false) {
 			List<Toestel> toestellen = new();
 
 			try {
 				using SqlConnection connection = new(ConfigRepository.ConnectionString);
 				connection.Open();
 
-				SqlCommand command = new("SELECT IdentificatieCode, ToestelType, InHerstelling FROM Toestellen WHERE Verwijderd = 0;", connection);
+				SqlCommand command;
+
+				if (!metVerwijderedeToestellen)
+					command = new("SELECT * FROM Toestellen WHERE Verwijderd = 0;", connection);
+				else
+					command = new("SELECT * FROM Toestellen WHERE Verwijderd = 1;", connection);
+
 
 				using SqlDataReader dataReader = command.ExecuteReader();
 
@@ -26,12 +32,13 @@ namespace Persistentie {
 						int identificatieCode = (int)dataReader["IdentificatieCode"];
 						string toestelType = (string)dataReader["ToestelType"];
 						bool inHerstelling = (bool)dataReader["InHerstelling"];
+						bool verwijderd = (bool)dataReader["Verwijderd"];
 
 						Toestel toestel = new(identificatieCode, toestelType, inHerstelling);
 
 						toestellen.Add(toestel);
 					}
-				} else throw new ToestellenUitDbException("Geen Toestellen gevonden.");
+				}
 			} catch (Exception error) {
 				throw new ToestellenUitDbException(error.Message);
 			}
@@ -40,6 +47,7 @@ namespace Persistentie {
 		}
 
 		public static void VoegToestelToe(string naam) {
+			Toestel.ControlleerToestelNaam(naam);
 			try {
 				using SqlConnection connection = new(ConfigRepository.ConnectionString);
 				connection.Open();

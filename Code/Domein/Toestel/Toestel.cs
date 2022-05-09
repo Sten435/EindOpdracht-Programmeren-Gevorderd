@@ -24,7 +24,7 @@ namespace Domein {
 
 		public override string ToString() => $"{ToestelType} - InHerstelling: {InHerstelling}";
 
-		private void ControlleerToestelNaam(string toestelType) {
+		public static void ControlleerToestelNaam(string toestelType) {
 			string toestelNaam = toestelType.Trim();
 			if (string.IsNullOrEmpty(toestelNaam)) throw new ToestelTypeException("Toesteltype mag niet leeg zijn.");
 			if (toestelType.Length <= 1) throw new ToestelTypeException("Toesteltype moet langer zijn dan 1 letter.");

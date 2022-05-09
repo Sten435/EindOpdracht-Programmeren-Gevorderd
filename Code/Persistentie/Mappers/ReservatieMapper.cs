@@ -6,7 +6,7 @@ using System.Data.SqlClient;
 namespace Persistentie {
 
 	public static class ReservatieMapper {
-		public static List<Reservatie> GeefAlleReservaties() {
+		public static List<Reservatie> GeefAlleReservaties(bool metVerwijderedeToestellen = false) {
 			List<Reservatie> reservaties = new();
 
 			try {
@@ -27,11 +27,14 @@ namespace Persistentie {
 						DateTime eindTijd = (DateTime)reader["EindTijd"];
 
 						Klant klant = KlantenMapper.GeefAlleKlanten().Find(klant => klant.KlantenNummer == klantenNummer);
-						Toestel toestel = ToestellenMapper.GeefToestellen().Find(toestel => toestel.IdentificatieCode == toestelNummer);
-						TijdsSlot tijdsSlot = new(startTijd, eindTijd);
+						List<Toestel> toestellen = ToestellenMapper.GeefToestellen(metVerwijderedeToestellen);
+						Toestel toestel = ToestellenMapper.GeefToestellen(metVerwijderedeToestellen).Find(toestel => toestel.IdentificatieCode == toestelNummer);
+						if(toestel != null) {
+							TijdsSlot tijdsSlot = new(startTijd, eindTijd);
 
-						reservatie = new(reservatieNummer, klant, tijdsSlot, toestel);
-						reservaties.Add(reservatie);
+							reservatie = new(reservatieNummer, klant, tijdsSlot, toestel);
+							reservaties.Add(reservatie);
+						}
 					}
 				}
 

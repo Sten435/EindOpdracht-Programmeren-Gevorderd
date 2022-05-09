@@ -18,7 +18,7 @@ namespace Domein {
 			CheckDatumGeboorte(geboorteDatum);
 			CheckVoorNaam(voornaam);
 			CheckAchterNaam(achternaam);
-			CheckDatumEmail(email);
+			CheckEmail(email);
 			Interesses = CheckInteresses(interesses);
 
 			GeboorteDatum = geboorteDatum;
@@ -67,7 +67,7 @@ namespace Domein {
 			}
 		}
 
-		private void CheckDatumEmail(string email) {
+		public static void CheckEmail(string email) {
 			email = email.Trim();
 			if (string.IsNullOrEmpty(email)) throw new EmailExpection("Email mag niet leeg zijn.");
 			try {

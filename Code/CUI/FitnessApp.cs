@@ -295,9 +295,21 @@ namespace CUI {
 					#region |=> Email
 
 					case 2:
-						Utility.Logger.Info($"--- Email ---", true);
 
-						email = Utility.AskUser.ReadInput(DefaultInfoBackgroundPrintLineColor, Utility.SelectPrefix);
+						bool isEmailOk;
+						do {
+							try {
+								Utility.Logger.Info($"--- Email ---", true);
+								email = Utility.AskUser.ReadInput(DefaultInfoBackgroundPrintLineColor, Utility.SelectPrefix);
+								Klant.CheckEmail(email);
+								isEmailOk = true;
+							} catch (EmailExpection error) {
+								Console.Clear();
+								Utility.Logger.Info(error.Message, true);
+								isEmailOk = false;
+							}
+						} while (!isEmailOk);
+
 						EmailOk = true;
 
 						SchuifIndexPositieOp();
@@ -549,9 +561,7 @@ namespace CUI {
 
 		#region GeefKlantReservaties()
 
-		public List<string> GeefKlantReservaties() => _domeinController.GeefKlantReservaties()
-																				.Select(k => k.ToString())
-																				.ToList();
+		public List<string> GeefKlantReservaties() => _domeinController.GeefKlantReservaties();
 
 		#endregion GeefKlantReservaties
 

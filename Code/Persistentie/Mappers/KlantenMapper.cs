@@ -48,7 +48,7 @@ namespace Persistentie {
 							klanten.Add(nieuweInteresseKlant);
 						}
 					}
-				} else throw new KlantenUitDbException("Geen Klanten gevonden.");
+				}
 			} catch (Exception error) {
 				throw new KlantenUitDbException(error.Message);
 			}
