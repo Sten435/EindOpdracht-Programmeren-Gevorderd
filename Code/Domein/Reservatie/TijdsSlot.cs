@@ -23,9 +23,9 @@ namespace Domein {
 		}
 
 		private void ControlleerTijd(DateTime startTijd) {
-			if (SlotTijdUur == -1) throw new ConfigException("Het SlotTijdUur is nog niet correct ingesteld.");
-			if (LowerBoundUurReservatie == -1) throw new ConfigException("Het LowerBoundUurReservatie is nog niet correct ingesteld.");
-			if (UpperBoundUurReservatie == -1) throw new ConfigException("Het UpperBoundUurReservatie is nog niet correct ingesteld.");
+			if (SlotTijdUur == -1) throw new ConfigException("(Config) Het SlotTijdUur is nog niet correct ingesteld in de DB.");
+			if (LowerBoundUurReservatie == -1) throw new ConfigException("(Config) Het LowerBoundUurReservatie is nog niet correct ingesteld in de DB.");
+			if (UpperBoundUurReservatie == -1) throw new ConfigException("(Config) Het UpperBoundUurReservatie is nog niet correct ingesteld in de DB.");
 			if (startTijd < DateTime.Now) throw new TijdsSlotException($"Het TijdsSlot: {startTijd.ToString("f")} mag niet in het verleden zijn.");
 		}
 	}

@@ -28,9 +28,11 @@ namespace Persistentie {
 						TijdsSlot.LowerBoundUurReservatie = lowerBoundUurReservatie;
 						TijdsSlot.UpperBoundUurReservatie = upperBoundUurReservatie;
 					}
-				} else throw new NoConfigDataInDbException("Er bevind zich geen config data in de databank.");
-			} catch (Exception err) {
-				throw new SelectConfigFromDbException($"Fout bij select config data uit DB: {err.Message}");
+				} else throw new ConfigException("(Config) Er bevind zich geen config data in de databank.");
+			} catch (SqlException) {
+				throw new ConfigException("(Config) Fout met query naar config Db.");
+			} catch (Exception) {
+				throw new ConfigException("(Config) Fout in config Db.");
 			}
 		}
 	}

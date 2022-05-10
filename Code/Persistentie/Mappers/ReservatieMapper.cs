@@ -38,8 +38,10 @@ namespace Persistentie {
 					}
 				}
 
-			} catch (Exception error) {
-				throw new ReservatieUitDbException(error.Message);
+			} catch (SqlException) {
+				throw new ReservatieException("(Select) Fout met query naar reservatie Db.");
+			} catch (Exception) {
+				throw new ReservatieException("(Select) Fout in reservatie Db.");
 			}
 			return reservaties;
 		}
@@ -54,8 +56,10 @@ namespace Persistentie {
 				command.Parameters.AddWithValue("@ReservatieNummer", reservatie.ReservatieNummer);
 
 				command.ExecuteNonQuery();
-			} catch (Exception error) {
-				throw new ReservatieVerwijderenException(error.Message);
+			} catch (SqlException) {
+				throw new ReservatieException("(Delete) Fout met query naar reservatie Db.");
+			} catch (Exception) {
+				throw new ReservatieException("(Delete) Fout in reservatie Db.");
 			}
 		}
 
@@ -82,9 +86,10 @@ namespace Persistentie {
 				command.ExecuteNonQuery();
 
 				sqlTransaction.Commit();
-			} catch (Exception error) {
-				sqlTransaction.Rollback();
-				throw new ReservatieToeVoegenException(error.Message);
+			} catch (SqlException) {
+				throw new ReservatieException("(Insert) Fout met query naar reservatie Db.");
+			} catch (Exception) {
+				throw new ReservatieException("(Insert) Fout in reservatie Db.");
 			}
 		}
 	}

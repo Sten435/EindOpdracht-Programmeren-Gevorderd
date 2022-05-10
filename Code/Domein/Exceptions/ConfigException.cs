@@ -2,10 +2,7 @@
 using System.Runtime.Serialization;
 
 namespace Domein {
-	public class ConfigException : Exception {
-		public ConfigException() {
-		}
-
+	public class ConfigException : CustomExceptions {
 		public ConfigException(string message) : base(message) {
 		}
 	}

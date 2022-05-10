@@ -2,10 +2,9 @@
 
 namespace Domein {
 
-	public class LoginException : Exception {
+	public class LoginException : CustomExceptions {
 
-		public LoginException() {
-		}
+	
 
 		public LoginException(string message) : base(message) {
 		}

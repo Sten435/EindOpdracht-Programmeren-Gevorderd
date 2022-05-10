@@ -21,7 +21,7 @@ namespace Domein.Tests {
 			_klantenRepo = new KlantenRepository();
 			_toestselRepo = new ToestellenRepository();
 
-			reservatie = new(new Klant(), new TijdsSlot(DateTime.Now.AddHours(5)), new Toestel(1, "Stantoestel"));
+			reservatie = new(int.MaxValue - 2468, new Klant(), new TijdsSlot(DateTime.Now.AddHours(5)), new Toestel(1, "Stantoestel"));
 			klant = new(1, "Stan", "Persoons", "stan.persoons1@student.hogent.be", new List<string>(), DateTime.Now, new Adres(), TypeKlant.Silver);
 		}
 

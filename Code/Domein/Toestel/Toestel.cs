@@ -26,8 +26,8 @@ namespace Domein {
 
 		public static void ControlleerToestelNaam(string toestelType) {
 			string toestelNaam = toestelType.Trim();
-			if (string.IsNullOrEmpty(toestelNaam)) throw new ToestelTypeException("Toesteltype mag niet leeg zijn.");
-			if (toestelType.Length <= 1) throw new ToestelTypeException("Toesteltype moet langer zijn dan 1 letter.");
+			if (string.IsNullOrEmpty(toestelNaam)) throw new ToestelException("Toesteltype mag niet leeg zijn.");
+			if (toestelType.Length <= 1) throw new ToestelException("Toesteltype moet langer zijn dan 1 letter.");
 		}
 
 		private void ControlleerStandaardherstelling() {
@@ -35,7 +35,7 @@ namespace Domein {
 		}
 
 		private void ControlleerIdentificatieCode(int identificatieCode) {
-			if (identificatieCode < 0) throw new IdentificatieCodeException("IdentificatieCode moet groter dan 0 zijn.");
+			if (identificatieCode < 0) throw new ToestelException("IdentificatieCode moet groter dan 0 zijn.");
 		}
 
 		public override bool Equals(object obj) {

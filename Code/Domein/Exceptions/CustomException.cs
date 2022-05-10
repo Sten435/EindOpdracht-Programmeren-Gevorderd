@@ -5,11 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Domein {
-	public class ToestelException : Exception {
-		public ToestelException() {
-
-		}
-		public ToestelException(string message) : base(message) {
+	public class CustomExceptions : Exception {
+		public CustomExceptions(string message) : base(message) {
 		}
 	}
 }

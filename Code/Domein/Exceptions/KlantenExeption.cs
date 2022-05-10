@@ -2,9 +2,8 @@
 using System.Runtime.Serialization;
 
 namespace Domein {
-	internal class KlantenExeption : Exception {
-		public KlantenExeption() {
-		}
+	public class KlantenExeption : CustomExceptions {
+	
 
 		public KlantenExeption(string message) : base(message) {
 		}

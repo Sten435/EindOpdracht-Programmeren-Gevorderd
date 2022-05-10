@@ -39,8 +39,10 @@ namespace Persistentie {
 						toestellen.Add(toestel);
 					}
 				}
-			} catch (Exception error) {
-				throw new ToestellenUitDbException(error.Message);
+			} catch (SqlException) {
+				throw new ToestelException("(Select) Fout met query naar toestellen Db.");
+			} catch (Exception) {
+				throw new ToestelException("(Select) Fout in toestellen Db.");
 			}
 
 			return toestellen;
@@ -58,8 +60,10 @@ namespace Persistentie {
 				command.Parameters.AddWithValue("@InHerstelling", Toestel.StandaardInherstelling);
 
 				command.ExecuteNonQuery();
-			} catch (Exception error) {
-				throw new ToestellenToeVoegenException(error.Message);
+			} catch (SqlException) {
+				throw new ToestelException("(Insert) Fout met query naar toestellen Db.");
+			} catch (Exception) {
+				throw new ToestelException("(Insert) Fout in toestellen Db.");
 			}
 		}
 
@@ -74,8 +78,10 @@ namespace Persistentie {
 				command.Parameters.AddWithValue("@IdentificatieCode", huidigToestel.IdentificatieCode);
 
 				command.ExecuteNonQuery();
-			} catch (Exception error) {
-				throw new ToestellenVerwijderenException(error.Message);
+			} catch (SqlException) {
+				throw new ToestelException("(Delete) Fout met query naar toestellen Db.");
+			} catch (Exception) {
+				throw new ToestelException("(Delete) Fout in toestellen Db.");
 			}
 		}
 
@@ -90,8 +96,10 @@ namespace Persistentie {
 				command.Parameters.AddWithValue("@ToestelType", huidigToestel.ToestelType);
 
 				command.ExecuteNonQuery();
-			} catch (Exception error) {
-				throw new ToestellenZetNaamExcaption(error.Message);
+			} catch (SqlException) {
+				throw new ToestelException("(Update Naam) Fout met query naar toestellen Db.");
+			} catch (Exception) {
+				throw new ToestelException("(Update Naam) Fout in toestellen Db.");
 			}
 		}
 
@@ -107,8 +115,10 @@ namespace Persistentie {
 				command.Parameters.AddWithValue("@InHerstelling", huidigToestel.InHerstelling);
 
 				command.ExecuteNonQuery();
-			} catch (Exception error) {
-				throw new ToestellenZetInHerstellingException(error.Message);
+			} catch (SqlException) {
+				throw new ToestelException("(Update Herstel) Fout met query naar toestellen Db.");
+			} catch (Exception) {
+				throw new ToestelException("(Update Herstel) Fout in toestellen Db.");
 			}
 		}
 	}

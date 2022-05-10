@@ -40,41 +40,41 @@ namespace Domein {
 		private void CheckKlantenNummer(int? klantenNummer) {
 			if(klantenNummer != null) {
 				string _klantenNummer = klantenNummer.ToString().Trim();
-				if (string.IsNullOrWhiteSpace(_klantenNummer)) throw new KlantenNummerException("KlantenNummer niet leeg zijn.");
-				if (klantenNummer <= 0) throw new KlantenNummerException("Klanten nummer moet groter dan 0 zijn.");
+				if (string.IsNullOrWhiteSpace(_klantenNummer)) throw new KlantenExeption("KlantenNummer niet leeg zijn.");
+				if (klantenNummer <= 0) throw new KlantenExeption("Klanten nummer moet groter dan 0 zijn.");
 			}
 		}
 
 		private void CheckDatumGeboorte(DateTime datum) {
-			if (datum > DateTime.Now) throw new GeboorteDatumException("Geboortedatum mag niet in de toekomst zijn.");
+			if (datum > DateTime.Now) throw new KlantenExeption("Geboortedatum mag niet in de toekomst zijn.");
 		}
 
 		private void CheckVoorNaam(string voorNaam) {
 			voorNaam = voorNaam.Trim();
-			if (string.IsNullOrEmpty(voorNaam)) throw new VoorNaamException("Voornaam mag niet leeg zijn.");
-			if (voorNaam.Length <= 2) throw new VoorNaamException("Voornaam moet meer dan 2 letters bevatten.");
+			if (string.IsNullOrEmpty(voorNaam)) throw new KlantenExeption("Voornaam mag niet leeg zijn.");
+			if (voorNaam.Length <= 2) throw new KlantenExeption("Voornaam moet meer dan 2 letters bevatten.");
 			foreach (char letter in voorNaam.ToCharArray()) {
-				if (char.IsNumber(letter)) throw new VoorNaamException("Voornaam mag geen enkel cijfer bevatten.");
+				if (char.IsNumber(letter)) throw new KlantenExeption("Voornaam mag geen enkel cijfer bevatten.");
 			}
 		}
 
 		private void CheckAchterNaam(string achterNaam) {
 			achterNaam = achterNaam.Trim();
-			if (string.IsNullOrEmpty(achterNaam)) throw new AchterNaamExpection("Achternaam mag niet leeg zijn.");
-			if (achterNaam.Length <= 1) throw new AchterNaamExpection("Achternaam moet meer dan 1 letter bevatten.");
+			if (string.IsNullOrEmpty(achterNaam)) throw new KlantenExeption("Achternaam mag niet leeg zijn.");
+			if (achterNaam.Length <= 1) throw new KlantenExeption("Achternaam moet meer dan 1 letter bevatten.");
 			foreach (char letter in achterNaam.ToCharArray()) {
-				if (char.IsNumber(letter)) throw new AchterNaamExpection("Achternaam mag geen enkel cijfer bevatten.");
+				if (char.IsNumber(letter)) throw new KlantenExeption("Achternaam mag geen enkel cijfer bevatten.");
 			}
 		}
 
 		public static void CheckEmail(string email) {
 			email = email.Trim();
-			if (string.IsNullOrEmpty(email)) throw new EmailExpection("Email mag niet leeg zijn.");
+			if (string.IsNullOrEmpty(email)) throw new KlantenExeption("Email mag niet leeg zijn.");
 			try {
 				var addr = new System.Net.Mail.MailAddress(email);
-				if (addr.Address != email) throw new EmailExpection("Email is niet toegelaten.");
+				if (addr.Address != email) throw new KlantenExeption("Email is niet toegelaten.");
 			} catch {
-				throw new EmailExpection("Email is niet toegelaten.");
+				throw new KlantenExeption("Email is niet toegelaten.");
 			}
 		}
 

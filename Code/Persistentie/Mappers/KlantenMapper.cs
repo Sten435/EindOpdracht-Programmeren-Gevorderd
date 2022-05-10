@@ -49,8 +49,10 @@ namespace Persistentie {
 						}
 					}
 				}
-			} catch (Exception error) {
-				throw new KlantenUitDbException(error.Message);
+			} catch (SqlException) {
+				throw new KlantenExeption("(Select) Fout met query naar klanten Db.");
+			} catch (Exception) {
+				throw new KlantenExeption("(Select) Fout in klanten Db.");
 			}
 
 			return klanten;
@@ -95,9 +97,10 @@ namespace Persistentie {
 				});
 
 				sqlTransaction.Commit();
-			} catch (Exception err) {
-				sqlTransaction.Rollback();
-				throw new KlantToevoegenDbException(err.Message);
+			} catch (SqlException) {
+				throw new KlantenExeption("(Insert) Fout met query naar klanten Db.");
+			} catch (Exception) {
+				throw new KlantenExeption("(Insert) Fout in klanten Db.");
 			}
 		}
 	}
