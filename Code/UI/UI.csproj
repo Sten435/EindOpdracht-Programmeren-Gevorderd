@@ -5,6 +5,7 @@
     <TargetFramework>net5.0-windows</TargetFramework>
     <Nullable>disable</Nullable>
     <UseWPF>true</UseWPF>
+    <StartupObject>UI.App</StartupObject>
   </PropertyGroup>
 
   <ItemGroup>

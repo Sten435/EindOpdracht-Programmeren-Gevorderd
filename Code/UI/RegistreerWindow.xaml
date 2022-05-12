@@ -5,8 +5,123 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:UI"
         mc:Ignorable="d"
-        Title="Registreer" Height="450" Width="800" WindowStartupLocation="CenterScreen">
+        Title="Registreer" Height="Auto" Padding="40" Width="800" WindowStartupLocation="CenterScreen">
     <Grid>
-        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Image Source="/Assets/Images/Login.png" Grid.Column="0" Margin="20"/>
+        <StackPanel Grid.Column="1" Background="#F5F5F5">
+            <Image Source="/Assets/Images/Logo.png" Height="40" Width="40" Margin="0 10 0 0"/>
+            <TextBlock Text="Fitnessa" FontWeight="Bold" FontSize="24" TextDecorations="Underline" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#FFED5959" Margin="0 4 0 0"/>
+            <StackPanel Margin="20 25 20 0" Orientation="Horizontal">
+                <Image Source="/Assets/Images/Email.png" Width="30" Margin="0 5 5 0"/>
+                <Border BorderThickness="0,0,0,1" BorderBrush="#CFCECF">
+                    <TextBox FontSize="20" Text="Email" Foreground="#CFCECF" Background="Transparent" BorderBrush="Transparent" Padding="0 4 0 0">
+                        <TextBox.Style>
+                            <Style TargetType="TextBox">
+                                <Style.Triggers>
+                                    <Trigger Property ="IsMouseOver" Value="True">
+                                        <Setter Property= "Background" Value="#3B3B3B"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBox.Style>
+                    </TextBox>
+                </Border>
+            </StackPanel>
+            <StackPanel Margin="20 25 20 0" Orientation="Horizontal">
+                <Image Source="/Assets/Images/Email.png" Width="30" Margin="0 5 5 0"/>
+                <Border BorderThickness="0,0,0,1" BorderBrush="#CFCECF">
+                    <TextBox FontSize="20" Text="Email" Foreground="#CFCECF" Background="Transparent" BorderBrush="Transparent" Padding="0 4 0 0">
+                        <TextBox.Style>
+                            <Style TargetType="TextBox">
+                                <Style.Triggers>
+                                    <Trigger Property ="IsMouseOver" Value="True">
+                                        <Setter Property= "Background" Value="#3B3B3B"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBox.Style>
+                    </TextBox>
+                </Border>
+            </StackPanel>
+            <StackPanel Margin="20 25 20 0" Orientation="Horizontal">
+                <Image Source="/Assets/Images/Email.png" Width="30" Margin="0 5 5 0"/>
+                <Border BorderThickness="0,0,0,1" BorderBrush="#CFCECF">
+                    <TextBox FontSize="20" Text="Email" Foreground="#CFCECF" Background="Transparent" BorderBrush="Transparent" Padding="0 4 0 0">
+                        <TextBox.Style>
+                            <Style TargetType="TextBox">
+                                <Style.Triggers>
+                                    <Trigger Property ="IsMouseOver" Value="True">
+                                        <Setter Property= "Background" Value="#3B3B3B"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBox.Style>
+                    </TextBox>
+                </Border>
+            </StackPanel>
+            <StackPanel Margin="20 25 20 0" Orientation="Horizontal">
+                <Image Source="/Assets/Images/Email.png" Width="30" Margin="0 5 5 0"/>
+                <Border BorderThickness="0,0,0,1" BorderBrush="#CFCECF">
+                    <TextBox FontSize="20" Text="Email" Foreground="#CFCECF" Background="Transparent" BorderBrush="Transparent" Padding="0 4 0 0">
+                        <TextBox.Style>
+                            <Style TargetType="TextBox">
+                                <Style.Triggers>
+                                    <Trigger Property ="IsMouseOver" Value="True">
+                                        <Setter Property= "Background" Value="#3B3B3B"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBox.Style>
+                    </TextBox>
+                </Border>
+            </StackPanel>
+            <StackPanel Margin="20 25 20 0" Orientation="Horizontal">
+                <Image Source="/Assets/Images/Email.png" Width="30" Margin="0 5 5 0"/>
+                <Border BorderThickness="0,0,0,1" BorderBrush="#CFCECF">
+                    <TextBox FontSize="20" Text="Email" Foreground="#CFCECF" Background="Transparent" BorderBrush="Transparent" Padding="0 4 0 0">
+                        <TextBox.Style>
+                            <Style TargetType="TextBox">
+                                <Style.Triggers>
+                                    <Trigger Property ="IsMouseOver" Value="True">
+                                        <Setter Property= "Background" Value="#3B3B3B"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBox.Style>
+                    </TextBox>
+                </Border>
+            </StackPanel>
+            <Button Height="45" Width="150" MinWidth="100" FontSize="24" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" Background="#FFED5959" Foreground="GhostWhite" BorderBrush="Transparent" Padding="0 -4 0 0" Margin="20 30 20 0">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="22"/>
+                    </Style>
+                </Button.Resources>
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Style.Triggers>
+                            <Trigger Property ="IsMouseOver" Value="True">
+                                <Setter Property= "Background" Value="#FFED5959"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+                <Label Content="Registreer" Foreground="White">
+                    <Label.Effect>
+                        <DropShadowEffect
+                      ShadowDepth="4"
+                      Direction="330"
+                      Color="Black"
+                      Opacity="0.1"
+                     BlurRadius="4"/>
+                    </Label.Effect>
+                </Label>
+            </Button>
+            <Button Content="Login" FontSize="16" FontWeight="Bold" HorizontalAlignment="Center" Foreground="#FF757273" Background="Transparent"  BorderBrush="Transparent" FontStyle="Italic" Margin="0 10 0 0"/>
+        </StackPanel>
     </Grid>
 </Window>
