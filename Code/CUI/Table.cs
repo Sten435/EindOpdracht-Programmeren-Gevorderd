@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace CUI {
+
 	public class Table {
 		private const string TopLeftJoint = "┌";
 		private const string TopRightJoint = "┐";

@@ -1,11 +1,8 @@
 ﻿using Domein;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Persistentie {
+
 	public class ReservatieRepository : IReservatieRepository {
 
 		public List<Reservatie> GeefAlleReservaties(bool metVerwijderedeToestellen = false) => ReservatieMapper.GeefAlleReservaties(metVerwijderedeToestellen);

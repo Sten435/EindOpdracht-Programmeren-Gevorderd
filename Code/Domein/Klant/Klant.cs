@@ -38,7 +38,7 @@ namespace Domein {
 		}
 
 		private void CheckKlantenNummer(int? klantenNummer) {
-			if(klantenNummer != null) {
+			if (klantenNummer != null) {
 				string _klantenNummer = klantenNummer.ToString().Trim();
 				if (string.IsNullOrWhiteSpace(_klantenNummer)) throw new KlantenExeption("KlantenNummer niet leeg zijn.");
 				if (klantenNummer <= 0) throw new KlantenExeption("Klanten nummer moet groter dan 0 zijn.");
@@ -69,12 +69,12 @@ namespace Domein {
 
 		public static void CheckEmail(string email) {
 			email = email.Trim();
-			if (string.IsNullOrEmpty(email)) throw new KlantenExeption("Email mag niet leeg zijn.");
+			if (string.IsNullOrEmpty(email)) throw new EmailExpection("Email mag niet leeg zijn.");
 			try {
 				var addr = new System.Net.Mail.MailAddress(email);
-				if (addr.Address != email) throw new KlantenExeption("Email is niet toegelaten.");
+				if (addr.Address != email) throw new EmailExpection("Email is niet toegelaten.");
 			} catch {
-				throw new KlantenExeption("Email is niet toegelaten.");
+				throw new EmailExpection("Email is niet toegelaten.");
 			}
 		}
 

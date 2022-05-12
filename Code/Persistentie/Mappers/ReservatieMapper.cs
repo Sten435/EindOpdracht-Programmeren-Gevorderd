@@ -6,6 +6,7 @@ using System.Data.SqlClient;
 namespace Persistentie {
 
 	public static class ReservatieMapper {
+
 		public static List<Reservatie> GeefAlleReservaties(bool metVerwijderedeToestellen = false) {
 			List<Reservatie> reservaties = new();
 
@@ -29,7 +30,7 @@ namespace Persistentie {
 						Klant klant = KlantenMapper.GeefAlleKlanten().Find(klant => klant.KlantenNummer == klantenNummer);
 						List<Toestel> toestellen = ToestellenMapper.GeefToestellen(metVerwijderedeToestellen);
 						Toestel toestel = ToestellenMapper.GeefToestellen(metVerwijderedeToestellen).Find(toestel => toestel.IdentificatieCode == toestelNummer);
-						if(toestel != null) {
+						if (toestel != null) {
 							TijdsSlot tijdsSlot = new(startTijd, eindTijd);
 
 							reservatie = new(reservatieNummer, klant, tijdsSlot, toestel);
@@ -37,7 +38,6 @@ namespace Persistentie {
 						}
 					}
 				}
-
 			} catch (SqlException) {
 				throw new ReservatieException("(Select) Fout met query naar reservatie Db.");
 			} catch (Exception) {

@@ -1,12 +1,10 @@
 ﻿using Domein;
-using Persistentie;
 using System;
 using System.Collections.Generic;
 
 namespace CUI {
 
 	public class KlantProgram {
-
 		private static DomeinController domeinController;
 		private static FitnessApp fitnessApp;
 

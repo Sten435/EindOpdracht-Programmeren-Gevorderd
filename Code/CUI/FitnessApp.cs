@@ -12,12 +12,15 @@ namespace CUI {
 		}
 
 		#region Private Fields
+
 		private readonly DomeinController _domeinController;
 		private const char _requiredCharacter = '#';
 		private const int _maximumDagenReserverenToekomst = 7;
+
 		#endregion Private Fields
 
 		#region Public Properties
+
 		public static ConsoleColor DefaultReadLineColor { get => ConsoleColor.Cyan; }
 
 		public static ConsoleColor DefaultInfoBackgroundPrintLineColor { get => ConsoleColor.DarkYellow; }
@@ -64,7 +67,7 @@ namespace CUI {
 			_domeinController.VoegNieuwToestelToe(naam.Trim());
 		}
 
-		#endregion VoegToestelToe
+		#endregion VoegToestelToe()
 
 		#region VerwijderToestel()
 
@@ -134,6 +137,7 @@ namespace CUI {
 		#endregion ToonAlleReservaties()
 
 		#region ToonAlleToestellen()
+
 		public void ToonAlleToestellen() {
 			ResetPositionIndex();
 			Table table = new();
@@ -216,6 +220,7 @@ namespace CUI {
 			} while (!gaTerug);
 			SelectedIndex = 3;
 		}
+
 		#endregion ToonAlleToestellen()
 
 		#region RegistreerKlant(bool isBeheerder)
@@ -557,13 +562,13 @@ namespace CUI {
 			AssignOudePositie();
 		}
 
-		#endregion ToonKlantReservaties
+		#endregion ToonKlantReservaties()
 
 		#region GeefKlantReservaties()
 
 		public List<string> GeefKlantReservaties() => _domeinController.GeefKlantReservaties();
 
-		#endregion GeefKlantReservaties
+		#endregion GeefKlantReservaties()
 
 		#region VerwijderReservatie()
 
@@ -590,7 +595,6 @@ namespace CUI {
 					int selectedIndex = Utility.OptieLijstConroller(optieLijst, "Druk op [ ▲ | ▼ ] om de dag te selecteren\nDruk op [Enter] om te verwijderen\n\n", metPijl: false, metEinde: true);
 					if (selectedIndex == optieLijst.Count - 1) gaTerug = true;
 					else {
-
 						int reservatieId = _domeinController.GeefReservatieIdOpIndex(selectedIndex);
 
 						table.Clear();
@@ -622,7 +626,7 @@ namespace CUI {
 			AssignOudePositie();
 		}
 
-		#endregion VerwijderReservatie(klant klant)
+		#endregion VerwijderReservatie()
 
 		#region Login()
 
@@ -639,8 +643,10 @@ namespace CUI {
 		#endregion Login()
 
 		#region Logout()
+
 		public void Logout() => _domeinController.Logout();
-		#endregion
+
+		#endregion Logout()
 
 		#region ToonKlantDetails()
 
@@ -674,7 +680,7 @@ namespace CUI {
 			AssignOudePositie();
 		}
 
-		#endregion
+		#endregion ToonAlleKlanten()
 
 		#region RegistreerToestel()
 
@@ -736,7 +742,6 @@ namespace CUI {
 				(beschikbareUren, kanNogReservaren) = _domeinController.GeefBeschikbareUrenOpDatum(dag, toestelNaam);
 
 				if (beschikbareUren.Count == 0) {
-
 					beschikbareUren.Clear();
 					Console.SetCursorPosition(0, Console.CursorTop);
 					Utility.Logger.Info(new string(' ', Console.WindowWidth), newLine: false, metAchtergrond: false);

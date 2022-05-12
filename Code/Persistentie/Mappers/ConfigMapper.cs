@@ -3,7 +3,9 @@ using System;
 using System.Data.SqlClient;
 
 namespace Persistentie {
+
 	public class ConfigMapper {
+
 		public void LoadConfig() {
 			//Laad Config Table en zet alle statiche propperties die aanpasbaar zijn door de beheerder gelijk.
 			//TijdsSlot.SlotTijdUur = SELECT SlotTijdUur FROM Config;

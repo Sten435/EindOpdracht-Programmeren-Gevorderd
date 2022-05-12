@@ -1,12 +1,9 @@
 ﻿using Domein;
 using Persistentie;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CUI {
+
 	public class InitializeKlant {
 		private static IKlantenRepository _klantenRepository;
 		private static IReservatieRepository _reservatieRepository;
@@ -15,7 +12,7 @@ namespace CUI {
 
 		private static DomeinController _domeinController;
 
-		static void Main(string[] args) {
+		private static void Main(string[] args) {
 			do {
 				try {
 					_klantenRepository = new KlantenRepository();
@@ -27,6 +24,8 @@ namespace CUI {
 
 					new KlantProgram(_domeinController).Start();
 
+				} catch (CustomExceptions error) {
+					Utility.Logger.Error(error, clearConsole: true);
 				} catch (NullReferenceException error) {
 					Utility.Logger.Error($"Onbekende fout <001> (Contacteer een beheerder): {error}", clearConsole: true);
 				} catch (ArgumentOutOfRangeException error) {

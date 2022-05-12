@@ -1,12 +1,9 @@
 ﻿using Domein;
 using Persistentie;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CUI {
+
 	public class InitializeBeheerder {
 		private static IKlantenRepository _klantenRepository;
 		private static IReservatieRepository _reservatieRepository;
@@ -15,7 +12,7 @@ namespace CUI {
 
 		private static DomeinController _domeinController;
 
-		static void Main(string[] args) {
+		private static void Main(string[] args) {
 			do {
 				try {
 					_klantenRepository = new KlantenRepository();
@@ -26,7 +23,6 @@ namespace CUI {
 					_domeinController = new(_reservatieRepository, _klantenRepository, _toestelRepository, _configRepository);
 
 					new BeheerderProgram(_domeinController).Start();
-
 				} catch (CustomExceptions error) {
 					Utility.Logger.Error(error, clearConsole: true);
 				} catch (NullReferenceException error) {

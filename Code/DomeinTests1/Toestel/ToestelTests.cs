@@ -1,20 +1,15 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Domein;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Domein.Tests {
+
 	[TestClass()]
 	public class ToestelTests {
-		Toestel toestel;
-		Toestel toestelCopy;
+		private Toestel toestel;
+		private Toestel toestelCopy;
 
 		[TestInitialize()]
 		public void Initialize() {
-			toestel = new("Fiets");
+			toestel = new(999996, "Fiets");
 			toestelCopy = toestel;
 		}
 
@@ -36,8 +31,8 @@ namespace Domein.Tests {
 
 		[TestMethod()]
 		public void ToestelNaamTest() {
-			Assert.ThrowsException<ToestelTypeException>(() => new Toestel(1, "S"));
-			Assert.ThrowsException<ToestelTypeException>(() => new Toestel(1, ""));
+			Assert.ThrowsException<ToestelException>(() => new Toestel(1, "S"));
+			Assert.ThrowsException<ToestelException>(() => new Toestel(1, ""));
 		}
 	}
 }

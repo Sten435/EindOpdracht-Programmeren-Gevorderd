@@ -1,14 +1,8 @@
 ﻿using Domein;
-using Microsoft.VisualBasic.FileIO;
-using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Persistentie {
+
 	public class ToestellenRepository : IToestelRepository {
 
 		public List<Toestel> GeefAlleToestellen() => ToestellenMapper.GeefToestellen();

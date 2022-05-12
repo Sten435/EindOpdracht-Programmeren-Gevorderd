@@ -13,6 +13,7 @@ namespace Domein {
 		void VerwijderToestel(Toestel toestel);
 
 		void UpdateToestelNaamOpId(int toestelId, string toestelNaam);
+
 		bool GeefToestelHerstelStatusOpId(int toestelId);
 	}
 }

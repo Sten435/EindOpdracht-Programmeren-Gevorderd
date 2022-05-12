@@ -1,0 +1,54 @@
+﻿<Window x:Class="UI.LoginWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:UI"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800" ResizeMode="CanResize" WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Image Source="/Assets/Images/Login.png" Grid.Column="0" Margin="20"/>
+        <StackPanel Grid.Column="1" Background="#F5F5F5">
+            <Image Source="/Assets/Images/Logo.png" Height="80" Width="80" Margin="0 40 0 0"/>
+            <TextBlock FontSize="16" HorizontalAlignment="Center" Margin="0 14 0 0">Welcome to <TextBlock Text="Fitnessa" FontWeight="Bold" TextDecorations="Underline" Foreground="#FFED5959" /></TextBlock>
+            <DockPanel Margin="20 25 20 0">
+                <Image Source="/Assets/Images/Email.png" Width="30" Margin="0 5 5 0"/>
+                <Border BorderThickness="0,0,0,1" BorderBrush="#CFCECF">
+                    <TextBox x:Name="emailTextBox" FontSize="20" Text="Email" Foreground="#CFCECF" Background="Transparent" BorderBrush="Transparent" Padding="0 4 0 0">
+                        <TextBox.Style>
+                            <Style TargetType="TextBox">
+                                <Style.Triggers>
+                                    <Trigger Property ="IsMouseOver" Value="True">
+                                        <Setter Property= "Background" Value="#3B3B3B"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBox.Style>
+                    </TextBox>
+                </Border>
+            </DockPanel>
+            <Button Height="45" Width="150" MinWidth="100" Content="Log In" FontSize="24" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" Background="#FFED5959" Foreground="GhostWhite" BorderBrush="Transparent" Padding="0 -4 0 0" Margin="20 30 20 0" Click="LoginButton">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="22"/>
+                    </Style>
+                </Button.Resources>
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Style.Triggers>
+                            <Trigger Property ="IsMouseOver" Value="True">
+                                <Setter Property= "Background" Value="#FFED5959"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+            <TextBlock FontSize="16" Text="Geen account?" HorizontalAlignment="Center" Margin="0 30 0 0"/>
+            <Button FontSize="16" FontWeight="Bold" HorizontalAlignment="Center" Foreground="#FF757273" Background="Transparent"  BorderBrush="Transparent" Click="OpenRegistreerWindow" FontStyle="Italic">Registreer Hier</Button>
+        </StackPanel>
+    </Grid>
+</Window>

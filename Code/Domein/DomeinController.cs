@@ -48,6 +48,7 @@ namespace Domein {
 																		.Select(r => r.Toestel)
 																		.Select(t => t.ToString())
 																		.ToList();
+
 		/// <summary>
 		/// Geef alle klanten reservaties die gelijk zijn aan een bepaald klantid.
 		/// </summary>
@@ -96,6 +97,7 @@ namespace Domein {
 		public string GeefReservatieStringOpId(int reservatieId) => _reservatieRepo.GeefAlleReservaties()
 																				.First(r => r.ReservatieNummer == reservatieId)
 																				.ToString();
+
 		#endregion Reservatie
 
 		#region TijdsSlot
@@ -201,6 +203,7 @@ namespace Domein {
 		/// </summary>
 		/// <param name="klant"></param>
 		public void RegistreerKlant(string voornaam, string achternaam, string email, DateTime geboorteDatum, List<string> interesses, string typeKlant, string straat, string plaats, string huisNummer, int postCode) {
+			if (_klantenRepo.GeefAlleKlanten().Any(kl => kl.Email == email.ToLower())) throw new KlantenExeption("Email adres bestaat al.");
 
 			TypeKlant _typeKlant = typeKlant switch {
 				"Bronze" => TypeKlant.Bronze,
@@ -280,6 +283,11 @@ namespace Domein {
 		/// <param name="naam"></param>
 		public void VoegNieuwToestelToe(string naam) => _toestselRepo.VoegToestelToe(naam);
 
+		/// <summary>
+		/// Update Toestel naam op index.
+		/// </summary>
+		/// <param name="toestelIndex">Toestelindex</param>
+		/// <param name="toestelNaam">Naam van toestel</param>
 		public void UpdateToestelNaamOpIndex(int toestelIndex, string toestelNaam) {
 			int toestelId = GeefToestelIdOpIndex(toestelIndex);
 			_toestselRepo.UpdateToestelNaamOpId(toestelId, toestelNaam);

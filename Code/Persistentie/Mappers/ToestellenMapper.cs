@@ -1,10 +1,7 @@
 ﻿using Domein;
-using Microsoft.VisualBasic.FileIO;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.IO;
-using System.Linq;
 
 namespace Persistentie {
 
@@ -23,7 +20,6 @@ namespace Persistentie {
 					command = new("SELECT * FROM Toestellen WHERE Verwijderd = 0;", connection);
 				else
 					command = new("SELECT * FROM Toestellen WHERE Verwijderd = 1;", connection);
-
 
 				using SqlDataReader dataReader = command.ExecuteReader();
 
