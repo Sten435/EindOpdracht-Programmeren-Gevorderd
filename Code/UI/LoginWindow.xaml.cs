@@ -19,15 +19,18 @@ namespace UI {
 	/// Interaction logic for MainWindow.xaml
 	/// </summary>
 	public partial class LoginWindow : Window {
-
 		private static DomeinController domeinController;
+
+		private string _emailTextBoxPlaceholder = "Email";
+		public string EmailTextBoxPlaceholder { get => _emailTextBoxPlaceholder; set { _emailTextBoxPlaceholder = value; } }
+
 		public LoginWindow(DomeinController _domeinController) {
 			domeinController = _domeinController;
 			InitializeComponent();
 		}
 
 		private void OpenRegistreerWindow(object sender, RoutedEventArgs e) {
-			RegistreerWindow registreerWindow = new RegistreerWindow();
+			RegistreerWindow registreerWindow = new RegistreerWindow(domeinController);
 			registreerWindow.Show();
 			this.Close();
 		}
@@ -36,7 +39,23 @@ namespace UI {
 			string email = emailTextBox.Text.ToLower().Trim();
 			domeinController.Login(email);
 
-			MessageBox.Show(domeinController.KlantOmschrijving);
+			if (domeinController.LoggedIn) {
+				DashbordWindow dashbordWindow = new DashbordWindow(domeinController);
+				dashbordWindow.Title = "Dashbord";
+				dashbordWindow.Show();
+				this.Close();
+			}
+		}
+
+		private void EmailTextBox_GotFocus(object sender, RoutedEventArgs e) {
+			SetTextBoxPlaceholder(emailTextBox, EmailTextBoxPlaceholder);
+		}
+
+		private void SetTextBoxPlaceholder(TextBox textBox, string value) {
+			if (textBox.Text.Trim() == string.Empty)
+				textBox.Text = value;
+			else if (textBox.Text.Trim().ToLower() == value.ToLower())
+				textBox.Text = string.Empty;
 		}
 	}
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Domein {
 
@@ -117,22 +118,24 @@ namespace Domein {
 		/// <param name="dag">Dag van reservatie</param>
 		/// <param name="toestelId">Toestel die je met de reservatie wil koppelen</param>
 		/// <returns>List int waarbij elke daarvan een uur voorsteld, bool steld voor of de klant nog kan reservaren op die datetime</returns>
-		public (List<int>, bool) GeefBeschikbareUrenOpDatum(DateTime dag, string naam) {
+		public (List<int>,bool) GeefBeschikbareUrenOpDatum(DateTime dag, string naam) {
 			Toestel toestel = GeefRandomToestelOpNaam(naam);
 
-			List<Reservatie> klantReservaties = _reservatieRepo.GeefAlleReservaties().Where(r => r.Klant.KlantenNummer == _klant.KlantenNummer).ToList();
+			List<Reservatie> reservaties = _reservatieRepo.GeefAlleReservaties();
+			List<Reservatie> klantReservaties = reservaties.Where(r => r.Klant.KlantenNummer == _klant.KlantenNummer).ToList();
 			List<Reservatie> klantReservatiesDag = klantReservaties.Where(r => r.TijdsSlot.StartTijd.Day == dag.Day).ToList();
 
 			List<DateTime> klantReservatiesMetGeselecteerdeToestel = klantReservaties.Where(r => r.Toestel.ToestelType == toestel.ToestelType && r.TijdsSlot.StartTijd.Day == dag.Day).Select(t => t.TijdsSlot.StartTijd).ToList();
 			List<DateTime> gereserveerdeTijdSloten = GeefAlleTijdSloten(toestel);
 
-			int beginUur = 8;
-			int eindUur = 22;
+			int beginUur = TijdsSlot.LowerBoundUurReservatie;
+			int eindUur = TijdsSlot.UpperBoundUurReservatie;
 
-			List<int> beschikbareUrenFitness = Enumerable.Range(beginUur, (eindUur - 8) + 1).ToList();
+			List<int> beschikbareUrenFitness = Enumerable.Range(beginUur, (eindUur - beginUur) + 1).ToList();
 			List<int> urenNaFilter = new();
 
-			List<Toestel> beschikbareToestellen = _toestselRepo.GeefAlleToestellen().Where(t => t.ToestelType == toestel.ToestelType && t.InHerstelling == false).ToList();
+			List<Toestel> toestellen = _toestselRepo.GeefAlleToestellen();
+			List<Toestel> beschikbareToestellen = toestellen.Where(t => t.ToestelType == toestel.ToestelType && t.InHerstelling == false).ToList();
 
 			if (klantReservatiesDag.Count == 4) return (urenNaFilter.ToList(), false);
 
@@ -154,6 +157,7 @@ namespace Domein {
 
 				if (tijdsSlot < DateTime.Now) urenNaFilter.Remove(uur);
 			}
+
 			return (urenNaFilter.ToList(), true);
 		}
 

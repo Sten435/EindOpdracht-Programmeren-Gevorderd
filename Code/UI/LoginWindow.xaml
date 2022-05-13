@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:UI"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800" ResizeMode="CanResize" WindowStartupLocation="CenterScreen">
+        Title="MainWindow" Height="450" Width="874" ResizeMode="CanResize" WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*"/>
@@ -18,7 +18,7 @@
             <DockPanel Margin="20 25 20 0">
                 <Image Source="/Assets/Images/Email.png" Width="30" Margin="0 5 5 0"/>
                 <Border BorderThickness="0,0,0,1" BorderBrush="#CFCECF">
-                    <TextBox x:Name="emailTextBox" FontSize="20" Text="Email" Foreground="#CFCECF" Background="Transparent" BorderBrush="Transparent" Padding="0 4 0 0">
+                    <TextBox x:Name="emailTextBox" FontSize="20" Text="{Binding EmailTextBoxPlaceholder, Mode=OneWay}" Foreground="#FF757273" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Padding="0 4 0 0" GotFocus="EmailTextBox_GotFocus" LostFocus="EmailTextBox_GotFocus">
                         <TextBox.Style>
                             <Style TargetType="TextBox">
                                 <Style.Triggers>
@@ -31,7 +31,7 @@
                     </TextBox>
                 </Border>
             </DockPanel>
-            <Button Height="45" Width="150" MinWidth="100" FontSize="24" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" Background="#FFED5959" Foreground="GhostWhite" BorderBrush="Transparent" Padding="0 -4 0 0" Margin="20 30 20 0" Click="LoginButton">
+            <Button Height="45" Width="150" MinWidth="100" FontSize="24" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" Background="#FFED5959" Foreground="GhostWhite" BorderBrush="Transparent"  BorderThickness="0" Padding="0 -4 0 0" Margin="20 30 20 0" Click="LoginButton">
                 <Button.Resources>
                     <Style TargetType="Border">
                         <Setter Property="CornerRadius" Value="22"/>
@@ -58,7 +58,7 @@
                 </Label>
             </Button>
             <TextBlock FontSize="16" Text="Geen account?" HorizontalAlignment="Center" Margin="0 30 0 0"/>
-            <Button FontSize="16" FontWeight="Bold" HorizontalAlignment="Center" Foreground="#FF757273" Background="Transparent"  BorderBrush="Transparent" Click="OpenRegistreerWindow" FontStyle="Italic">Registreer Hier</Button>
+            <Button FontSize="16" FontWeight="Bold" HorizontalAlignment="Center" Foreground="#FF757273" Background="Transparent"  BorderBrush="Transparent"  BorderThickness="0" Click="OpenRegistreerWindow" FontStyle="Italic">Registreer Hier</Button>
         </StackPanel>
     </Grid>
 </Window>

@@ -14,12 +14,15 @@ namespace Persistentie {
 				using SqlConnection connection = new(ConfigRepository.ConnectionString);
 				connection.Open();
 
-				SqlCommand command = new("SELECT * FROM Reservaties r join TijdSloten ts on ts.Reservatie_ReservatieNummer = ReservatieNummer;", connection);
+				SqlCommand command = new("SELECT * FROM Reservaties r join TijdSloten ts on ts.Reservatie_ReservatieNummer = ReservatieNummer ORDER BY ReservatieNummer ASC;", connection);
 
 				Reservatie reservatie;
 
 				using SqlDataReader reader = command.ExecuteReader();
 				if (reader.HasRows) {
+					List<Klant> klanten = KlantenMapper.GeefAlleKlanten();
+					List<Toestel> toestellen = ToestellenMapper.GeefToestellen(metVerwijderedeToestellen);
+
 					while (reader.Read()) {
 						int reservatieNummer = (int)reader["ReservatieNummer"];
 						int klantenNummer = (int)reader["Klant_KlantenNummer"];
@@ -27,9 +30,8 @@ namespace Persistentie {
 						DateTime startTijd = (DateTime)reader["StartTijd"];
 						DateTime eindTijd = (DateTime)reader["EindTijd"];
 
-						Klant klant = KlantenMapper.GeefAlleKlanten().Find(klant => klant.KlantenNummer == klantenNummer);
-						List<Toestel> toestellen = ToestellenMapper.GeefToestellen(metVerwijderedeToestellen);
-						Toestel toestel = ToestellenMapper.GeefToestellen(metVerwijderedeToestellen).Find(toestel => toestel.IdentificatieCode == toestelNummer);
+						Klant klant = klanten.Find(klant => klant.KlantenNummer == klantenNummer);
+						Toestel toestel = toestellen.Find(toestel => toestel.IdentificatieCode == toestelNummer);
 						if (toestel != null) {
 							TijdsSlot tijdsSlot = new(startTijd, eindTijd);
 

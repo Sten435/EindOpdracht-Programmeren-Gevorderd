@@ -5,111 +5,112 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:UI"
         mc:Ignorable="d"
-        Title="Registreer" Height="Auto" Padding="40" Width="800" WindowStartupLocation="CenterScreen">
+        Title="Registreer" Padding="40" WindowStartupLocation="CenterScreen" Icon="/Assets/Images/Logo.png" Width="874" Height="642">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <Image Source="/Assets/Images/Login.png" Grid.Column="0" Margin="20"/>
-        <StackPanel Grid.Column="1" Background="#F5F5F5">
-            <Image Source="/Assets/Images/Logo.png" Height="40" Width="40" Margin="0 10 0 0"/>
+        <Image Source="/Assets/Images/Registreer.png" Grid.Column="0" Margin="20" MinHeight="349.421102333006" Height="330.176943065912"/>
+        <StackPanel Grid.Column="1" Background="#F5F5F5" x:Name="KlantenAside" Visibility="Visible">
+            <Image Source="/Assets/Images/Logo.png" Height="50" Width="50" Margin="0 30 0 0"/>
             <TextBlock Text="Fitnessa" FontWeight="Bold" FontSize="24" TextDecorations="Underline" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#FFED5959" Margin="0 4 0 0"/>
-            <StackPanel Margin="20 25 20 0" Orientation="Horizontal">
+            <DockPanel Margin="20 25 20 0">
+                <Image Source="/Assets/Images/Voornaam.png" Width="30" Margin="0 5 5 0"/>
+                <Border BorderThickness="0,0,0,1" BorderBrush="#CFCECF">
+                    <TextBox x:Name="VoornaamTextBox" FontSize="20" Text="{Binding VoornaamTextBoxPlaceholder, Mode=OneWay}" Foreground="#CFCECF" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Padding="0 4 0 0" GotFocus="VoornaamTextBox_GotFocus" LostFocus="VoornaamTextBox_GotFocus"/>
+                </Border>
+            </DockPanel>
+            <DockPanel Margin="20 25 20 0">
+                <Image Source="/Assets/Images/Achternaam.png" Width="30" Margin="0 5 5 0"/>
+                <Border BorderThickness="0,0,0,1" BorderBrush="#CFCECF">
+                    <TextBox x:Name="AchternaamTextBox" FontSize="20" Text="{Binding AchternaamTextBoxPlaceholder, Mode=OneWay}" Foreground="#CFCECF" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Padding="0 4 0 0" GotFocus="AchternaamTextBox_GotFocus" LostFocus="AchternaamTextBox_GotFocus"/>
+                </Border>
+            </DockPanel>
+            <DockPanel Margin="20 25 20 0">
+                <Image Source="/Assets/Images/Datum.png" Width="30" Margin="0 5 5 0"/>
+                <Border BorderThickness="0,0,0,1" BorderBrush="#CFCECF">
+                    <TextBox x:Name="GeboorteDatumTextBox" FontSize="20" Text="{Binding GeboorteDatumTextBoxPlaceholder, Mode=OneWay}" Foreground="#CFCECF" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Padding="0 4 0 0" GotFocus="AchternaamTextBox_GotFocus" LostFocus="AchternaamTextBox_GotFocus" PreviewTextInput="GeboorteDatumCheck"/>
+                </Border>
+            </DockPanel>
+            <DockPanel Margin="20 25 20 0">
                 <Image Source="/Assets/Images/Email.png" Width="30" Margin="0 5 5 0"/>
                 <Border BorderThickness="0,0,0,1" BorderBrush="#CFCECF">
-                    <TextBox FontSize="20" Text="Email" Foreground="#CFCECF" Background="Transparent" BorderBrush="Transparent" Padding="0 4 0 0">
-                        <TextBox.Style>
-                            <Style TargetType="TextBox">
-                                <Style.Triggers>
-                                    <Trigger Property ="IsMouseOver" Value="True">
-                                        <Setter Property= "Background" Value="#3B3B3B"/>
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBox.Style>
-                    </TextBox>
+                    <TextBox x:Name="EmailTextBox" FontSize="20" Text="{Binding EmailTextBoxPlaceholder, Mode=OneWay}" Foreground="#CFCECF" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Padding="0 4 0 0" GotFocus="EmailTextBox_GotFocus" LostFocus="EmailTextBox_GotFocus"/>
                 </Border>
-            </StackPanel>
-            <StackPanel Margin="20 25 20 0" Orientation="Horizontal">
-                <Image Source="/Assets/Images/Email.png" Width="30" Margin="0 5 5 0"/>
+            </DockPanel>
+            <DockPanel Margin="20 25 20 0">
+                <Image Source="/Assets/Images/Interesses.png" Width="30" Margin="0 5 5 0"/>
                 <Border BorderThickness="0,0,0,1" BorderBrush="#CFCECF">
-                    <TextBox FontSize="20" Text="Email" Foreground="#CFCECF" Background="Transparent" BorderBrush="Transparent" Padding="0 4 0 0">
-                        <TextBox.Style>
-                            <Style TargetType="TextBox">
-                                <Style.Triggers>
-                                    <Trigger Property ="IsMouseOver" Value="True">
-                                        <Setter Property= "Background" Value="#3B3B3B"/>
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBox.Style>
-                    </TextBox>
+                    <ComboBox x:Name="InteresseComboBox" FontSize="20" IsEditable="True" IsReadOnly="True" Text="Interesse" Foreground="Gray" Background="Transparent" BorderBrush="Transparent"  BorderThickness="0" Padding="4 4 0 0">
+                        <ComboBoxItem Content="Loopband"/>
+                        <ComboBoxItem Content="Fiets"/>
+                        <ComboBoxItem Content="Bench"/>
+                        <ComboBoxItem Content="Lopen"/>
+                        <ComboBoxItem Content="Roeien"/>
+                    </ComboBox>
                 </Border>
-            </StackPanel>
-            <StackPanel Margin="20 25 20 0" Orientation="Horizontal">
-                <Image Source="/Assets/Images/Email.png" Width="30" Margin="0 5 5 0"/>
+            </DockPanel>
+            <DockPanel Margin="20 25 20 0">
+                <Image Source="/Assets/Images/Abonnement.png" Width="30" Margin="0 5 5 0"/>
                 <Border BorderThickness="0,0,0,1" BorderBrush="#CFCECF">
-                    <TextBox FontSize="20" Text="Email" Foreground="#CFCECF" Background="Transparent" BorderBrush="Transparent" Padding="0 4 0 0">
-                        <TextBox.Style>
-                            <Style TargetType="TextBox">
-                                <Style.Triggers>
-                                    <Trigger Property ="IsMouseOver" Value="True">
-                                        <Setter Property= "Background" Value="#3B3B3B"/>
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBox.Style>
-                    </TextBox>
+                    <ComboBox x:Name="AbonnementComboBox" FontSize="20" IsEditable="True" IsReadOnly="True" Text="Abonnement" Foreground="Gray" Background="Transparent" BorderBrush="Transparent"  BorderThickness="0" Padding="4 4 0 0">
+                        <ComboBoxItem Content="Bronze"/>
+                        <ComboBoxItem Content="Silver"/>
+                        <ComboBoxItem Content="Gold"/>
+                    </ComboBox>
                 </Border>
-            </StackPanel>
-            <StackPanel Margin="20 25 20 0" Orientation="Horizontal">
-                <Image Source="/Assets/Images/Email.png" Width="30" Margin="0 5 5 0"/>
-                <Border BorderThickness="0,0,0,1" BorderBrush="#CFCECF">
-                    <TextBox FontSize="20" Text="Email" Foreground="#CFCECF" Background="Transparent" BorderBrush="Transparent" Padding="0 4 0 0">
-                        <TextBox.Style>
-                            <Style TargetType="TextBox">
-                                <Style.Triggers>
-                                    <Trigger Property ="IsMouseOver" Value="True">
-                                        <Setter Property= "Background" Value="#3B3B3B"/>
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBox.Style>
-                    </TextBox>
-                </Border>
-            </StackPanel>
-            <StackPanel Margin="20 25 20 0" Orientation="Horizontal">
-                <Image Source="/Assets/Images/Email.png" Width="30" Margin="0 5 5 0"/>
-                <Border BorderThickness="0,0,0,1" BorderBrush="#CFCECF">
-                    <TextBox FontSize="20" Text="Email" Foreground="#CFCECF" Background="Transparent" BorderBrush="Transparent" Padding="0 4 0 0">
-                        <TextBox.Style>
-                            <Style TargetType="TextBox">
-                                <Style.Triggers>
-                                    <Trigger Property ="IsMouseOver" Value="True">
-                                        <Setter Property= "Background" Value="#3B3B3B"/>
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBox.Style>
-                    </TextBox>
-                </Border>
-            </StackPanel>
-            <Button Height="45" Width="150" MinWidth="100" FontSize="24" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" Background="#FFED5959" Foreground="GhostWhite" BorderBrush="Transparent" Padding="0 -4 0 0" Margin="20 30 20 0">
+            </DockPanel>
+            <Button Height="45" Width="150" MinWidth="100" FontSize="24" x:Name="ToonVolgendeVeldenButton" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" Background="#FFED5959" Foreground="GhostWhite" BorderBrush="Transparent"  BorderThickness="0" Padding="0 -4 0 0" Margin="20 30 20 0" Click="ToonVerdereVelden">
                 <Button.Resources>
                     <Style TargetType="Border">
                         <Setter Property="CornerRadius" Value="22"/>
                     </Style>
                 </Button.Resources>
-                <Button.Style>
-                    <Style TargetType="Button">
-                        <Style.Triggers>
-                            <Trigger Property ="IsMouseOver" Value="True">
-                                <Setter Property= "Background" Value="#FFED5959"/>
-                            </Trigger>
-                        </Style.Triggers>
+                <Label Content="Ga Verder" Foreground="White">
+                    <Label.Effect>
+                        <DropShadowEffect
+                      ShadowDepth="4"
+                      Direction="330"
+                      Color="Black"
+                      Opacity="0.1"
+                     BlurRadius="4"/>
+                    </Label.Effect>
+                </Label>
+            </Button>
+            <Button Content="Login" FontSize="16" FontWeight="Bold" HorizontalAlignment="Center" Foreground="#FF757273" Background="Transparent"  BorderBrush="Transparent"  BorderThickness="0" FontStyle="Italic" Margin="0 10 0 0" Click="Button_Click"/>
+        </StackPanel>
+        <StackPanel Grid.Column="1" Background="#F5F5F5" x:Name="AdresAside" Visibility="Collapsed">
+            <DockPanel Margin="20 25 20 0">
+                <Image Source="/Assets/Images/Huisnummer.png" Width="30" Margin="0 7 5 0"/>
+                <Border BorderThickness="0,0,0,1" BorderBrush="#CFCECF">
+                    <TextBox x:Name="HuisnummerTextBox" FontSize="20" Text="{Binding HuisnummerTextBoxPlaceholder, Mode=OneWay}" Foreground="#CFCECF" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Padding="0 4 0 0" GotFocus="HuisnummerTextBox_GotFocus" LostFocus="HuisnummerTextBox_GotFocus"/>
+                </Border>
+            </DockPanel>
+            <DockPanel Margin="20 25 20 0">
+                <Image Source="/Assets/Images/Straat.png" Width="30" Margin="0 6 5 0"/>
+                <Border BorderThickness="0,0,0,1" BorderBrush="#CFCECF">
+                    <TextBox x:Name="StraatnaamTextBox" FontSize="20" Text="{Binding StraatTextBoxPlaceholder, Mode=OneWay}" Foreground="#CFCECF" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Padding="0 4 0 0" GotFocus="StraatTextBox_GotFocus" LostFocus="StraatTextBox_GotFocus"/>
+                </Border>
+            </DockPanel>
+            <DockPanel Margin="20 25 20 0">
+                <Image Source="/Assets/Images/Plaats.png" Width="30" Margin="0 7 5 0"/>
+                <Border BorderThickness="0,0,0,1" BorderBrush="#CFCECF">
+                    <TextBox x:Name="PlaatsTextBox" FontSize="20" Text="{Binding PlaatsTextBoxPlaceholder, Mode=OneWay}" Foreground="#CFCECF" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Padding="0 4 0 0" GotFocus="PlaatsTextBox_GotFocus" LostFocus="PlaatsTextBox_GotFocus"/>
+                </Border>
+            </DockPanel>
+            <DockPanel Margin="20 25 20 0">
+                <Image Source="/Assets/Images/Postcode.png" Width="30" Margin="0 2 5 0"/>
+                <Border BorderThickness="0,0,0,1" BorderBrush="#CFCECF">
+                    <TextBox x:Name="PostcodeTextBox" FontSize="20" Text="{Binding PostcodeTextBoxPlaceholder, Mode=OneWay}" Foreground="#CFCECF" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Padding="0 4 0 0" GotFocus="PostcodeTextBox_GotFocus" LostFocus="PostcodeTextBox_GotFocus" PreviewTextInput="PostCodeCheck"/>
+                </Border>
+            </DockPanel>
+            <Button Height="45" Width="150" MinWidth="100" FontSize="24" x:Name="RegistreerButton" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" Background="#FFED5959" Foreground="GhostWhite" BorderBrush="Transparent" BorderThickness="0" Padding="0 -4 0 0" Margin="20 30 20 0" Click="RegistreerKlant">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="22"/>
                     </Style>
-                </Button.Style>
+                </Button.Resources>
                 <Label Content="Registreer" Foreground="White">
                     <Label.Effect>
                         <DropShadowEffect
@@ -121,7 +122,6 @@
                     </Label.Effect>
                 </Label>
             </Button>
-            <Button Content="Login" FontSize="16" FontWeight="Bold" HorizontalAlignment="Center" Foreground="#FF757273" Background="Transparent"  BorderBrush="Transparent" FontStyle="Italic" Margin="0 10 0 0"/>
         </StackPanel>
     </Grid>
 </Window>

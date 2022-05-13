@@ -9,10 +9,24 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Assets\Images\Abonnement.png" />
+    <None Remove="Assets\Images\Achternaam.png" />
     <None Remove="Assets\Images\Close.png" />
+    <None Remove="Assets\Images\Datum.png" />
     <None Remove="Assets\Images\Email.png" />
+    <None Remove="Assets\Images\Huisnummer.png" />
+    <None Remove="Assets\Images\Interesses.png" />
     <None Remove="Assets\Images\Login.png" />
     <None Remove="Assets\Images\Logo.png" />
+    <None Remove="Assets\Images\Logout.png" />
+    <None Remove="Assets\Images\Plaats.png" />
+    <None Remove="Assets\Images\Postcode.png" />
+    <None Remove="Assets\Images\Registreer.png" />
+    <None Remove="Assets\Images\Reservaties.png" />
+    <None Remove="Assets\Images\Straat.png" />
+    <None Remove="Assets\Images\Tijdslot.png" />
+    <None Remove="Assets\Images\Toestel.png" />
+    <None Remove="Assets\Images\Voornaam.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -21,16 +35,58 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Assets\Images\Abonnement.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Images\Achternaam.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Assets\Images\Close.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Assets\Images\Datum.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Assets\Images\Email.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Images\Huisnummer.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Images\Interesses.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Assets\Images\Login.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Assets\Images\Logo.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Images\Logout.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Images\Plaats.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Images\Postcode.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Images\Registreer.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Images\Reservaties.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Images\Straat.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Images\Tijdslot.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Images\Toestel.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Images\Voornaam.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>

@@ -17,9 +17,9 @@ namespace Persistentie {
 				SqlCommand command;
 
 				if (!metVerwijderedeToestellen)
-					command = new("SELECT * FROM Toestellen WHERE Verwijderd = 0;", connection);
+					command = new("SELECT * FROM Toestellen WHERE Verwijderd = 0 ORDER BY IdentificatieCode ASC;", connection);
 				else
-					command = new("SELECT * FROM Toestellen WHERE Verwijderd = 1;", connection);
+					command = new("SELECT * FROM Toestellen WHERE Verwijderd = 1 ORDER BY IdentificatieCode ASC;", connection);
 
 				using SqlDataReader dataReader = command.ExecuteReader();
 

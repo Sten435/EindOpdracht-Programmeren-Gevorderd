@@ -721,12 +721,10 @@ namespace CUI {
 		#region Functionaliteit TijdsDisplayControl()
 
 		private DateTime TijdsDisplayPicker(string toestelNaam) {
-			int lowerBoundUur = 8;
-			int upperBoundUur = 22;
 
 			DateTime lowerBoundDag = DateTime.Now;
 			DateTime upperBoundDag = DateTime.Now.Date.AddDays(_maximumDagenReserverenToekomst);
-			DateTime dag = new(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, lowerBoundUur, 0, 0);
+			DateTime dag = new(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, TijdsSlot.LowerBoundUurReservatie, 0, 0);
 			DateTime datum;
 
 			List<int> beschikbareUren;
@@ -801,9 +799,9 @@ namespace CUI {
 
 				keyPressed = Console.ReadKey(false).Key;
 
-				if (keyPressed == ConsoleKey.UpArrow && beschikbareUren[_domeinController.UurIndex] < upperBoundUur && beschikbareUren[_domeinController.UurIndex] != beschikbareUren[^1])
+				if (keyPressed == ConsoleKey.UpArrow && beschikbareUren[_domeinController.UurIndex] < TijdsSlot.UpperBoundUurReservatie && beschikbareUren[_domeinController.UurIndex] != beschikbareUren[^1])
 					_domeinController.UurIndex++;
-				else if (keyPressed == ConsoleKey.DownArrow && beschikbareUren[_domeinController.UurIndex] > lowerBoundUur && beschikbareUren[_domeinController.UurIndex] != beschikbareUren[0])
+				else if (keyPressed == ConsoleKey.DownArrow && beschikbareUren[_domeinController.UurIndex] > TijdsSlot.UpperBoundUurReservatie && beschikbareUren[_domeinController.UurIndex] != beschikbareUren[0])
 					_domeinController.UurIndex--;
 			} while (keyPressed != ConsoleKey.Enter);
 			Console.CursorVisible = true;

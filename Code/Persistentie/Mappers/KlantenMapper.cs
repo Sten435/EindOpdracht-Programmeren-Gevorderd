@@ -15,7 +15,7 @@ namespace Persistentie {
 				using SqlConnection connection = new(ConfigRepository.ConnectionString);
 				connection.Open();
 
-				SqlCommand command = new("SELECT KlantenNummer, Voornaam, Achternaam, Email, GeboorteDatum, Abonnement, InteresseNaam, StraatNaam, HuisNummer, Plaats, PostCode from Klanten kl join Interesses it on it.Klant_KlantenNummer = kl.KlantenNummer join Adressen ad on ad.Klant_KlantenNummer = kl.KlantenNummer;", connection);
+				SqlCommand command = new("SELECT KlantenNummer, Voornaam, Achternaam, Email, GeboorteDatum, Abonnement, InteresseNaam, StraatNaam, HuisNummer, Plaats, PostCode from Klanten kl join Interesses it on it.Klant_KlantenNummer = kl.KlantenNummer join Adressen ad on ad.Klant_KlantenNummer = kl.KlantenNummer ORDER BY KlantenNummer ASC;", connection);
 
 				using SqlDataReader dataReader = command.ExecuteReader();
 

@@ -30,6 +30,8 @@ namespace UI {
 			LoginWindow loginWindow = new(_domeinController);
 			loginWindow.Title = "Login";
 			loginWindow.Show();
+			//DashbordWindow dashbordWindowWindow = new(_domeinController);
+			//dashbordWindowWindow.Show();
 		}
 
 		private void LaatsteExceptieKans(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e) {
