@@ -27,6 +27,7 @@ namespace UI {
 		public LoginWindow(DomeinController _domeinController) {
 			domeinController = _domeinController;
 			InitializeComponent();
+			this.DataContext = this;
 		}
 
 		private void OpenRegistreerWindow(object sender, RoutedEventArgs e) {
@@ -42,8 +43,8 @@ namespace UI {
 			if (domeinController.LoggedIn) {
 				DashbordWindow dashbordWindow = new DashbordWindow(domeinController);
 				dashbordWindow.Title = "Dashbord";
-				dashbordWindow.Show();
 				this.Close();
+				dashbordWindow.Show();
 			}
 		}
 

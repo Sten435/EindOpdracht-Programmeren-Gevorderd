@@ -7,14 +7,19 @@ namespace Persistentie {
 
 	public static class ReservatieMapper {
 
-		public static List<Reservatie> GeefAlleReservaties(bool metVerwijderedeToestellen = false) {
+		public static List<Reservatie> GeefAlleReservaties(bool metVerwijderedeToestellen = false, bool vanafVandaag = false) {
 			List<Reservatie> reservaties = new();
 
 			try {
 				using SqlConnection connection = new(ConfigRepository.ConnectionString);
 				connection.Open();
 
-				SqlCommand command = new("SELECT * FROM Reservaties r join TijdSloten ts on ts.Reservatie_ReservatieNummer = ReservatieNummer ORDER BY ReservatieNummer ASC;", connection);
+				SqlCommand command;
+
+				if (vanafVandaag)
+					command = new("SELECT * FROM Reservaties r join TijdSloten ts on ts.Reservatie_ReservatieNummer = ReservatieNummer WHERE DAY(StartTijd) >= DAY(GETDATE()) AND MONTH(StartTijd) >= MONTH(GETDATE()) AND YEAR(StartTijd) >= YEAR(GETDATE()) ORDER BY ReservatieNummer ASC;", connection);
+				else
+					command = new("SELECT * FROM Reservaties r join TijdSloten ts on ts.Reservatie_ReservatieNummer = ReservatieNummer ORDER BY ReservatieNummer ASC;", connection);
 
 				Reservatie reservatie;
 
@@ -46,6 +51,35 @@ namespace Persistentie {
 				throw new ReservatieException("(Select) Fout in reservatie Db.");
 			}
 			return reservaties;
+		}
+
+		public static int? GeefBeschikbaarToestelOpTijdsSlot(DateTime dag, string toestelNaam) {
+			try {
+				using SqlConnection connection = new(ConfigRepository.ConnectionString);
+				connection.Open();
+
+				SqlCommand command = new($"SELECT IdentificatieCode FROM Toestellen WHERE IdentificatieCode NOT IN (SELECT DISTINCT Toestel_IdentificatieCode FROM Reservaties r join TijdSloten ts on ts.Reservatie_ReservatieNummer = ReservatieNummer " +
+					$"WHERE StartTijd = CAST(@dag AS datetime) " +
+					$"OR(StartTijd = CAST(@dag AS datetime) AND DAY(StartTijd) >= DAY(GETDATE()) " +
+					$"AND MONTH(StartTijd) >= MONTH(GETDATE()) " +
+					$"AND YEAR(StartTijd) >= YEAR(GETDATE()))) AND ToestelType = @toestelNaam;", connection);
+
+				command.Parameters.AddWithValue("@dag", dag.ToString("yyyy-MM-dd HH:mm:ss"));
+				command.Parameters.AddWithValue("@toestelNaam", toestelNaam);
+
+				using SqlDataReader reader = command.ExecuteReader();
+
+				if (reader.HasRows) {
+					while (reader.Read()) {
+						return (int)reader["IdentificatieCode"];
+					}
+				}
+			} catch (SqlException) {
+				throw new ReservatieException("(Select) Fout met query naar reservatie Db.");
+			} catch (Exception) {
+				throw new ReservatieException("(Select) Fout in reservatie Db.");
+			}
+			return null;
 		}
 
 		public static void VerwijderReservatie(Reservatie reservatie) {

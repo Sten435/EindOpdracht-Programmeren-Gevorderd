@@ -16,7 +16,7 @@ namespace Domein {
 			ReservatieNummer = reservatieNummer;
 		}
 
-		public override string ToString() => $" Nr: {ReservatieNummer} - {Toestel.ToestelType} - Klant: {Klant.Voornaam} {Klant.Achternaam} - Datum: {TijdsSlot.StartTijd:d} - Tijdslot: {TijdsSlot.StartTijd:t}/uur -> {TijdsSlot.EindTijd:t}/uur ";
+		public override string ToString() => $"{TijdsSlot.StartTijd.ToString("dd/MM/yyyy")} \t\t {TijdsSlot.StartTijd:HH:mm} -> {TijdsSlot.EindTijd:HH:mm} \t\t {Toestel.ToestelType}";
 
 		public override bool Equals(object obj) {
 			return obj is Reservatie reservatie &&

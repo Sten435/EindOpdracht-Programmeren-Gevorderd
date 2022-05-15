@@ -701,9 +701,15 @@ namespace CUI {
 				}
 
 				string naam = _domeinController.GeefBeschikbareToestellen()[selectedIndex];
-				int toestelId = _domeinController.GeefRandomToestelIdOpNaam(naam);
 				tijdsSlotDatum = TijdsDisplayPicker(naam);
-				string reservatieString = _domeinController.VoegReservatieToe(tijdsSlotDatum, toestelId);
+				int? toestelId = _domeinController.GeefEenVrijToestelIdOpNaam(naam, tijdsSlotDatum);
+
+				string reservatieString = "";
+				if (toestelId != null) {
+					reservatieString = _domeinController.VoegReservatieToe(tijdsSlotDatum, (int)toestelId);
+				} else
+					throw new ToestelException("Geen toestel gevonden die vrij is.");
+					
 
 				table.SetHeaders("Reservatie");
 				table.AddRow(reservatieString);

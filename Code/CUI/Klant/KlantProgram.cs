@@ -16,7 +16,7 @@ namespace CUI {
 		public void Start() {
 			do {
 #if DEBUG
-				domeinController.Login("stan.persoons@student.hogent.be");
+				domeinController.Login("24");
 #endif
 
 				Console.ResetColor();

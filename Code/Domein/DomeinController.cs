@@ -108,8 +108,8 @@ namespace Domein {
 		/// </summary>
 		/// <param name="toestel">Toestel van waar je de Datetime's van terug wil.</param>
 		/// <returns>List van DateTime start tijden</returns>
-		private List<DateTime> GeefAlleTijdSloten(Toestel toestel) => _reservatieRepo.GeefAlleReservaties()
-			.Where(rv => rv.Toestel.IdentificatieCode == toestel.IdentificatieCode)
+		private List<DateTime> GeefAlleTijdSloten(string naam) => _reservatieRepo.GeefAlleReservaties()
+			.Where(rv => rv.Toestel.ToestelType.ToLower() == naam.ToLower())
 			.Select(r => r.TijdsSlot.StartTijd).ToList();
 
 		/// <summary>
@@ -118,15 +118,14 @@ namespace Domein {
 		/// <param name="dag">Dag van reservatie</param>
 		/// <param name="toestelId">Toestel die je met de reservatie wil koppelen</param>
 		/// <returns>List int waarbij elke daarvan een uur voorsteld, bool steld voor of de klant nog kan reservaren op die datetime</returns>
-		public (List<int>,bool) GeefBeschikbareUrenOpDatum(DateTime dag, string naam) {
-			Toestel toestel = GeefRandomToestelOpNaam(naam);
+		public (List<int>, bool) GeefBeschikbareUrenOpDatum(DateTime dag, string naam) {
 
-			List<Reservatie> reservaties = _reservatieRepo.GeefAlleReservaties();
+			List<Reservatie> reservaties = _reservatieRepo.GeefAlleReservaties(vanafVandaag: true);
 			List<Reservatie> klantReservaties = reservaties.Where(r => r.Klant.KlantenNummer == _klant.KlantenNummer).ToList();
 			List<Reservatie> klantReservatiesDag = klantReservaties.Where(r => r.TijdsSlot.StartTijd.Day == dag.Day).ToList();
 
-			List<DateTime> klantReservatiesMetGeselecteerdeToestel = klantReservaties.Where(r => r.Toestel.ToestelType == toestel.ToestelType && r.TijdsSlot.StartTijd.Day == dag.Day).Select(t => t.TijdsSlot.StartTijd).ToList();
-			List<DateTime> gereserveerdeTijdSloten = GeefAlleTijdSloten(toestel);
+			List<DateTime> klantReservatiesMetGeselecteerdeToestel = klantReservaties.Where(r => r.Toestel.ToestelType == naam && r.TijdsSlot.StartTijd.Day == dag.Day).Select(t => t.TijdsSlot.StartTijd).ToList();
+			List<DateTime> gereserveerdeTijdSloten = GeefAlleTijdSloten(naam);
 
 			int beginUur = TijdsSlot.LowerBoundUurReservatie;
 			int eindUur = TijdsSlot.UpperBoundUurReservatie;
@@ -135,7 +134,7 @@ namespace Domein {
 			List<int> urenNaFilter = new();
 
 			List<Toestel> toestellen = _toestselRepo.GeefAlleToestellen();
-			List<Toestel> beschikbareToestellen = toestellen.Where(t => t.ToestelType == toestel.ToestelType && t.InHerstelling == false).ToList();
+			List<Toestel> beschikbareToestellen = toestellen.Where(t => t.ToestelType == naam && t.InHerstelling == false).ToList();
 
 			if (klantReservatiesDag.Count == 4) return (urenNaFilter.ToList(), false);
 
@@ -174,8 +173,7 @@ namespace Domein {
 		/// </summary>
 		/// <param name="toestelNaam">ToestelNaam van toestel dat je terug wil.</param>
 		/// <returns>Toestel dat je op toestelNaam meegeeft</returns>
-		public int GeefRandomToestelIdOpNaam(string toestelNaam) => _toestselRepo.GeefAlleToestellen()
-																.Find(t => t.ToestelType == toestelNaam).IdentificatieCode;
+		public int? GeefEenVrijToestelIdOpNaam(string toestelNaam, DateTime tijdsSlot) => _reservatieRepo.GeefBeschikbaarToestelOpTijdsSlot(tijdsSlot, toestelNaam);
 
 		/// <summary>
 		/// Geef toestel op toestelNaam.

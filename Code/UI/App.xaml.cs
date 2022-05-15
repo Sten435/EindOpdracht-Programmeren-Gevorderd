@@ -30,13 +30,11 @@ namespace UI {
 			LoginWindow loginWindow = new(_domeinController);
 			loginWindow.Title = "Login";
 			loginWindow.Show();
-			//DashbordWindow dashbordWindowWindow = new(_domeinController);
-			//dashbordWindowWindow.Show();
 		}
 
 		private void LaatsteExceptieKans(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e) {
 			e.Handled = true;
-			MessageBox.Show(e.Exception.Message);
+			MessageBox.Show(e.Exception.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
 		}
 	}
 }

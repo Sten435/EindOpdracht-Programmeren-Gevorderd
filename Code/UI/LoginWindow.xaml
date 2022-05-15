@@ -3,9 +3,15 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:local="clr-namespace:UI"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="874" ResizeMode="CanResize" WindowStartupLocation="CenterScreen">
+        Title="MainWindow" 
+        Height="450" 
+        Width="874" 
+        FontFamily="{DynamicResource MaterialDesignFont}"
+        ResizeMode="CanResize" 
+        WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*"/>
@@ -18,44 +24,11 @@
             <DockPanel Margin="20 25 20 0">
                 <Image Source="/Assets/Images/Email.png" Width="30" Margin="0 5 5 0"/>
                 <Border BorderThickness="0,0,0,1" BorderBrush="#CFCECF">
-                    <TextBox x:Name="emailTextBox" FontSize="20" Text="{Binding EmailTextBoxPlaceholder, Mode=OneWay}" Foreground="#FF757273" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Padding="0 4 0 0" GotFocus="EmailTextBox_GotFocus" LostFocus="EmailTextBox_GotFocus">
-                        <TextBox.Style>
-                            <Style TargetType="TextBox">
-                                <Style.Triggers>
-                                    <Trigger Property ="IsMouseOver" Value="True">
-                                        <Setter Property= "Background" Value="#3B3B3B"/>
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBox.Style>
+                    <TextBox x:Name="emailTextBox" FontSize="20" Text="{Binding EmailTextBoxPlaceholder, Mode=OneWay}" Foreground="#FF757273" Padding="0 4 0 0" GotFocus="EmailTextBox_GotFocus" LostFocus="EmailTextBox_GotFocus">
                     </TextBox>
                 </Border>
             </DockPanel>
-            <Button Height="45" Width="150" MinWidth="100" FontSize="24" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" Background="#FFED5959" Foreground="GhostWhite" BorderBrush="Transparent"  BorderThickness="0" Padding="0 -4 0 0" Margin="20 30 20 0" Click="LoginButton">
-                <Button.Resources>
-                    <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="22"/>
-                    </Style>
-                </Button.Resources>
-                <Button.Style>
-                    <Style TargetType="Button">
-                        <Style.Triggers>
-                            <Trigger Property ="IsMouseOver" Value="True">
-                                <Setter Property= "Background" Value="#FFED5959"/>
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                </Button.Style>
-                <Label Content="Log In" Foreground="White">
-                    <Label.Effect>
-                        <DropShadowEffect
-                      ShadowDepth="4"
-                      Direction="330"
-                      Color="Black"
-                      Opacity="0.1"
-                     BlurRadius="4"/>
-                    </Label.Effect>
-                </Label>
+            <Button materialDesign:ButtonAssist.CornerRadius="25" Content="Log In" Height="45" Width="150" MinWidth="100" IsDefault="True" FontSize="24" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" Background="#FFED5959" Foreground="GhostWhite" BorderBrush="Transparent"  BorderThickness="0" Margin="20 30 20 0" Click="LoginButton">
             </Button>
             <TextBlock FontSize="16" Text="Geen account?" HorizontalAlignment="Center" Margin="0 30 0 0"/>
             <Button FontSize="16" FontWeight="Bold" HorizontalAlignment="Center" Foreground="#FF757273" Background="Transparent"  BorderBrush="Transparent"  BorderThickness="0" Click="OpenRegistreerWindow" FontStyle="Italic">Registreer Hier</Button>

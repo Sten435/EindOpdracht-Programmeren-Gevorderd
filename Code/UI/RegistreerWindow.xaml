@@ -41,25 +41,21 @@
             </DockPanel>
             <DockPanel Margin="20 25 20 0">
                 <Image Source="/Assets/Images/Interesses.png" Width="30" Margin="0 5 5 0"/>
-                <Border BorderThickness="0,0,0,1" BorderBrush="#CFCECF">
-                    <ComboBox x:Name="InteresseComboBox" FontSize="20" IsEditable="True" IsReadOnly="True" Text="Interesse" Foreground="Gray" Background="Transparent" BorderBrush="Transparent"  BorderThickness="0" Padding="4 4 0 0">
-                        <ComboBoxItem Content="Loopband"/>
-                        <ComboBoxItem Content="Fiets"/>
-                        <ComboBoxItem Content="Bench"/>
-                        <ComboBoxItem Content="Lopen"/>
-                        <ComboBoxItem Content="Roeien"/>
-                    </ComboBox>
-                </Border>
+                <ComboBox x:Name="InteresseComboBox" FontSize="20" Padding="4 4 0 0" IsTextSearchEnabled="False" Height="30" >
+                    <ComboBoxItem Content="Loopband"/>
+                    <ComboBoxItem Content="Fiets"/>
+                    <ComboBoxItem Content="Bench"/>
+                    <ComboBoxItem Content="Lopen"/>
+                    <ComboBoxItem Content="Roeien"/>
+                </ComboBox>
             </DockPanel>
             <DockPanel Margin="20 25 20 0">
                 <Image Source="/Assets/Images/Abonnement.png" Width="30" Margin="0 5 5 0"/>
-                <Border BorderThickness="0,0,0,1" BorderBrush="#CFCECF">
-                    <ComboBox x:Name="AbonnementComboBox" FontSize="20" IsEditable="True" IsReadOnly="True" Text="Abonnement" Foreground="Gray" Background="Transparent" BorderBrush="Transparent"  BorderThickness="0" Padding="4 4 0 0">
-                        <ComboBoxItem Content="Bronze"/>
-                        <ComboBoxItem Content="Silver"/>
-                        <ComboBoxItem Content="Gold"/>
-                    </ComboBox>
-                </Border>
+                <ComboBox x:Name="AbonnementComboBox" FontSize="20" Padding="4 4 0 0" Height="30" Foreground="#FF757273">
+                    <ComboBoxItem Content="Bronze"/>
+                    <ComboBoxItem Content="Silver"/>
+                    <ComboBoxItem Content="Gold"/>
+                </ComboBox>
             </DockPanel>
             <Button Height="45" Width="150" MinWidth="100" FontSize="24" x:Name="ToonVolgendeVeldenButton" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" Background="#FFED5959" Foreground="GhostWhite" BorderBrush="Transparent"  BorderThickness="0" Padding="0 -4 0 0" Margin="20 30 20 0" Click="ToonVerdereVelden">
                 <Button.Resources>
