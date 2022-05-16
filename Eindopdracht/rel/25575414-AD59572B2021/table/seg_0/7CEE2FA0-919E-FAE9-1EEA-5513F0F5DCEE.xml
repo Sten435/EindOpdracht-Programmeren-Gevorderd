@@ -80,7 +80,7 @@
 <ownDataTypeParameters>,,</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
-<Column name="Abonnement" id="A67952DF-4D1E-B21F-93D7-BEC4911C8E35">
+<Column name="ABONNEMENT" id="A67952DF-4D1E-B21F-93D7-BEC4911C8E35">
 <createdBy>stanp</createdBy>
 <createdTime>2022-05-04 19:41:41 UTC</createdTime>
 <generatorID>DA403888-BA85-FCAB-44D4-17E3A4F83DA2</generatorID>

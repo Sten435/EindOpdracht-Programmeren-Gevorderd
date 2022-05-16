@@ -46,6 +46,28 @@
 <ownDataTypeParameters>0,,</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
+<Column name="LOWERBOUNDUURRESERVATIE" id="F63CF010-FB5B-4079-2C7B-0071FA625E74">
+<createdBy>stanp</createdBy>
+<createdTime>2022-05-16 06:30:02 UTC</createdTime>
+<generatorID>BE3026C2-B85D-3FF6-1BD0-64A9CAA36617</generatorID>
+<ownerDesignName>Eindopdracht</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="UPPERBOUNDUURRESERVATIE" id="50961091-5A26-447F-C6B1-4F5AFA8DDB7B">
+<createdBy>stanp</createdBy>
+<createdTime>2022-05-16 06:30:02 UTC</createdTime>
+<generatorID>20E733DF-6B6B-D7B2-A808-0731FEAB0083</generatorID>
+<ownerDesignName>Eindopdracht</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
 </columns>
 <indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
 <ind_PK_UK id="A21EE961-CB56-78AA-1E89-7409122D0CC5" name="Config_PK">

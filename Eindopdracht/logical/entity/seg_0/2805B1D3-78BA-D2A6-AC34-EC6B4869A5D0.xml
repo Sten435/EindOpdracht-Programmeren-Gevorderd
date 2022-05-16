@@ -54,6 +54,30 @@
 <dataTypeSize>0</dataTypeSize>
 <ownDataTypeParameters>0,,</ownDataTypeParameters>
 </Attribute>
+<Attribute name="LowerBoundUurReservatie" id="BE3026C2-B85D-3FF6-1BD0-64A9CAA36617">
+<createdBy>stanp</createdBy>
+<createdTime>2022-05-16 06:27:57 UTC</createdTime>
+<ownerDesignName>Eindopdracht</ownerDesignName>
+<engineerTo>
+<item key="25575414-A2C2-293D-8E56-AD59572B2021" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="UpperBoundUurReservatie" id="20E733DF-6B6B-D7B2-A808-0731FEAB0083">
+<createdBy>stanp</createdBy>
+<createdTime>2022-05-16 06:28:30 UTC</createdTime>
+<ownerDesignName>Eindopdracht</ownerDesignName>
+<engineerTo>
+<item key="25575414-A2C2-293D-8E56-AD59572B2021" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
 </attributes>
 <identifiers itemClass="oracle.dbtools.crest.model.design.logical.CandidateKey">
 <identifier id="547028ED-1A2A-D7E4-23F5-C8DB3D2A4328" name="Config PK">

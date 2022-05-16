@@ -83,6 +83,17 @@
 <colAssociation fkAssociation="0B343939-195E-A4E1-74CC-D7F37841D727" referredColumn="C3474EE9-061B-E49C-32F6-2A2C66668585"/>
 </associations>
 </Column>
+<Column name="Id1" id="D37FC923-C249-5AB1-064F-B0B4442C306B">
+<createdBy>stanp</createdBy>
+<createdTime>2022-05-16 06:30:37 UTC</createdTime>
+<generatorID>69E75550-8121-4F60-0B67-B2E4E58A07C2</generatorID>
+<ownerDesignName>Eindopdracht</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
 </columns>
 <indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
 <ind_PK_UK id="7CE5EF03-1EC0-D8C8-34D2-C42F20A39D79" name="Adressen_PK">
