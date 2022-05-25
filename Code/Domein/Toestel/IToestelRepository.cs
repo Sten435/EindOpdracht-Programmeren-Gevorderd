@@ -5,16 +5,21 @@ namespace Domein {
 
 	public interface IToestelRepository {
 
-		List<Toestel> GeefAlleToestellen();
+		List<Toestel> GeefAlleToestellen(bool metVerwijderdeToestellen = false);
 
-		void VoegToestelToe(string naam);
+		Toestel GeefToestel(int toestelNummer);
 
-		void ZetToestelInOfUitHerstelling(int toestelId, bool nieuweHerstellingValue);
+		List<Toestel> GeefToestellenZonderReservatie();
 
-		void VerwijderToestel(Toestel toestel);
+		int VoegToestelToe(string naam);
+
+		void ZetToestelInOfUitHerstelling(int toestelId);
+
+		void VerwijderToestel(int toestelId);
 
 		void UpdateToestelNaamOpId(int toestelId, string toestelNaam);
 
 		bool GeefToestelHerstelStatusOpId(int toestelId);
+
 	}
 }

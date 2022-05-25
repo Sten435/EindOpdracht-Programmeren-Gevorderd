@@ -68,6 +68,17 @@
 <ownDataTypeParameters>,,</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
+<Column name="AANTALDAGENINTOEKOMSTRESERVEREN" id="6B4BA53E-B4F7-DB1E-8410-5A9BFB84681C">
+<createdBy>stanp</createdBy>
+<createdTime>2022-05-20 07:21:11 UTC</createdTime>
+<generatorID>840D8190-1938-54F3-3A33-552DF31D3FD1</generatorID>
+<ownerDesignName>Eindopdracht</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
 </columns>
 <indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
 <ind_PK_UK id="A21EE961-CB56-78AA-1E89-7409122D0CC5" name="Config_PK">

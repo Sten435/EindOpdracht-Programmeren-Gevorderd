@@ -7,7 +7,7 @@ namespace Persistentie {
 
 	public static class ReservatieMapper {
 
-		public static List<Reservatie> GeefAlleReservaties(bool metVerwijderedeToestellen = false, bool vanafVandaag = false) {
+		public static List<Reservatie> GeefAlleReservaties(bool vandaagPlusToekomst = false, bool alleenVandaag = false, int klantenNummer = -1) {
 			List<Reservatie> reservaties = new();
 
 			try {
@@ -16,27 +16,30 @@ namespace Persistentie {
 
 				SqlCommand command;
 
-				if (vanafVandaag)
-					command = new("SELECT * FROM Reservaties r join TijdSloten ts on ts.Reservatie_ReservatieNummer = ReservatieNummer WHERE DAY(StartTijd) >= DAY(GETDATE()) AND MONTH(StartTijd) >= MONTH(GETDATE()) AND YEAR(StartTijd) >= YEAR(GETDATE()) ORDER BY ReservatieNummer ASC;", connection);
+				string klantenNummerTussenVoegsel = "";
+				if (klantenNummer != -1)
+					klantenNummerTussenVoegsel = $"AND Klant_KlantenNummer = {klantenNummer}";
+
+				if (vandaagPlusToekomst)
+					command = new($"SELECT * FROM Reservaties r join TijdSloten ts on ts.Reservatie_ReservatieNummer = ReservatieNummer WHERE DAY(StartTijd) >= DAY(GETDATE()) AND MONTH(StartTijd) >= MONTH(GETDATE()) AND YEAR(StartTijd) >= YEAR(GETDATE()) {klantenNummerTussenVoegsel} ORDER BY ReservatieNummer ASC;", connection);
+				else if(alleenVandaag)
+					command = new($"SELECT * FROM Reservaties r join TijdSloten ts on ts.Reservatie_ReservatieNummer = ReservatieNummer WHERE DAY(StartTijd) = DAY(GETDATE()) AND MONTH(StartTijd) = MONTH(GETDATE()) AND YEAR(StartTijd) = YEAR(GETDATE()) {klantenNummerTussenVoegsel} ORDER BY ReservatieNummer ASC;", connection);
 				else
-					command = new("SELECT * FROM Reservaties r join TijdSloten ts on ts.Reservatie_ReservatieNummer = ReservatieNummer ORDER BY ReservatieNummer ASC;", connection);
+					command = new($"SELECT * FROM Reservaties r join TijdSloten ts on ts.Reservatie_ReservatieNummer = ReservatieNummer {(klantenNummer != -1 ? $"WHERE Klant_KlantenNummer = {klantenNummer}" : "")} ORDER BY ReservatieNummer ASC;", connection);
 
 				Reservatie reservatie;
 
 				using SqlDataReader reader = command.ExecuteReader();
 				if (reader.HasRows) {
-					List<Klant> klanten = KlantenMapper.GeefAlleKlanten();
-					List<Toestel> toestellen = ToestellenMapper.GeefToestellen(metVerwijderedeToestellen);
-
 					while (reader.Read()) {
 						int reservatieNummer = (int)reader["ReservatieNummer"];
-						int klantenNummer = (int)reader["Klant_KlantenNummer"];
+						int _klantenNummer = (int)reader["Klant_KlantenNummer"];
 						int toestelNummer = (int)reader["Toestel_IdentificatieCode"];
 						DateTime startTijd = (DateTime)reader["StartTijd"];
 						DateTime eindTijd = (DateTime)reader["EindTijd"];
 
-						Klant klant = klanten.Find(klant => klant.KlantenNummer == klantenNummer);
-						Toestel toestel = toestellen.Find(toestel => toestel.IdentificatieCode == toestelNummer);
+						Klant klant = KlantenMapper.GeefKlant(_klantenNummer);
+						Toestel toestel = ToestellenMapper.GeefToestel(toestelNummer);
 						if (toestel != null) {
 							TijdsSlot tijdsSlot = new(startTijd, eindTijd);
 
@@ -82,14 +85,14 @@ namespace Persistentie {
 			return null;
 		}
 
-		public static void VerwijderReservatie(Reservatie reservatie) {
+		public static void VerwijderReservatie(int reservatieId) {
 			try {
 				using SqlConnection connection = new(ConfigRepository.ConnectionString);
 				connection.Open();
 
 				SqlCommand command = new("DELETE FROM Reservaties WHERE ReservatieNummer = @ReservatieNummer", connection);
 
-				command.Parameters.AddWithValue("@ReservatieNummer", reservatie.ReservatieNummer);
+				command.Parameters.AddWithValue("@ReservatieNummer", reservatieId);
 
 				command.ExecuteNonQuery();
 			} catch (SqlException) {
@@ -99,7 +102,7 @@ namespace Persistentie {
 			}
 		}
 
-		public static void VoegReservatieToe(Reservatie reservatie) {
+		public static int VoegReservatieToe(Reservatie reservatie) {
 			using SqlConnection connection = new(ConfigRepository.ConnectionString);
 			connection.Open();
 
@@ -122,6 +125,7 @@ namespace Persistentie {
 				command.ExecuteNonQuery();
 
 				sqlTransaction.Commit();
+				return reservatieNummer;
 			} catch (SqlException) {
 				throw new ReservatieException("(Insert) Fout met query naar reservatie Db.");
 			} catch (Exception) {

@@ -15,7 +15,7 @@ namespace Persistentie {
 				using SqlConnection connection = new(ConfigRepository.ConnectionString);
 				connection.Open();
 
-				SqlCommand command = new("SELECT KlantenNummer, Voornaam, Achternaam, Email, GeboorteDatum, Abonnement, InteresseNaam, StraatNaam, HuisNummer, Plaats, PostCode from Klanten kl join Interesses it on it.Klant_KlantenNummer = kl.KlantenNummer join Adressen ad on ad.Klant_KlantenNummer = kl.KlantenNummer ORDER BY KlantenNummer ASC;", connection);
+				SqlCommand command = new("SELECT * from Klanten kl join Interesses it on it.Klant_KlantenNummer = kl.KlantenNummer join Adressen ad on ad.Klant_KlantenNummer = kl.KlantenNummer ORDER BY KlantenNummer ASC;", connection);
 
 				using SqlDataReader dataReader = command.ExecuteReader();
 
@@ -56,6 +56,48 @@ namespace Persistentie {
 			}
 
 			return klanten;
+		}
+
+		public static Klant GeefKlant(int klantenNummer) {
+			try {
+				using SqlConnection connection = new(ConfigRepository.ConnectionString);
+				connection.Open();
+
+				SqlCommand command = new("SELECT * from Klanten kl join Interesses it on it.Klant_KlantenNummer = kl.KlantenNummer join Adressen ad on ad.Klant_KlantenNummer = kl.KlantenNummer WHERE kl.KlantenNummer = @klantenNummer ORDER BY KlantenNummer ASC", connection);
+
+				command.Parameters.AddWithValue("@klantenNummer", klantenNummer);
+
+				using SqlDataReader dataReader = command.ExecuteReader();
+
+				if (dataReader.HasRows) {
+					while (dataReader.Read()) {
+						int klantennummer = (int)dataReader["KlantenNummer"];
+						string voornaam = (string)dataReader["Voornaam"];
+						string achternaam = (string)dataReader["Achternaam"];
+						string email = (string)dataReader["Email"];
+
+						DateTime geboorteDatum = (DateTime)dataReader["GeboorteDatum"];
+						int abonnement = int.Parse((string)dataReader["Abonnement"]);
+						List<string> interesses = new() { (string)dataReader["InteresseNaam"] };
+
+						string straatNaam = (string)dataReader["StraatNaam"];
+						string huisNummer = (string)dataReader["HuisNummer"];
+						string plaats = (string)dataReader["Plaats"];
+
+						int postCode = (int)dataReader["PostCode"];
+
+						Adres adres = new(straatNaam, huisNummer, plaats, postCode);
+						TypeKlant klantType = (TypeKlant)Enum.Parse(typeof(TypeKlant), abonnement.ToString());
+						return new(klantennummer, voornaam, achternaam, email, interesses, geboorteDatum, adres, klantType);
+					}
+				}
+			} catch (SqlException) {
+				throw new KlantenExeption("(Select) Fout met query naar klanten Db.");
+			} catch (Exception) {
+				throw new KlantenExeption("(Select) Fout in klanten Db.");
+			}
+
+			throw new KlantenExeption("Klanten niet gevonden\n\nProbeer opnieuw.");
 		}
 
 		public static void VoegKlantToe(Klant klant) {

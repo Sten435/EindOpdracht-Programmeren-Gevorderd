@@ -13,93 +13,91 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Collections;
+using System.Collections.ObjectModel;
+using System.Reflection;
 
 namespace UI {
 	/// <summary>
 	/// Interaction logic for Reservaties.xaml
 	/// </summary>
 	public partial class DashbordWindow : Window {
-		private DomeinController domeinController;
+		public Visibility IsAdmin { get; } = Visibility.Collapsed;
+
+		private readonly DomeinController domeinController;
 		private List<int> beschikbareUren;
-		private DateTime dag;
-		Thickness borderNone = new Thickness(0, 0, 0, 0);
-		Thickness newLeftBorder = new Thickness(5, 0, 0, 0);
-
-		bool kanNogReservaren;
-
-		const int maximumDagenReserverenToekomst = 7;
+		private readonly List<ReservatieInfo> reservatieInfo = new();
 
 		public DashbordWindow(DomeinController _domeincontroller) {
 			domeinController = _domeincontroller;
 			InitializeComponent();
 			this.DataContext = this;
-			LaadDataInDashBord();
-			UpdateReservaties();
+			LaadAccountData();
+
+			if (domeinController.isAdmin) {
+				IsAdmin = Visibility.Visible;
+				LaadAdminDataInDashBord();
+			}
+
+			List<string> reservaties = domeinController.GeefKlantReservaties(true);
+			reservatieInfo = reservaties.Select(r => new ReservatieInfo(r)).ToList();
+			UpdateToestelList();
 		}
 
-		private void LaadDataInDashBord() {
+		private void LaadAdminDataInDashBord() {
+			AdminListBox.Items.Clear();
+			List<string> toestellenRaw = domeinController.GeefToestellenZonderReservatie();
+			List<ToestelInfo> toestelInfo = toestellenRaw.Select(t => new ToestelInfo(t)).ToList();
+
+			toestelInfo.ForEach(to => AdminListBox.Items.Add(to));
+		}
+
+		private void UpdateToestelList() {
+			ToestelComboBox.ItemsSource = new List<string>();
+
 			List<string> beschikbareToestellen = domeinController.GeefBeschikbareToestellen();
-			beschikbareToestellen.ForEach(t => ToestelComboBox.Items.Add(t));
+			ToestelComboBox.ItemsSource = beschikbareToestellen;
 		}
 
-		private void UpdateReservaties() {
-			ReservatieListBox.Items.Clear();
-			List<string> reservaties = domeinController.GeefKlantReservaties();
-			reservaties.Reverse();
+		private void LaadAccountData() {
+			string klantenInfo = domeinController.KlantOmschrijvingParsable;
 
-			reservaties.ForEach(r => {
-				StackPanel st = new();
-				Label textlb = new();
-				Label txtbox = new();
-				Border br = new();
+			List<string> klantenInfoParsed = klantenInfo.Split("@|@").ToList();
+			List<string> interesses = klantenInfoParsed.Last().Split("#|#", StringSplitOptions.RemoveEmptyEntries).ToList();
 
-				string rs = r.ToString();
-				DateTime datum = DateTime.Parse(rs[..10]);
-				textlb.FontWeight = FontWeights.Bold;
+			//string klantenNummer = klantenInfoParsed[0] ?? "Geen klantennummer beschikbaar";
+			string voornaam = klantenInfoParsed[1] ?? "Geen voornaam gekozen"; ;
+			string achternaam = klantenInfoParsed[2] ?? "Geen achternaam gekozen"; ;
+			string email = klantenInfoParsed[3] ?? "Geen email gekozen"; ;
+			bool IsGeboorteDatumok = DateTime.TryParse(klantenInfoParsed[4], out DateTime geboorteDatum);
+			if (IsGeboorteDatumok) {
+				DashBordGeboorteDatumTextBox.Content = geboorteDatum.ToString("dd/MM/yyyy");
+			} else
+				DashBordGeboorteDatumTextBox.Content = "Geboortedatum niet correct ingesteld";
 
-				txtbox.FontWeight = FontWeights.Bold;
-				txtbox.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFFFFFFF"));
+			string abonnement = klantenInfoParsed[5] ?? "Geen abonnement gekozen";
+			string straatNaam = klantenInfoParsed[6] ?? "Geen straat naam gekozen";
+			string huisNummer = klantenInfoParsed[7] ?? "Geen huis nummer gekozen";
+			string plaats = klantenInfoParsed[8] ?? "Geen plaats gekozen";
+			string postcode = klantenInfoParsed[9] ?? "Geen postcode gekozen";
 
-				if (datum.ToString("dd/MM/yyyy") == DateTime.Now.ToString("dd/MM/yyyy")) {
-					txtbox.Content = "VANDAAG";
-					br.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF59A6ED"));
-				}
-				else if (datum < DateTime.Now) {
-					txtbox.Content = "VERLEDEN";
-					br.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFA5A5A5"));
-				}
-				else if (datum > DateTime.Now) {
-					txtbox.Content = "TOEKOMST";
-					br.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF4DCA6C"));
-				}
-
-				br.CornerRadius = new CornerRadius(5);
-				txtbox.HorizontalAlignment = HorizontalAlignment.Center;
-				txtbox.VerticalAlignment = VerticalAlignment.Center;
-				br.Child = txtbox;
-				br.Width = 80;
-				br.Margin = new Thickness(0, 0, 62, 0);
-
-				textlb.Content = r.ToString();
-				st.HorizontalAlignment = HorizontalAlignment.Center;
-				st.Orientation = Orientation.Horizontal;
-				st.Children.Add(br);
-				st.Children.Add(textlb);
-
-				ReservatieListBox.Items.Add(st);
-			});
+			DashBordVoornaamTextBox.Content = voornaam;
+			DashBordAchternaamTextBox.Content = achternaam;
+			DashBordEmailTextBox.Content = email;
+			DashBordAbonnementTextBox.Content = abonnement;
+			DashBordStraatTextBox.Content = straatNaam;
+			DashBordHuisNummerTextBox.Content = huisNummer;
+			DashBordPlaatsTextBox.Content = plaats;
+			DashBordPostcodeTextBox.Content = postcode;
+			DashBordInteressesTextBox.Content = (string.Join(", ", interesses).Trim() != string.Empty) ? string.Join(", ", interesses) : "Geen Interesses";
 		}
 
 		private void ToestelGekozen(object sender, SelectionChangedEventArgs e) {
 			TijdSlotComboBox.Items.Clear();
 			DatumComboBox.Items.Clear();
 
-			int selectedToestelIndex = ToestelComboBox.SelectedIndex;
-
-			if (selectedToestelIndex != -1) {
-				for (int i = 0; i < maximumDagenReserverenToekomst; i++) {
-					DatumComboBox.Items.Add($"{DateTime.Now.AddDays(i):d}");
-				}
+			if (ToestelComboBox.SelectedIndex != -1) {
+				List<DateTime> beschikbareDagen = domeinController.GeefBeschikbareDagen();
+				beschikbareDagen.ForEach(datum => DatumComboBox.Items.Add(datum.ToString("d")));
 			}
 
 			ReservatieButtonKlikbaarMaken(null, null);
@@ -112,19 +110,19 @@ namespace UI {
 				bool isDateTimeOk = DateTime.TryParse(DatumComboBox.SelectedItem.ToString(), out DateTime dateTime);
 
 				if (isDateTimeOk) {
-					dag = new(dateTime.Year, dateTime.Month, dateTime.Day, TijdsSlot.LowerBoundUurReservatie, 0, 0);
-
-					(beschikbareUren, kanNogReservaren) = domeinController.GeefBeschikbareUrenOpDatum(dag, ToestelComboBox.SelectedItem.ToString());
+					DateTime dag = new(dateTime.Year, dateTime.Month, dateTime.Day, 0, 0, 0);
+					bool heeftNogGeenVierReservaties;
+					(beschikbareUren, heeftNogGeenVierReservaties) = domeinController.GeefBeschikbareReservatieUren(dag, ToestelComboBox.SelectedItem.ToString());
 
 					if (beschikbareUren.Count != 0) {
-						if (kanNogReservaren) {
+						if (heeftNogGeenVierReservaties) {
 							for (int i = 0; i < beschikbareUren.Count; i++) {
 								string item = beschikbareUren[i].ToString().Length == 1 ? $"0{beschikbareUren[i]}" : beschikbareUren[i].ToString();
 								TijdSlotComboBox.Items.Add($"{item}:00");
 							}
 						}
 					} else {
-						if (!kanNogReservaren)
+						if (!heeftNogGeenVierReservaties)
 							MessageBox.Show(" [max 4 reservaties per dag]", "Foutje", MessageBoxButton.OK, MessageBoxImage.Exclamation);
 						else
 							MessageBox.Show(" [geen reservaties meer beschikbaar]", "Foutje", MessageBoxButton.OK, MessageBoxImage.Exclamation);
@@ -150,15 +148,12 @@ namespace UI {
 					int _tijdSlot = beschikbareUren[TijdSlotComboBox.SelectedIndex];
 					string toestelNaam = ToestelComboBox.SelectedItem.ToString();
 					DateTime tijdSlot = new DateTime(dag.Year, dag.Month, dag.Day, _tijdSlot, 0, 0);
-
 					int? toestelId = domeinController.GeefEenVrijToestelIdOpNaam(toestelNaam, tijdSlot);
-
 					if (toestelId != null) {
-						domeinController.VoegReservatieToe(tijdSlot, (int)toestelId);
-						MessageBox.Show($"Reservatie \n Toestel -> {toestelNaam}:{toestelId}\n Datum -> {tijdSlot:g}", "Success", MessageBoxButton.OK, MessageBoxImage.Question, MessageBoxResult.OK, MessageBoxOptions.ServiceNotification);
-
 						ResetKeuze();
-						UpdateReservaties();
+						string reservatie = domeinController.VoegReservatieToe(tijdSlot, (int)toestelId);
+						reservatieInfo.Add(new(reservatie));
+						LaadReservaties(null, null);
 					} else {
 						MessageBox.Show("Geen toesel gevonden.");
 					}
@@ -174,41 +169,97 @@ namespace UI {
 			TijdSlotComboBox.SelectedIndex = -1;
 		}
 
-		private void LogoutButton(object sender, MouseButtonEventArgs e) {
+		private void VerwijderToestelButton(object sender, RoutedEventArgs e) {
+			var toestelRaw = (sender as Button).DataContext;
+			ToestelInfo toestel = AdminListBox.Items.GetItemAt(AdminListBox.Items.IndexOf(toestelRaw)) as ToestelInfo;
+
+			var confirmMessage = MessageBox.Show($"Ben je zeker dat je het toestel: [{toestel.ToestelNaam} | #{toestel.ToestelNummer}] Verwijderen?", "Pas Op", MessageBoxButton.YesNo, MessageBoxImage.Question);
+			if (confirmMessage == MessageBoxResult.Yes) {
+				domeinController.VerwijderToestelOpId(toestel.ToestelNummer);
+			}
+
+			LaadAdminDataInDashBord();
+		}
+
+		private void ZetInHerstellingButton(object sender, RoutedEventArgs e) {
+			var toestelRaw = (sender as Button).DataContext;
+			ToestelInfo toestel = AdminListBox.Items.GetItemAt(AdminListBox.Items.IndexOf(toestelRaw)) as ToestelInfo;
+
+			domeinController.ZetToestelInOfUitHerstelling(toestel.ToestelNummer);
+			toestel.InHerstelling = !toestel.InHerstelling;
+			var txt = (sender as Button);
+
+			if (toestel.InHerstelling)
+				txt.Content = "Nee";
+			else
+				txt.Content = "Ja";
+		}
+
+		private void VoegToestelToe(object sender, RoutedEventArgs e) {
+			string toestelNaam = ToestelToevoegenTextBox.Text.Trim();
+
+			if (!string.IsNullOrEmpty(toestelNaam)) {
+				ToestelToevoegenTextBox.Text = string.Empty;
+				domeinController.VoegNieuwToestelToe(toestelNaam);
+				LaadAdminDataInDashBord();
+			}
+
+		}
+
+		private void Logout(object sender, MouseButtonEventArgs e) {
 			domeinController.Logout();
 			LoginWindow loginWindow = new(domeinController);
 			loginWindow.Title = "Login";
-			this.Close();
 			loginWindow.Show();
+			this.Close();
 		}
 
-		private void VeranderKleurLogoutButtonHoverStart(object sender, MouseEventArgs e) {
-			logoutLabel.Opacity = 1;
-			logoutImage.Opacity = 1;
-		}
-		private void VeranderKleurLogoutButtonHoverExit(object sender, MouseEventArgs e) {
-			logoutLabel.Opacity = .5;
-			logoutImage.Opacity = .5;
+		private void LaadReservaties(object sender, MouseButtonEventArgs e) {
+			UpdateToestelList();
+			ReservatieListBox.ItemsSource = new List<string>();
+			ReservatieListBox.ItemsSource = reservatieInfo.OrderByDescending(reservatie => reservatie.Datum).ThenByDescending(reservatie => reservatie.StartTijd).ToList();
 		}
 
-		private void SelecteerReservatiesItem(object sender, MouseButtonEventArgs e) {
-			ReservatieScherm.Visibility = Visibility.Visible;
-
-			ReservatieItem.BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFED5959"));
-			ReservatieItem.BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFED5959"));
-
-			AccountItem.BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFEBEBEB"));
-			AccountScherm.Visibility = Visibility.Collapsed;
-
-			UpdateReservaties();
+		private void EnableVoegToestelToe(object sender, TextChangedEventArgs e) {
+			if (!string.IsNullOrEmpty(ToestelToevoegenTextBox.Text)) {
+				VoegToeBtn.IsEnabled = true;
+			} else
+				VoegToeBtn.IsEnabled = false;
 		}
 
-		private void SelecteerAccountItem(object sender, MouseButtonEventArgs e) {
-			ReservatieItem.BorderBrush = new SolidColorBrush(Color.FromArgb(0, 0, 0, 0));
-			ReservatieScherm.Visibility = Visibility.Collapsed;
+		private void LaadAdmin(object sender, MouseButtonEventArgs e) {
+			LaadAdminDataInDashBord();
+		}
 
-			AccountItem.BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFED5959"));
-			AccountScherm.Visibility = Visibility.Visible;
+		private void VerwijderReservatie(object sender, MouseButtonEventArgs e) {
+			if (ReservatieListBox.SelectedItem == null) return;
+
+			var reservatie = ReservatieListBox.SelectedItem as ReservatieInfo;
+			var result = MessageBox.Show($"Ben je zeker?\n\n({reservatie.Id}) - {reservatie.Toestel} (-> {reservatie.StartTijd.ToString("HH:mm")} -> {reservatie.EindTijd.ToString("HH:mm")}", "Opgepast", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+
+			if (result == MessageBoxResult.Yes) {
+				domeinController.VerwijderReservatie(reservatie.Id);
+				LaadReservaties(null, null);
+			}
+		}
+
+		string content = "";
+		string contentKleur = "";
+		private void ChangeToVerwijderBtn(object sender, MouseEventArgs e) {
+			var border = sender as Border;
+			var label = border.Child as Label;
+
+			label.Cursor = Cursors.Hand;
+
+			if (label.Content.ToString() != " VERWIJDER ") {
+				content = label.Content.ToString();
+				contentKleur = border.Background.ToString();
+				label.Content = " VERWIJDER ";
+				border.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFED5959"));
+			} else {
+				label.Content = $"{content}";
+				border.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString(contentKleur));
+			}
 		}
 	}
 }

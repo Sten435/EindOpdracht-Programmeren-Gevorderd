@@ -22,6 +22,7 @@ namespace Domein.Tests {
 		[TestMethod()]
 		public void ToStringTest() {
 			Assert.AreEqual("Fiets - InHerstelling: False", toestel.ToString());
+			Assert.AreEqual("999996@|@Fiets@|@False@|@False", toestel.ToString(true));
 		}
 
 		[TestMethod()]
@@ -33,6 +34,9 @@ namespace Domein.Tests {
 		public void ToestelNaamTest() {
 			Assert.ThrowsException<ToestelException>(() => new Toestel(1, "S"));
 			Assert.ThrowsException<ToestelException>(() => new Toestel(1, ""));
+			Assert.ThrowsException<ToestelException>(() => new Toestel(1, "1"));
+			Assert.ThrowsException<ToestelException>(() => new Toestel(1, "-)^"));
+			Assert.ThrowsException<ToestelException>(() => new Toestel(1, "fsf3"));
 		}
 	}
 }

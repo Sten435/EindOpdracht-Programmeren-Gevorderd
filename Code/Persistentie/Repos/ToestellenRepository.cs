@@ -5,11 +5,15 @@ namespace Persistentie {
 
 	public class ToestellenRepository : IToestelRepository {
 
-		public List<Toestel> GeefAlleToestellen() => ToestellenMapper.GeefToestellen();
+		public List<Toestel> GeefAlleToestellen(bool metVerwijderdeToestellen = false) => ToestellenMapper.GeefToestellen(metVerwijderdeToestellen);
 
-		public void VoegToestelToe(string naam) => ToestellenMapper.VoegToestelToe(new(naam[0].ToString().ToUpper() + naam.ToLower().Substring(1)));
+		public Toestel GeefToestel(int toestelNummer) => ToestellenMapper.GeefToestel(toestelNummer);
 
-		public void VerwijderToestel(Toestel toestel) => ToestellenMapper.VerwijderToestel(toestel);
+		public List<Toestel> GeefToestellenZonderReservatie() => ToestellenMapper.GeefToestellenZonderReservatie();
+
+		public int VoegToestelToe(string naam) => ToestellenMapper.VoegToestelToe(new(naam[0].ToString().ToUpper() + naam.ToLower().Substring(1)));
+
+		public void VerwijderToestel(int toestelId) => ToestellenMapper.VerwijderToestel(toestelId);
 
 		public void UpdateToestelNaamOpId(int toestelId, string toestelNaam) {
 			Toestel huidigToestel = GeefAlleToestellen().Find(t => t.IdentificatieCode == toestelId);
@@ -21,14 +25,12 @@ namespace Persistentie {
 			}
 		}
 
-		public void ZetToestelInOfUitHerstelling(int toestelId, bool nieuweHerstellingValue) {
-			Toestel huidigToestel = GeefAlleToestellen().Find(t => t.IdentificatieCode == toestelId);
+		public void ZetToestelInOfUitHerstelling(int toestelId) {
+			Toestel huidigToestel = ToestellenMapper.GeefToestelOpId(toestelId);
 
-			if (huidigToestel != null) {
-				huidigToestel.InHerstelling = nieuweHerstellingValue;
-
+			if (huidigToestel != null)
 				ToestellenMapper.UpdateToestelInHerstelling(huidigToestel);
-			}
+			else throw new ToestelException("Toestel niet gevonden");
 		}
 
 		public bool GeefToestelHerstelStatusOpId(int toestelId) => GeefAlleToestellen().Find(t => t.IdentificatieCode == toestelId).InHerstelling;

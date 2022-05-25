@@ -3,9 +3,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:local="clr-namespace:UI"
         mc:Ignorable="d"
-        Title="Registreer" Padding="40" WindowStartupLocation="CenterScreen" Icon="/Assets/Images/Logo.png" Width="874" Height="642">
+        Title="Registreer" Padding="40" WindowStartupLocation="CenterScreen" Icon="/Assets/Images/LogoWindows.png" Width="874" Height="642">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*"/>
@@ -110,14 +111,15 @@
                 <Label Content="Registreer" Foreground="White">
                     <Label.Effect>
                         <DropShadowEffect
-                      ShadowDepth="4"
-                      Direction="330"
+                      ShadowDepth="1"
+                      Direction="0"
                       Color="Black"
-                      Opacity="0.1"
-                     BlurRadius="4"/>
+                      Opacity="0.2"
+                     BlurRadius="1"/>
                     </Label.Effect>
                 </Label>
             </Button>
+            <Button FontSize="16" FontWeight="Bold" HorizontalAlignment="Center" Foreground="#FF757273" Background="Transparent"  BorderBrush="Transparent"  BorderThickness="0" Click="GaTerug" FontStyle="Italic">Ga Terug</Button>
         </StackPanel>
     </Grid>
 </Window>

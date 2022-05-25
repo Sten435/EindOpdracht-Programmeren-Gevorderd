@@ -11,6 +11,7 @@
   <ItemGroup>
     <None Remove="Assets\Images\Abonnement.png" />
     <None Remove="Assets\Images\Achternaam.png" />
+    <None Remove="Assets\Images\Admin.png" />
     <None Remove="Assets\Images\Close.png" />
     <None Remove="Assets\Images\Datum.png" />
     <None Remove="Assets\Images\Email.png" />
@@ -19,6 +20,7 @@
     <None Remove="Assets\Images\Login.png" />
     <None Remove="Assets\Images\Logo.png" />
     <None Remove="Assets\Images\Logout.png" />
+    <None Remove="Assets\Images\LogoWindows.png" />
     <None Remove="Assets\Images\Plaats.png" />
     <None Remove="Assets\Images\Postcode.png" />
     <None Remove="Assets\Images\Registreer.png" />
@@ -47,6 +49,9 @@
     <Resource Include="Assets\Images\Achternaam.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Assets\Images\Admin.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Assets\Images\Close.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
@@ -70,6 +75,9 @@
     </Resource>
     <Resource Include="Assets\Images\Logout.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Images\LogoWindows.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Assets\Images\Plaats.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

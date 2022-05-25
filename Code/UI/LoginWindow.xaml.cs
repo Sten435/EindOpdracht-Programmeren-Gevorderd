@@ -43,8 +43,8 @@ namespace UI {
 			if (domeinController.LoggedIn) {
 				DashbordWindow dashbordWindow = new DashbordWindow(domeinController);
 				dashbordWindow.Title = "Dashbord";
-				this.Close();
 				dashbordWindow.Show();
+				this.Close();
 			}
 		}
 

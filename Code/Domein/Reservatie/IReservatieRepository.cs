@@ -5,12 +5,12 @@ namespace Domein {
 
 	public interface IReservatieRepository {
 
-		List<Reservatie> GeefAlleReservaties(bool metVerwijderedeToestellen = false, bool vanafVandaag = false);
+		List<Reservatie> GeefAlleReservaties(bool vandaagPlusToekomst = false, bool alleenVandaag = false, int klantenNummer = -1);
 
 		int? GeefBeschikbaarToestelOpTijdsSlot(DateTime dag, string ToestelNaam);
 
-		void VoegReservatieToe(Reservatie reservatie);
+		int VoegReservatieToe(Reservatie reservatie);
 
-		void VerwijderReservatie(Reservatie reservatie);
+		void VerwijderReservatie(int reservatieId);
 	}
 }

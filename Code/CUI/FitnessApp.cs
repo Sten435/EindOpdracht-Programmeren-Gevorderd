@@ -630,16 +630,11 @@ namespace CUI {
 
 		#region Login()
 
-		public void Login(bool isBeheerder = false) {
+		public void Login() {
 			Utility.Logger.Info("Wat is je E-mailAdres:");
 			string email = Utility.AskUser.ReadInput(color: DefaultInfoBackgroundPrintLineColor, prompt: Utility.SelectPrefix).ToLower();
-
-			if (isBeheerder) {
-				isBeheerder = _domeinController.Login(email, true);
-				if (!isBeheerder) throw new LoginException($"{email} is geen beheerder account.");
-			} else _domeinController.Login(email);
+			_domeinController.Login(email);
 		}
-
 		#endregion Login()
 
 		#region Logout()
@@ -743,7 +738,7 @@ namespace CUI {
 			Utility.Logger.Info($"\rDruk op [ ▲ | ▼ ] om de dag te wijzigen.\nDruk op [Enter] om te bevestigen.");
 
 			do {
-				(beschikbareUren, kanNogReservaren) = _domeinController.GeefBeschikbareUrenOpDatum(dag, toestelNaam);
+				(beschikbareUren, kanNogReservaren) = _domeinController.GeefBeschikbareReservatieUren(dag, toestelNaam);
 
 				if (beschikbareUren.Count == 0) {
 					beschikbareUren.Clear();

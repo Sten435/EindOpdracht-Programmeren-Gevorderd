@@ -65,9 +65,6 @@ namespace UI {
 		private string _postcodeTextBoxPlaceholder = "Postcode";
 		public string PostcodeTextBoxPlaceholder { get => _postcodeTextBoxPlaceholder; set { _postcodeTextBoxPlaceholder = value; } }
 
-
-
-
 		private void AchternaamTextBox_GotFocus(object sender, RoutedEventArgs e) {
 			SetTextBoxPlaceholder(AchternaamTextBox, AchternaamTextBoxPlaceholder);
 		}
@@ -198,8 +195,11 @@ namespace UI {
 				domeinController.RegistreerKlant(voornaam, achternaam, email, geboorteDatum, interesses, typeKlant, straat, plaats, huisnummer, postcode);
 
 				domeinController.Login(email);
-				string infoOverKlant = domeinController.KlantOmschrijving;
-				MessageBox.Show(infoOverKlant);
+
+				DashbordWindow dashbord = new(domeinController);
+				dashbord.Title = "Dashboard";
+				dashbord.Show();
+				this.Close();
 			}
 		}
 
@@ -209,10 +209,9 @@ namespace UI {
 			this.Close();
 		}
 
-
-		//public event PropertyChangedEventHandler PropertyChanged;
-		//private void OnproppertyChanged(string propertyName = null) {
-		//	PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-		//}
+		public void GaTerug(object sender, RoutedEventArgs e) {
+			AdresAside.Visibility = Visibility.Collapsed;
+			KlantenAside.Visibility = Visibility.Visible;
+		}
 	}
 }

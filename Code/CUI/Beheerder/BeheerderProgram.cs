@@ -42,7 +42,7 @@ namespace CUI {
 
 				switch (selectedIndex) {
 					case 0:
-						fitnessApp.Login(true);
+						fitnessApp.Login();
 						break;
 
 					case 1:

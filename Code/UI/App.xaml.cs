@@ -32,7 +32,7 @@ namespace UI {
 			loginWindow.Show();
 		}
 
-		private void LaatsteExceptieKans(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e) {
+		private void LaatsteExceptieKans(object sender, DispatcherUnhandledExceptionEventArgs e) {
 			e.Handled = true;
 			MessageBox.Show(e.Exception.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
 		}

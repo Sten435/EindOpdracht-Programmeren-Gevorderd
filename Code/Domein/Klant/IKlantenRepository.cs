@@ -6,6 +6,8 @@ namespace Domein {
 
 		List<Klant> GeefAlleKlanten();
 
+		Klant GeefKlant(int klantenNummer);
+
 		void RegistreerKlant(Klant klant);
 
 		Klant Login(string email);

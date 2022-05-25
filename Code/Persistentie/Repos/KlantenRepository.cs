@@ -8,6 +8,8 @@ namespace Persistentie {
 
 		public List<Klant> GeefAlleKlanten() => KlantenMapper.GeefAlleKlanten();
 
+		public Klant GeefKlant(int klantenNummer) => KlantenMapper.GeefKlant(klantenNummer);
+
 		public Klant Login(string Txt) {
 			Txt = Txt.Trim().ToLower();
 			if (string.IsNullOrEmpty(Txt)) throw new EmailExpection("Email of Klantennummer mag niet leeg zijn.");

@@ -15,7 +15,7 @@ namespace Persistentie {
 				using SqlConnection connection = new(ConfigRepository.ConnectionString);
 				connection.Open();
 
-				SqlCommand command = new("SELECT SlotTijdUur, StandaardInherstelling, LowerBoundUurReservatie, UpperBoundUurReservatie FROM Config;", connection);
+				SqlCommand command = new("SELECT * FROM Config;", connection);
 				using SqlDataReader dataFromQuery = command.ExecuteReader();
 
 				if (dataFromQuery.HasRows) {
@@ -24,11 +24,13 @@ namespace Persistentie {
 						bool standaardInherstelling = (bool)dataFromQuery["StandaardInherstelling"];
 						int lowerBoundUurReservatie = (int)dataFromQuery["LowerBoundUurReservatie"];
 						int upperBoundUurReservatie = (int)dataFromQuery["UpperBoundUurReservatie"];
+						int aantalDagenInToekomstReserveren = (int)dataFromQuery["AantalDagenInToekomstReserveren"];
 
 						TijdsSlot.SlotTijdUur = slotTijdUur;
 						Toestel.StandaardInherstelling = standaardInherstelling;
 						TijdsSlot.LowerBoundUurReservatie = lowerBoundUurReservatie;
 						TijdsSlot.UpperBoundUurReservatie = upperBoundUurReservatie;
+						Reservatie.AantalDagenInToekomstReserveren = aantalDagenInToekomstReserveren;
 					}
 				} else throw new ConfigException("(Config) Er bevind zich geen config data in de databank.");
 			} catch (SqlException) {

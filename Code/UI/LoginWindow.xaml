@@ -11,7 +11,7 @@
         Width="874" 
         FontFamily="{DynamicResource MaterialDesignFont}"
         ResizeMode="CanResize" 
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen" Icon="/Assets/Images/LogoWindows.png">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*"/>

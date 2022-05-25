@@ -15,6 +15,7 @@ namespace Domein.Tests {
 		}
 
 		[DataRow("s", "Persoons", "stan.persoons@hogent.be", TypeKlant.Bronze)]
+		[DataRow("", "Persoons", "stan.persoons@hogent.be", TypeKlant.Bronze)]
 		[TestMethod()]
 		public void KlantVoorNaam(string voorNaam, string achterNaam, string email, TypeKlant typeKlant) {
 			DateTime geboorteDatum = DateTime.Now;
@@ -22,6 +23,7 @@ namespace Domein.Tests {
 		}
 
 		[DataRow("Stan", "P", "stan.persoons@student.hogent.be", TypeKlant.Bronze)]
+		[DataRow("Stan", "", "stan.persoons@student.hogent.be", TypeKlant.Bronze)]
 		[TestMethod()]
 		public void KlantAchterNaam(string voorNaam, string achterNaam, string email, TypeKlant typeKlant) {
 			DateTime geboorteDatum = DateTime.Now;
@@ -29,6 +31,7 @@ namespace Domein.Tests {
 		}
 
 		[DataRow("Stan", "Persoons", "stan&.pers@@osdqqns@student..hogent.be", TypeKlant.Bronze)]
+		[DataRow("Stan", "Persoons", "@student.hogent.be", TypeKlant.Bronze)]
 		[TestMethod()]
 		public void KlantEmail(string voorNaam, string achterNaam, string email, TypeKlant typeKlant) {
 			DateTime geboorteDatum = DateTime.Now;

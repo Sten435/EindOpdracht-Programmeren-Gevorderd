@@ -30,10 +30,10 @@ namespace Domein {
 			TypeKlant = typeKlant;
 		}
 
-		public Klant() {
-		}
+		public string ToString(bool parsable = false) {
+			if (parsable)
+				return $"{KlantenNummer}@|@{Voornaam}@|@{Achternaam}@|@{Email}@|@{GeboorteDatum}@|@{TypeKlant}@|@{Adres.StraatNaam}@|@{Adres.HuisNummer}@|@{Adres.Plaats}@|@{Adres.PostCode}@|@{string.Join("#|#", Interesses)}";
 
-		public override string ToString() {
 			return $"{KlantenNummer} | {Voornaam} {Achternaam} | {Email} | {GeboorteDatum.ToString("d")} | {string.Join(" - ", Interesses)} | {TypeKlant} | {Adres.StraatNaam} {Adres.HuisNummer} {Adres.PostCode}";
 		}
 

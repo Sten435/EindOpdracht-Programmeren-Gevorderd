@@ -6,12 +6,12 @@ namespace Persistentie {
 
 	public class ReservatieRepository : IReservatieRepository {
 
-		public List<Reservatie> GeefAlleReservaties(bool metVerwijderedeToestellen = false, bool vanafVandaag = false) => ReservatieMapper.GeefAlleReservaties(metVerwijderedeToestellen, vanafVandaag);
+		public List<Reservatie> GeefAlleReservaties(bool vandaagPlusToekomst = false, bool alleenVandaag = false, int klantenNummer = -1) => ReservatieMapper.GeefAlleReservaties(vandaagPlusToekomst, alleenVandaag, klantenNummer);
 
 		public int? GeefBeschikbaarToestelOpTijdsSlot(DateTime dag, string toestelNaam) => ReservatieMapper.GeefBeschikbaarToestelOpTijdsSlot(dag, toestelNaam);
 
-		public void VerwijderReservatie(Reservatie reservatie) => ReservatieMapper.VerwijderReservatie(reservatie);
+		public void VerwijderReservatie(int reservatie) => ReservatieMapper.VerwijderReservatie(reservatie);
 
-		public void VoegReservatieToe(Reservatie reservatie) => ReservatieMapper.VoegReservatieToe(reservatie);
+		public int VoegReservatieToe(Reservatie reservatie) => ReservatieMapper.VoegReservatieToe(reservatie);
 	}
 }

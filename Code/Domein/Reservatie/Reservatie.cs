@@ -8,15 +8,22 @@ namespace Domein {
 		public Klant Klant { get; }
 		public TijdsSlot TijdsSlot { get; }
 		public Toestel Toestel { get; }
+		public static int AantalDagenInToekomstReserveren { get; set; } = -1;
 
 		public Reservatie(int? reservatieNummer, Klant klant, TijdsSlot tijdsSlot, Toestel toestel) {
+			if (AantalDagenInToekomstReserveren == -1) throw new ConfigException("DagenInToekomst niet ingesteld in DB");
 			Klant = klant;
 			TijdsSlot = tijdsSlot;
 			Toestel = toestel;
 			ReservatieNummer = reservatieNummer;
 		}
 
-		public override string ToString() => $"{TijdsSlot.StartTijd.ToString("dd/MM/yyyy")} \t\t {TijdsSlot.StartTijd:HH:mm} -> {TijdsSlot.EindTijd:HH:mm} \t\t {Toestel.ToestelType}";
+		public string ToString(bool parsed = false) {
+			if (!parsed) {
+				return $"Id: {ReservatieNummer} Dag: {TijdsSlot.StartTijd.ToString("dd/MM/yyyy")} StartSlot: {TijdsSlot.StartTijd:HH:mm} EindSlot: {TijdsSlot.EindTijd:HH:mm} Toestel: {Toestel.ToestelType}";
+			}
+			return $"{ReservatieNummer}@|@{TijdsSlot.StartTijd.ToString("dd/MM/yyyy")}@|@{TijdsSlot.StartTijd:HH:mm}@|@{TijdsSlot.EindTijd:HH:mm}@|@{Toestel.ToestelType}";
+		}
 
 		public override bool Equals(object obj) {
 			return obj is Reservatie reservatie &&
