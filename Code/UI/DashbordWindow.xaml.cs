@@ -25,7 +25,7 @@ namespace UI {
 
 		private readonly DomeinController domeinController;
 		private List<int> beschikbareUren;
-		private readonly List<ReservatieInfo> reservatieInfo = new();
+		private List<ReservatieInfo> reservatieInfo = new();
 
 		public DashbordWindow(DomeinController _domeincontroller) {
 			domeinController = _domeincontroller;
@@ -220,6 +220,11 @@ namespace UI {
 			ReservatieListBox.ItemsSource = reservatieInfo.OrderByDescending(reservatie => reservatie.Datum).ThenByDescending(reservatie => reservatie.StartTijd).ToList();
 		}
 
+		private void LaadReservatieUitDb() {
+			List<string> reservaties = domeinController.GeefKlantReservaties(true);
+			reservatieInfo = reservaties.Select(r => new ReservatieInfo(r)).ToList();
+		}
+
 		private void EnableVoegToestelToe(object sender, TextChangedEventArgs e) {
 			if (!string.IsNullOrEmpty(ToestelToevoegenTextBox.Text)) {
 				VoegToeBtn.IsEnabled = true;
@@ -232,13 +237,12 @@ namespace UI {
 		}
 
 		private void VerwijderReservatie(object sender, MouseButtonEventArgs e) {
-			if (ReservatieListBox.SelectedItem == null) return;
-
-			var reservatie = ReservatieListBox.SelectedItem as ReservatieInfo;
-			var result = MessageBox.Show($"Ben je zeker?\n\n({reservatie.Id}) - {reservatie.Toestel} (-> {reservatie.StartTijd.ToString("HH:mm")} -> {reservatie.EindTijd.ToString("HH:mm")}", "Opgepast", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+			var reservatie = ((sender as Border).DataContext) as ReservatieInfo;
+			var result = MessageBox.Show($"Ben je zeker?\n\n({reservatie.Id}) - {reservatie.Toestel} {reservatie.StartTijd.ToString("HH:mm")} -> {reservatie.EindTijd.ToString("HH:mm")}", "Opgepast", MessageBoxButton.YesNo, MessageBoxImage.Warning);
 
 			if (result == MessageBoxResult.Yes) {
 				domeinController.VerwijderReservatie(reservatie.Id);
+				LaadReservatieUitDb();
 				LaadReservaties(null, null);
 			}
 		}

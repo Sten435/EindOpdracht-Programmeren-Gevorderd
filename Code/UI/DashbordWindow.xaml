@@ -108,8 +108,8 @@
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
                                                 <StackPanel HorizontalAlignment="Center">
-                                                    <Border CornerRadius="5" Background="{Binding DatumKleur}" HorizontalAlignment="Center" Padding="6 2" MouseEnter="ChangeToVerwijderBtn" MouseLeave="ChangeToVerwijderBtn">
-                                                        <Label FontSize="12" Content="{Binding Status, Mode=OneWay}" Foreground="White" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"  MouseLeftButtonDown="VerwijderReservatie" />
+                                                    <Border CornerRadius="5" Background="{Binding DatumKleur}" HorizontalAlignment="Center" Padding="6 2" MouseEnter="ChangeToVerwijderBtn" MouseLeave="ChangeToVerwijderBtn" MouseLeftButtonDown="VerwijderReservatie">
+                                                        <Label FontSize="12" Content="{Binding Status, Mode=OneWay}" Foreground="White" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
                                                     </Border>
                                                 </StackPanel>
                                             </DataTemplate>
