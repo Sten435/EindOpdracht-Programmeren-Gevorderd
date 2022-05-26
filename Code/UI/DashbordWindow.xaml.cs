@@ -27,6 +27,7 @@ namespace UI {
 		private readonly DomeinController domeinController;
 		private List<int> beschikbareUren;
 		private List<ReservatieInfo> reservatieInfo = new();
+		private List<ToestelInfo> toestelInfo = new();
 
 		public DashbordWindow(DomeinController _domeincontroller) {
 			domeinController = _domeincontroller;
@@ -66,7 +67,7 @@ namespace UI {
 			toestellen.RemoveAll(toestel => toestellenMetReservatie.Contains(toestel));
 			toestellen.AddRange(toestellenMetReservatieModded);
 
-			List<ToestelInfo> toestelInfo = toestellen.Select(t => new ToestelInfo(t)).ToList();
+			toestelInfo = toestellen.Select(t => new ToestelInfo(t)).ToList();
 			toestelInfo = toestelInfo.OrderBy(toes => toes.VerwijderdDisplay).ThenBy(toes => toes.HeeftReservatie).ThenBy(toes => toes.ToestelNaam).ToList();
 			toestelInfo.ForEach(to => AdminListBox.Items.Add(to));
 		}
@@ -109,6 +110,49 @@ namespace UI {
 			DashBordPlaatsTextBox.Content = plaats;
 			DashBordPostcodeTextBox.Content = postcode;
 			DashBordInteressesTextBox.Content = (string.Join(", ", interesses).Trim() != string.Empty) ? string.Join(", ", interesses) : "Geen Interesses";
+		}
+
+		private void SorteerCheckHandler(object sender, RoutedEventArgs e) {
+			AdminListBox.Items.Clear();
+			IOrderedEnumerable<ToestelInfo> toestelInfoOrder = null;
+
+			if (sender != null) {
+				switch ((sender as RadioButton).Name) {
+					case "IdRadio":
+						if ((OplopendSorteerBox.Content as Label).Content.ToString() == "Oplopend")
+							toestelInfoOrder = toestelInfo.OrderBy(toes => toes.ToestelNummer);
+						else
+							toestelInfoOrder = toestelInfo.OrderByDescending(toes => toes.ToestelNummer);
+						break;
+
+					case "ToestelRadio":
+						if ((OplopendSorteerBox.Content as Label).Content.ToString() == "Oplopend")
+							toestelInfoOrder = toestelInfo.OrderBy(toes => toes.ToestelNaam);
+						else
+							toestelInfoOrder = toestelInfo.OrderByDescending(toes => toes.ToestelNaam);
+						break;
+
+					case "BeschikbaarRadio":
+						if ((OplopendSorteerBox.Content as Label).Content.ToString() == "Oplopend")
+							toestelInfoOrder = toestelInfo.OrderBy(toes => toes.InHerstellingDisplay);
+						else
+							toestelInfoOrder = toestelInfo.OrderByDescending(toes => toes.InHerstellingDisplay);
+						break;
+
+					case "StatusRadio":
+						if ((OplopendSorteerBox.Content as Label).Content.ToString() == "Oplopend")
+							toestelInfoOrder = toestelInfo.OrderBy(toes => toes.VerwijderdDisplay);
+						else
+							toestelInfoOrder = toestelInfo.OrderByDescending(toes => toes.VerwijderdDisplay);
+						break;
+				}
+			}
+
+			toestelInfo = toestelInfoOrder.ThenBy(toes => toes.VerwijderdDisplay)
+											.ThenBy(toes => toes.HeeftReservatie)
+											.ThenBy(toes => toes.ToestelNaam).ToList();
+
+			toestelInfo.ForEach(to => AdminListBox.Items.Add(to));
 		}
 
 		private async void ToestelGekozen(object sender, SelectionChangedEventArgs e) {
@@ -317,6 +361,22 @@ namespace UI {
 				label.Content = $"{content}";
 				border.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString(contentKleur));
 			}
+		}
+
+		private void SorteerOrderBox(object sender, RoutedEventArgs e) {
+			if ((OplopendSorteerBox.Content as Label).Content.ToString() == "Aflopend") {
+				(OplopendSorteerBox.Content as Label).Content = "Oplopend";
+				OplopendSorteerBox.IsChecked = true;
+			}
+			else {
+				(OplopendSorteerBox.Content as Label).Content = "Aflopend";
+				OplopendSorteerBox.IsChecked = true;
+			}
+
+			IdRadio.IsChecked = false;
+			ToestelRadio.IsChecked = false;
+			BeschikbaarRadio.IsChecked = false;
+			StatusRadio.IsChecked = false;
 		}
 	}
 }

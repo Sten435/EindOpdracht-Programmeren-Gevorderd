@@ -41,57 +41,57 @@ namespace UI {
 			this.DataContext = this;
 		}
 
-		private string _voornaamTextBoxPlaceholder = "Voornaam";
-		public string VoornaamTextBoxPlaceholder { get => _voornaamTextBoxPlaceholder; set { _voornaamTextBoxPlaceholder = value; } }
+		//private string _voornaamTextBoxPlaceholder = "Voornaam";
+		//public string VoornaamTextBoxPlaceholder { get => _voornaamTextBoxPlaceholder; set { _voornaamTextBoxPlaceholder = value; } }
 
-		private string _achternaamTextBoxPlaceholder = "Achternaam";
-		public string AchternaamTextBoxPlaceholder { get => _achternaamTextBoxPlaceholder; set { _achternaamTextBoxPlaceholder = value; } }
+		//private string _achternaamTextBoxPlaceholder = "Achternaam";
+		//public string AchternaamTextBoxPlaceholder { get => _achternaamTextBoxPlaceholder; set { _achternaamTextBoxPlaceholder = value; } }
 
-		private string _emailTextBoxPlaceholder = "Email";
-		public string EmailTextBoxPlaceholder { get => _emailTextBoxPlaceholder; set { _emailTextBoxPlaceholder = value; } }
+		//private string _emailTextBoxPlaceholder = "Email";
+		//public string EmailTextBoxPlaceholder { get => _emailTextBoxPlaceholder; set { _emailTextBoxPlaceholder = value; } }
 
-		private string _geboorteDatumTextBoxPlaceholder = $"{DateTime.Now.Day}/{DateTime.Now.Month}/{DateTime.Now.Year}";
-		public string GeboorteDatumTextBoxPlaceholder { get => _geboorteDatumTextBoxPlaceholder; set { _geboorteDatumTextBoxPlaceholder = value; } }
+		//private string _geboorteDatumTextBoxPlaceholder = $"{DateTime.Now.Day}/{DateTime.Now.Month}/{DateTime.Now.Year}";
+		//public string GeboorteDatumTextBoxPlaceholder { get => _geboorteDatumTextBoxPlaceholder; set { _geboorteDatumTextBoxPlaceholder = value; } }
 
-		private string _straatTextBoxPlaceholder = "Straat";
-		public string StraatTextBoxPlaceholder { get => _straatTextBoxPlaceholder; set { _straatTextBoxPlaceholder = value; } }
+		//private string _straatTextBoxPlaceholder = "Straat";
+		//public string StraatTextBoxPlaceholder { get => _straatTextBoxPlaceholder; set { _straatTextBoxPlaceholder = value; } }
 
-		private string _huisnummerTextBoxPlaceholder = "Huisnummer";
-		public string HuisnummerTextBoxPlaceholder { get => _huisnummerTextBoxPlaceholder; set { _huisnummerTextBoxPlaceholder = value; } }
+		//private string _huisnummerTextBoxPlaceholder = "Huisnummer";
+		//public string HuisnummerTextBoxPlaceholder { get => _huisnummerTextBoxPlaceholder; set { _huisnummerTextBoxPlaceholder = value; } }
 
-		private string _plaatsTextBoxPlaceholder = "Plaats";
-		public string PlaatsTextBoxPlaceholder { get => _plaatsTextBoxPlaceholder; set { _plaatsTextBoxPlaceholder = value; } }
+		//private string _plaatsTextBoxPlaceholder = "Plaats";
+		//public string PlaatsTextBoxPlaceholder { get => _plaatsTextBoxPlaceholder; set { _plaatsTextBoxPlaceholder = value; } }
 
-		private string _postcodeTextBoxPlaceholder = "Postcode";
-		public string PostcodeTextBoxPlaceholder { get => _postcodeTextBoxPlaceholder; set { _postcodeTextBoxPlaceholder = value; } }
+		//private string _postcodeTextBoxPlaceholder = "Postcode";
+		//public string PostcodeTextBoxPlaceholder { get => _postcodeTextBoxPlaceholder; set { _postcodeTextBoxPlaceholder = value; } }
 
-		private void AchternaamTextBox_GotFocus(object sender, RoutedEventArgs e) {
-			SetTextBoxPlaceholder(AchternaamTextBox, AchternaamTextBoxPlaceholder);
-		}
+		//private void AchternaamTextBox_GotFocus(object sender, RoutedEventArgs e) {
+		//	SetTextBoxPlaceholder(AchternaamTextBox, AchternaamTextBoxPlaceholder);
+		//}
 
-		private void EmailTextBox_GotFocus(object sender, RoutedEventArgs e) {
-			SetTextBoxPlaceholder(EmailTextBox, EmailTextBoxPlaceholder);
-		}
+		//private void EmailTextBox_GotFocus(object sender, RoutedEventArgs e) {
+		//	SetTextBoxPlaceholder(EmailTextBox, EmailTextBoxPlaceholder);
+		//}
 
-		private void VoornaamTextBox_GotFocus(object sender, RoutedEventArgs e) {
-			SetTextBoxPlaceholder(VoornaamTextBox, VoornaamTextBoxPlaceholder);
-		}
+		//private void VoornaamTextBox_GotFocus(object sender, RoutedEventArgs e) {
+		//	SetTextBoxPlaceholder(VoornaamTextBox, VoornaamTextBoxPlaceholder);
+		//}
 
-		private void HuisnummerTextBox_GotFocus(object sender, RoutedEventArgs e) {
-			SetTextBoxPlaceholder(HuisnummerTextBox, HuisnummerTextBoxPlaceholder);
-		}
+		//private void HuisnummerTextBox_GotFocus(object sender, RoutedEventArgs e) {
+		//	SetTextBoxPlaceholder(HuisnummerTextBox, HuisnummerTextBoxPlaceholder);
+		//}
 
-		private void StraatTextBox_GotFocus(object sender, RoutedEventArgs e) {
-			SetTextBoxPlaceholder(StraatnaamTextBox, StraatTextBoxPlaceholder);
-		}
+		//private void StraatTextBox_GotFocus(object sender, RoutedEventArgs e) {
+		//	SetTextBoxPlaceholder(StraatnaamTextBox, StraatTextBoxPlaceholder);
+		//}
 
-		private void PlaatsTextBox_GotFocus(object sender, RoutedEventArgs e) {
-			SetTextBoxPlaceholder(PlaatsTextBox, PlaatsTextBoxPlaceholder);
-		}
+		//private void PlaatsTextBox_GotFocus(object sender, RoutedEventArgs e) {
+		//	SetTextBoxPlaceholder(PlaatsTextBox, PlaatsTextBoxPlaceholder);
+		//}
 
-		private void PostcodeTextBox_GotFocus(object sender, RoutedEventArgs e) {
-			SetTextBoxPlaceholder(PostcodeTextBox, PostcodeTextBoxPlaceholder);
-		}
+		//private void PostcodeTextBox_GotFocus(object sender, RoutedEventArgs e) {
+		//	SetTextBoxPlaceholder(PostcodeTextBox, PostcodeTextBoxPlaceholder);
+		//}
 
 		private void SetTextBoxPlaceholder(TextBox textBox, string value) {
 			if (textBox.Text.Trim() == string.Empty)
@@ -108,21 +108,21 @@ namespace UI {
 			if (!isGeboorteDatumOk) errorString = $"GeboorteDatum is niet in het juiste formaat.\n B.v. {DateTime.Now.Day}/{ DateTime.Now.Month}/{ DateTime.Now.Year}\n\n";
 
 			input = VoornaamTextBox.Text.Trim();
-			if (!string.IsNullOrEmpty(input) && input.Length > 2 && input != VoornaamTextBoxPlaceholder) {
+			if (!string.IsNullOrEmpty(input) && input.Length > 2) {
 				voornaam = input;
 			} else if (input.Length <= 2) {
 				errorString += "Voornaam moet langer dan 2 characters zijn.\n\n";
 			} else errorString += "Voornaam mag niet leeg zijn.\n\n";
 
 			input = AchternaamTextBox.Text.Trim();
-			if (!string.IsNullOrEmpty(input) && input.Length > 2 && input != AchternaamTextBoxPlaceholder) {
+			if (!string.IsNullOrEmpty(input) && input.Length > 2) {
 				achternaam = input;
 			} else if (input.Length <= 2) {
 				errorString += "Achternaam moet langer dan 2 characters zijn.\n\n";
 			} else errorString += "Achternaam mag niet leeg zijn.\n\n";
 
 			input = EmailTextBox.Text.Trim();
-			if (!string.IsNullOrEmpty(input) && input.Contains("@") && input != EmailTextBoxPlaceholder) {
+			if (!string.IsNullOrEmpty(input) && input.Contains("@")) {
 				email = input;
 			} else if (!input.Contains("@")) {
 				errorString += "Email is niet geldig.\n\n";
@@ -163,26 +163,26 @@ namespace UI {
 			errorString = string.Empty;
 
 			input = HuisnummerTextBox.Text.Trim();
-			if (!string.IsNullOrEmpty(input) && input.Length < 6 && input != HuisnummerTextBoxPlaceholder) {
+			if (!string.IsNullOrEmpty(input) && input.Length < 6) {
 				huisnummer = input;
 			} else errorString += "Huis nummer mag niet leeg zijn.\n\n";
 
 			input = StraatnaamTextBox.Text.Trim();
-			if (!string.IsNullOrEmpty(input) && input.Length > 3 && input != StraatTextBoxPlaceholder) {
+			if (!string.IsNullOrEmpty(input) && input.Length > 3) {
 				straat = input;
 			} else if (input.Length <= 3) {
 				errorString += "Straat naam moet langer dan 3 characters zijn.\n\n";
 			} else errorString += "Straat naam mag niet leeg zijn.\n\n";
 
 			input = PlaatsTextBox.Text.Trim();
-			if (!string.IsNullOrEmpty(input) && input.Length > 3 && input != PlaatsTextBoxPlaceholder) {
+			if (!string.IsNullOrEmpty(input) && input.Length > 3) {
 				plaats = input;
 			} else if (input.Length <= 3) {
 				errorString += "Plaats moet langer dan 3 characters zijn.\n\n";
 			} else errorString += "Plaats mag niet leeg zijn.\n\n";
 
 			input = PostcodeTextBox.Text.Trim();
-			if (!string.IsNullOrEmpty(input) && int.TryParse(input, out int parsed) && input != PostcodeTextBoxPlaceholder) {
+			if (!string.IsNullOrEmpty(input) && int.TryParse(input, out int parsed)) {
 				postcode = parsed;
 			} else if (string.IsNullOrEmpty(input)) {
 				errorString += "Postcode mag niet leeg zijn.\n\n";

@@ -6,7 +6,7 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:local="clr-namespace:UI"
         mc:Ignorable="d"
-        Title="Registreer" Padding="40" WindowStartupLocation="CenterScreen" Icon="/Assets/Images/LogoWindows.png" Width="874" Height="642">
+        Title="Registreer" Padding="40" WindowStartupLocation="CenterScreen" Icon="/Assets/Images/LogoWindows.png" MinWidth="874" Width="874" MinHeight="720" Height="720">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*"/>
@@ -19,25 +19,25 @@
             <DockPanel Margin="20 25 20 0">
                 <Image Source="/Assets/Images/Voornaam.png" Width="30" Margin="0 5 5 0"/>
                 <Border BorderThickness="0,0,0,1" BorderBrush="#CFCECF">
-                    <TextBox x:Name="VoornaamTextBox" FontSize="20" Text="{Binding VoornaamTextBoxPlaceholder, Mode=OneWay}" Foreground="#CFCECF" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Padding="0 4 0 0" GotFocus="VoornaamTextBox_GotFocus" LostFocus="VoornaamTextBox_GotFocus"/>
+                    <TextBox x:Name="VoornaamTextBox" FontSize="20" materialDesign:HintAssist.Hint="Voornaam" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Background="Transparent" BorderBrush="Transparent" BorderThickness="0"/>
                 </Border>
             </DockPanel>
             <DockPanel Margin="20 25 20 0">
                 <Image Source="/Assets/Images/Achternaam.png" Width="30" Margin="0 5 5 0"/>
                 <Border BorderThickness="0,0,0,1" BorderBrush="#CFCECF">
-                    <TextBox x:Name="AchternaamTextBox" FontSize="20" Text="{Binding AchternaamTextBoxPlaceholder, Mode=OneWay}" Foreground="#CFCECF" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Padding="0 4 0 0" GotFocus="AchternaamTextBox_GotFocus" LostFocus="AchternaamTextBox_GotFocus"/>
+                    <TextBox x:Name="AchternaamTextBox" FontSize="20" materialDesign:HintAssist.Hint="Achternaam" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Background="Transparent" BorderBrush="Transparent" BorderThickness="0"/>
                 </Border>
             </DockPanel>
             <DockPanel Margin="20 25 20 0">
                 <Image Source="/Assets/Images/Datum.png" Width="30" Margin="0 5 5 0"/>
                 <Border BorderThickness="0,0,0,1" BorderBrush="#CFCECF">
-                    <TextBox x:Name="GeboorteDatumTextBox" FontSize="20" Text="{Binding GeboorteDatumTextBoxPlaceholder, Mode=OneWay}" Foreground="#CFCECF" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Padding="0 4 0 0" GotFocus="AchternaamTextBox_GotFocus" LostFocus="AchternaamTextBox_GotFocus" PreviewTextInput="GeboorteDatumCheck"/>
+                    <TextBox x:Name="GeboorteDatumTextBox" FontSize="20" materialDesign:HintAssist.Hint="GeboorteDatum" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" PreviewTextInput="GeboorteDatumCheck"/>
                 </Border>
             </DockPanel>
             <DockPanel Margin="20 25 20 0">
                 <Image Source="/Assets/Images/Email.png" Width="30" Margin="0 5 5 0"/>
                 <Border BorderThickness="0,0,0,1" BorderBrush="#CFCECF">
-                    <TextBox x:Name="EmailTextBox" FontSize="20" Text="{Binding EmailTextBoxPlaceholder, Mode=OneWay}" Foreground="#CFCECF" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Padding="0 4 0 0" GotFocus="EmailTextBox_GotFocus" LostFocus="EmailTextBox_GotFocus"/>
+                    <TextBox x:Name="EmailTextBox" FontSize="20" materialDesign:HintAssist.Hint="Email" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Background="Transparent" BorderBrush="Transparent" BorderThickness="0"/>
                 </Border>
             </DockPanel>
             <DockPanel Margin="20 25 20 0">
@@ -81,25 +81,25 @@
             <DockPanel Margin="20 25 20 0">
                 <Image Source="/Assets/Images/Huisnummer.png" Width="30" Margin="0 7 5 0"/>
                 <Border BorderThickness="0,0,0,1" BorderBrush="#CFCECF">
-                    <TextBox x:Name="HuisnummerTextBox" FontSize="20" Text="{Binding HuisnummerTextBoxPlaceholder, Mode=OneWay}" Foreground="#CFCECF" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Padding="0 4 0 0" GotFocus="HuisnummerTextBox_GotFocus" LostFocus="HuisnummerTextBox_GotFocus"/>
+                    <TextBox x:Name="HuisnummerTextBox" materialDesign:HintAssist.Hint="Huisnummer" Style="{StaticResource MaterialDesignFloatingHintTextBox}" FontSize="20" Background="Transparent" BorderBrush="Transparent" BorderThickness="0"/>
                 </Border>
             </DockPanel>
             <DockPanel Margin="20 25 20 0">
                 <Image Source="/Assets/Images/Straat.png" Width="30" Margin="0 6 5 0"/>
                 <Border BorderThickness="0,0,0,1" BorderBrush="#CFCECF">
-                    <TextBox x:Name="StraatnaamTextBox" FontSize="20" Text="{Binding StraatTextBoxPlaceholder, Mode=OneWay}" Foreground="#CFCECF" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Padding="0 4 0 0" GotFocus="StraatTextBox_GotFocus" LostFocus="StraatTextBox_GotFocus"/>
+                    <TextBox x:Name="StraatnaamTextBox" materialDesign:HintAssist.Hint="Straatnaam" Style="{StaticResource MaterialDesignFloatingHintTextBox}" FontSize="20" Background="Transparent" BorderBrush="Transparent" BorderThickness="0"/>
                 </Border>
             </DockPanel>
             <DockPanel Margin="20 25 20 0">
                 <Image Source="/Assets/Images/Plaats.png" Width="30" Margin="0 7 5 0"/>
                 <Border BorderThickness="0,0,0,1" BorderBrush="#CFCECF">
-                    <TextBox x:Name="PlaatsTextBox" FontSize="20" Text="{Binding PlaatsTextBoxPlaceholder, Mode=OneWay}" Foreground="#CFCECF" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Padding="0 4 0 0" GotFocus="PlaatsTextBox_GotFocus" LostFocus="PlaatsTextBox_GotFocus"/>
+                    <TextBox x:Name="PlaatsTextBox" FontSize="20" materialDesign:HintAssist.Hint="Plaats" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Background="Transparent" BorderBrush="Transparent" BorderThickness="0"/>
                 </Border>
             </DockPanel>
             <DockPanel Margin="20 25 20 0">
                 <Image Source="/Assets/Images/Postcode.png" Width="30" Margin="0 2 5 0"/>
                 <Border BorderThickness="0,0,0,1" BorderBrush="#CFCECF">
-                    <TextBox x:Name="PostcodeTextBox" FontSize="20" Text="{Binding PostcodeTextBoxPlaceholder, Mode=OneWay}" Foreground="#CFCECF" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Padding="0 4 0 0" GotFocus="PostcodeTextBox_GotFocus" LostFocus="PostcodeTextBox_GotFocus" PreviewTextInput="PostCodeCheck"/>
+                    <TextBox x:Name="PostcodeTextBox" materialDesign:HintAssist.Hint="Postcode" Style="{StaticResource MaterialDesignFloatingHintTextBox}" FontSize="20" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" PreviewTextInput="PostCodeCheck"/>
                 </Border>
             </DockPanel>
             <Button Height="45" Width="150" MinWidth="100" FontSize="24" x:Name="RegistreerButton" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" Background="#FFED5959" Foreground="GhostWhite" BorderBrush="Transparent" BorderThickness="0" Padding="0 -4 0 0" Margin="20 30 20 0" Click="RegistreerKlant">

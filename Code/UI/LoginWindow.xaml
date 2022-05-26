@@ -24,8 +24,7 @@
             <DockPanel Margin="20 25 20 0">
                 <Image Source="/Assets/Images/Email.png" Width="30" Margin="0 5 5 0"/>
                 <Border BorderThickness="0,0,0,1" BorderBrush="#CFCECF">
-                    <TextBox x:Name="emailTextBox" FontSize="20" Text="{Binding EmailTextBoxPlaceholder, Mode=OneWay}" Foreground="#FF757273" Padding="0 4 0 0" GotFocus="EmailTextBox_GotFocus" LostFocus="EmailTextBox_GotFocus">
-                    </TextBox>
+                    <TextBox x:Name="emailTextBox" materialDesign:HintAssist.Hint="Email" Style="{StaticResource MaterialDesignFloatingHintTextBox}" FontSize="20" Foreground="#FF757273" />
                 </Border>
             </DockPanel>
             <Button materialDesign:ButtonAssist.CornerRadius="25" Content="Log In" Height="45" Width="150" MinWidth="100" IsDefault="True" FontSize="24" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" Background="#FFED5959" Foreground="GhostWhite" BorderBrush="Transparent"  BorderThickness="0" Margin="20 30 20 0" Click="LoginButton">

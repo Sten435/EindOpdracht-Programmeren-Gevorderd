@@ -41,6 +41,39 @@
                             <TextBox x:Name="ToestelToevoegenTextBox" FontSize="20" materialDesign:HintAssist.Hint="Toestel Naam" Style="{StaticResource MaterialDesignFloatingHintTextBox}" VerticalAlignment="Center" Margin="24 0" TextChanged="EnableVoegToestelToe" />
                             <Button materialDesign:ButtonAssist.CornerRadius="8" x:Name="VoegToeBtn" Content="Voeg Toe" IsEnabled="False" Height="45" Width="155" FontSize="24" FontWeight="Bold" Foreground="White" Click="VoegToestelToe" Margin=" 0 20" Padding="0 0 0 4"/>
                         </StackPanel>
+                        <StackPanel DockPanel.Dock="Right">
+                            <Border BorderBrush="#26757273" BorderThickness="0 0 0 1" Height="68" VerticalAlignment="Center">
+                                <Label Content="Sorteer" FontSize="24" FontWeight="Bold" Foreground="#FF757273" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Center" HorizontalContentAlignment="Center" />
+                            </Border>
+                            <StackPanel Margin="25 0 15 0" x:Name="SorteerSide">
+                                <StackPanel.Resources>
+                                    <Style TargetType="RadioButton">
+                                        <Setter Property="Margin" Value="0 10" />
+                                        <Setter Property="VerticalContentAlignment" Value="Center" />
+                                        <EventSetter Event="Checked" Handler="SorteerCheckHandler" />
+                                    </Style>
+                                </StackPanel.Resources>
+                                <RibbonRadioButton Content="qfsds" Foreground="Blue" />
+                                <RadioButton x:Name="IdRadio">
+                                    <Label Content="#" FontSize="16" FontWeight="Bold" Foreground="#FF757273"/>
+                                </RadioButton>
+                                <RadioButton x:Name="ToestelRadio">
+                                    <Label Content="Toestel" FontSize="16" FontWeight="Bold" Foreground="#FF757273"/>
+                                </RadioButton>
+                                <RadioButton x:Name="BeschikbaarRadio">
+                                    <Label Content="Beschikbaar" FontSize="16" FontWeight="Bold" Foreground="#FF757273"/>
+                                </RadioButton>
+                                <RadioButton x:Name="StatusRadio">
+                                    <Label Content="Status" FontSize="16" FontWeight="Bold" Foreground="#FF757273"/>
+                                </RadioButton>
+                                <CheckBox x:Name="OplopendSorteerBox" IsChecked="True" Click="SorteerOrderBox">
+                                    <Label Content="Oplopend" FontSize="16" FontWeight="Bold" Foreground="#FF757273"/>
+                                </CheckBox>
+                            </StackPanel>
+                        </StackPanel>
+                        <StackPanel DockPanel.Dock="Right">
+                            <Rectangle Fill="#26757273" Width="2" Height="{Binding Height}" />
+                        </StackPanel>
                         <ListView x:Name="AdminListBox" Margin="0 10 0 0">
                             <ListView.View>
                                 <GridView>
@@ -223,6 +256,7 @@
                                         </GridViewColumn>
                                     </GridView>
                                 </ListView.View>
+
                             </ListView>
                             <Label Content="Geen reservaties te bespeuren..." x:Name="NogGeenReservatieDockPl" Visibility="Collapsed" Grid.Column="0" FontSize="28" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="#FF757273"/>
                         </Grid>
