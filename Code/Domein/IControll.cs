@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Domein {
 	public interface IControll {
-		public List<string> GeefKlantReservaties(bool parsed = false);
+		public HashSet<string> GeefKlantReservaties(bool parsed = false);
 		public string VoegReservatieToe(DateTime tijdsSlotDatum, int toestelId);
 		public (List<int>, bool) GeefBeschikbareReservatieUren(DateTime dag, string naam);
 		public int? GeefEenVrijToestelIdOpNaam(string toestelNaam, DateTime tijdsSlot);
@@ -18,7 +18,7 @@ namespace Domein {
 		public void Logout();
 
 		public List<string> GeefBeschikbareToestellen();
-		public List<string> GeefAlleToestellen();
+		public List<string> GeefAlleToestellen(bool metVerwijderde = false);
 		public List<string> GeefToestellenZonderReservatie();
 		public int VoegNieuwToestelToe(string naam);
 		public void VerwijderToestelOpId(int toestelId);

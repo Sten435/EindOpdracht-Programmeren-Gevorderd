@@ -11,7 +11,8 @@ namespace UI {
 		public string ToestelNaam { get; set; }
 		public bool InHerstelling { get; set; }
 		public bool Verwijderd { get; set; }
-		public Visibility VerwijderdOfNiet { get; set; } = Visibility.Visible;
+		public Visibility HeeftReservatieOfNiet { get; set; }
+		public bool HeeftReservatie { get; set; } = false;
 		public string InHerstellingDisplay { get; set; }
 		public string VerwijderdDisplay { get; set; }
 
@@ -23,6 +24,9 @@ namespace UI {
 			InHerstelling = bool.Parse(parsedToestel[2]);
 			Verwijderd = bool.Parse(parsedToestel[3]);
 
+			if (parsedToestel.Length == 5)
+				HeeftReservatie = bool.Parse(parsedToestel[4]);
+
 			if (InHerstelling)
 				InHerstellingDisplay = "Nee";
 			else
@@ -30,9 +34,13 @@ namespace UI {
 
 			if (Verwijderd) {
 				VerwijderdDisplay = "Verwijderd";
-				VerwijderdOfNiet = Visibility.Collapsed;
 			} else
 				VerwijderdDisplay = "Actief";
+
+			if (!HeeftReservatie && !Verwijderd) {
+				HeeftReservatieOfNiet = Visibility.Visible;
+			} else
+				HeeftReservatieOfNiet = Visibility.Hidden;
 		}
 	}
 }

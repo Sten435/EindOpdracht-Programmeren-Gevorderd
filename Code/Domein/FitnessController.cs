@@ -11,6 +11,8 @@ namespace Domein {
 		private IKlantenRepository _klantenRepo;
 		private IToestelRepository _toestselRepo;
 
+		private HashSet<Reservatie> klantReservaties = new();
+
 		public string KlantOmschrijving {
 			get {
 				if (_klant == null)
@@ -41,19 +43,17 @@ namespace Domein {
 		}
 
 		private List<DateTime> GeefAlleTijdSloten(string naam, DateTime dag) {
-			return _reservatieRepo.GeefReservatiesPerToestel(naam, dag)
-			.Select(r => r.TijdsSlot.StartTijd).ToList();
+			return _reservatieRepo.GeefReservatiesPerToestel(naam, dag);
 		}
 
 		private Toestel GeefToestelOpId(int toestelId) {
 			return _toestselRepo.GeefToestel(toestelId);
 		}
 
-		public List<string> GeefKlantReservaties(bool parsed) {
+		public HashSet<string> GeefKlantReservaties(bool parsed) {
 			try {
 				return _reservatieRepo.GeefAlleReservaties(klantenNummer: (int)_klant.KlantenNummer).OrderByDescending(r => r.TijdsSlot.StartTijd.Date)
-				.Select(r => r.ToString(parsed))
-				.ToList();
+				.Select(r => r.ToString(parsed)).ToHashSet();
 			} catch (Exception) {
 				throw new KlantenExeption("Klant is niet ingevuld");
 			}
@@ -68,15 +68,20 @@ namespace Domein {
 
 			Reservatie reservatie = new(null, _klant, new TijdsSlot(tijdsSlotDatum), GeefToestelOpId(toestelId));
 			_reservatieRepo.VoegReservatieToe(reservatie);
+			UpdateklantReservaties();
 			return reservatie.ToString(true);
 		}
 
 		public void VerwijderReservatie(int reservatieNummer) {
 			_reservatieRepo.VerwijderReservatie(reservatieNummer);
+			UpdateklantReservaties();
+		}
+
+		public void UpdateklantReservaties() {
+			klantReservaties = _reservatieRepo.GeefAlleReservaties(vandaagPlusToekomst: true, klantenNummer: (int)_klant.KlantenNummer);
 		}
 
 		public (List<int>, bool) GeefBeschikbareReservatieUren(DateTime dag, string naam) {
-			List<Reservatie> klantReservaties = _reservatieRepo.GeefAlleReservaties(vandaagPlusToekomst: true, klantenNummer: (int)_klant.KlantenNummer);
 			List<Reservatie> klantReservatiesDag = klantReservaties.Where(r => r.TijdsSlot.StartTijd.Day == dag.Day).ToList();
 			if (klantReservatiesDag.Count == 4) return (new List<int>(), false);
 
@@ -105,24 +110,18 @@ namespace Domein {
 					urenLijstNaFilter.Add(uur);
 				}
 
-				if (klantReservatiesMetGeselecteerdeToestel.Contains(tijdsSlot)) { // Als jij al een reservatie hebt op dit tijdSlot dan moet mag dit niet bij de lijst.
-					urenLijstNaFilter.Remove(uur);
-				}
-
 				IEnumerable<DateTime> klantReservatiesStartTijdenLijstDag = klantReservatiesDag.Select(reservatie => reservatie.TijdsSlot.StartTijd);
 
-				if (klantReservatiesStartTijdenLijstDag.Contains(tijdsSlot.AddHours(-1)) && klantReservatiesStartTijdenLijstDag.Contains(tijdsSlot.AddHours(-2)) || klantReservatiesStartTijdenLijstDag.Contains(tijdsSlot.AddHours(1)) && klantReservatiesStartTijdenLijstDag.Contains(tijdsSlot.AddHours(2))) {
+				if (tijdsSlot < DateTime.Now || klantReservatiesStartTijdenLijstDag.Contains(tijdsSlot.AddHours(-1)) && klantReservatiesStartTijdenLijstDag.Contains(tijdsSlot.AddHours(-2)) || klantReservatiesStartTijdenLijstDag.Contains(tijdsSlot.AddHours(1)) && klantReservatiesStartTijdenLijstDag.Contains(tijdsSlot.AddHours(2)) || klantReservatiesMetGeselecteerdeToestel.Contains(tijdsSlot)) {
 					urenLijstNaFilter.Remove(uur);
 				}
-
-				if (tijdsSlot < DateTime.Now) urenLijstNaFilter.Remove(uur);
 			}
 
 			return (urenLijstNaFilter.ToList(), true);
 		}
 
-		public IEnumerable<DateTime> GeefBeschikbareDagen() {
-			List<Reservatie> klantReservaties = _reservatieRepo.GeefAlleReservaties(vandaagPlusToekomst: true, klantenNummer: (int)_klant.KlantenNummer);
+		public List<DateTime> GeefBeschikbareDagen() {
+			List<DateTime> beschikbaarLijst = new();
 
 			for (int i = 0; i <= Reservatie.AantalDagenInToekomstReserveren; i++) {
 				DateTime dag = DateTime.Now.AddDays(i);
@@ -130,8 +129,9 @@ namespace Domein {
 				List<Reservatie> klantReservatiesDag = klantReservaties.Where(r => r.TijdsSlot.StartTijd.Day == dag.Day).ToList();
 				if (klantReservatiesDag.Count == 4) continue;
 
-				yield return dag;
+				beschikbaarLijst.Add(dag);
 			}
+			return beschikbaarLijst;
 		}
 
 		public int? GeefEenVrijToestelIdOpNaam(string toestelNaam, DateTime tijdsSlot) {
@@ -185,8 +185,8 @@ namespace Domein {
 					.ToList();
 		}
 
-		public List<string> GeefAlleToestellen() {
-			return _toestselRepo.GeefAlleToestellen()
+		public List<string> GeefAlleToestellen(bool metVerwijderde = false) {
+			return _toestselRepo.GeefAlleToestellen(metVerwijderde)
 					.Select(t => t.ToString(parsed: true))
 					.ToList();
 		}

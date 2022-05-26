@@ -7,8 +7,8 @@ namespace Persistentie {
 
 	public static class ReservatieMapper {
 
-		public static List<Reservatie> GeefAlleReservaties(bool vandaagPlusToekomst = false, bool alleenVandaag = false, int klantenNummer = -1) {
-			List<Reservatie> reservaties = new();
+		public static HashSet<Reservatie> GeefAlleReservaties(bool vandaagPlusToekomst = false, bool alleenVandaag = false, int klantenNummer = -1) {
+			HashSet<Reservatie> reservaties = new();
 
 			try {
 				using SqlConnection connection = new(ConfigRepository.ConnectionString);
@@ -21,7 +21,7 @@ namespace Persistentie {
 					klantenNummerTussenVoegsel = $"AND Klant_KlantenNummer = {klantenNummer}";
 
 				if (vandaagPlusToekomst)
-					command = new($"SELECT * FROM Reservaties r join TijdSloten ts on ts.Reservatie_ReservatieNummer = ReservatieNummer WHERE DAY(StartTijd) >= DAY(GETDATE()) AND MONTH(StartTijd) >= MONTH(GETDATE()) AND YEAR(StartTijd) >= YEAR(GETDATE()) {klantenNummerTussenVoegsel} ORDER BY ReservatieNummer ASC;", connection);
+					command = new($"SELECT ReservatieNummer, Klant_KlantenNummer, Toestel_IdentificatieCode, StartTijd, EindTijd FROM Reservaties r join TijdSloten ts on ts.Reservatie_ReservatieNummer = ReservatieNummer WHERE DAY(StartTijd) >= DAY(GETDATE()) AND MONTH(StartTijd) >= MONTH(GETDATE()) AND YEAR(StartTijd) >= YEAR(GETDATE()) {klantenNummerTussenVoegsel} ORDER BY ReservatieNummer ASC;", connection);
 				else if (alleenVandaag)
 					command = new($"SELECT * FROM Reservaties r join TijdSloten ts on ts.Reservatie_ReservatieNummer = ReservatieNummer WHERE DAY(StartTijd) = DAY(GETDATE()) AND MONTH(StartTijd) = MONTH(GETDATE()) AND YEAR(StartTijd) = YEAR(GETDATE()) {klantenNummerTussenVoegsel} ORDER BY ReservatieNummer ASC;", connection);
 				else
@@ -56,9 +56,9 @@ namespace Persistentie {
 			return reservaties;
 		}
 
-		public static List<Reservatie> GeefReservatiesPerToestel(string naam, DateTime? dag) {
+		public static List<DateTime> GeefReservatiesPerToestel(string naam, DateTime? dag) {
 
-			List<Reservatie> reservaties = new();
+			List<DateTime> startijdLijst = new();
 
 			try {
 				using SqlConnection connection = new(ConfigRepository.ConnectionString);
@@ -67,11 +67,9 @@ namespace Persistentie {
 				SqlCommand command;
 
 				if (dag == null) {
-					command = new($"SELECT * FROM Reservaties r join TijdSloten ts on ts.Reservatie_ReservatieNummer = ReservatieNummer join Toestellen toes on toes.IdentificatieCode = r.Toestel_IdentificatieCode WHERE toes.ToestelType = @Naam ORDER BY ReservatieNummer ASC;", connection);
+					command = new($"SELECT StartTijd FROM Reservaties r join TijdSloten ts on ts.Reservatie_ReservatieNummer = ReservatieNummer join Toestellen toes on toes.IdentificatieCode = r.Toestel_IdentificatieCode WHERE toes.ToestelType = @Naam ORDER BY ReservatieNummer ASC;", connection);
 				} else
-					command = new($"SELECT * FROM Reservaties r join TijdSloten ts on ts.Reservatie_ReservatieNummer = ReservatieNummer join Toestellen toes on toes.IdentificatieCode = r.Toestel_IdentificatieCode WHERE toes.ToestelType = @Naam AND DAY(StartTijd) = DAY(@Dag) AND MONTH(StartTijd) = MONTH(@Dag) AND YEAR(StartTijd) = YEAR(@Dag) ORDER BY ReservatieNummer ASC;", connection);
-
-				Reservatie reservatie;
+					command = new($"SELECT StartTijd FROM Reservaties r join TijdSloten ts on ts.Reservatie_ReservatieNummer = ReservatieNummer join Toestellen toes on toes.IdentificatieCode = r.Toestel_IdentificatieCode WHERE toes.ToestelType = @Naam AND DAY(StartTijd) = DAY(@Dag) AND MONTH(StartTijd) = MONTH(@Dag) AND YEAR(StartTijd) = YEAR(@Dag) ORDER BY ReservatieNummer ASC;", connection);
 
 				if (dag != null) {
 					command.Parameters.AddWithValue("@Dag", dag);
@@ -82,20 +80,8 @@ namespace Persistentie {
 
 				if (reader.HasRows) {
 					while (reader.Read()) {
-						int reservatieNummer = (int)reader["ReservatieNummer"];
-						int _klantenNummer = (int)reader["Klant_KlantenNummer"];
-						int toestelNummer = (int)reader["Toestel_IdentificatieCode"];
 						DateTime startTijd = (DateTime)reader["StartTijd"];
-						DateTime eindTijd = (DateTime)reader["EindTijd"];
-
-						Klant klant = KlantenMapper.GeefKlant(_klantenNummer);
-						Toestel toestel = ToestellenMapper.GeefToestel(toestelNummer);
-						if (toestel != null) {
-							TijdsSlot tijdsSlot = new(startTijd, eindTijd);
-
-							reservatie = new(reservatieNummer, klant, tijdsSlot, toestel);
-							reservaties.Add(reservatie);
-						}
+						startijdLijst.Add(startTijd);
 					}
 				}
 			} catch (SqlException) {
@@ -103,7 +89,7 @@ namespace Persistentie {
 			} catch (Exception) {
 				throw new ReservatieException("(Select) Fout in reservatie Db.");
 			}
-			return reservaties;
+			return startijdLijst;
 		}
 
 		public static int? GeefBeschikbaarToestelOpTijdsSlot(DateTime dag, string toestelNaam) {

@@ -37,18 +37,37 @@ namespace UI {
 			if (domeinController.isAdmin) {
 				IsAdmin = Visibility.Visible;
 				LaadAdminDataInDashBord();
+			} else {
+				AdminItem.Visibility = Visibility.Collapsed;
+				ReservatieItem.IsSelected = true;
 			}
 
-			List<string> reservaties = domeinController.GeefKlantReservaties(true);
+			HashSet<string> reservaties = domeinController.GeefKlantReservaties(true);
+
+			if (reservaties.Count > 0) {
+				ReservatieListBox.Visibility = Visibility.Visible;
+				NogGeenReservatieDockPl.Visibility = Visibility.Collapsed;
+			} else {
+				NogGeenReservatieDockPl.Visibility = Visibility.Visible;
+				ReservatieListBox.Visibility = Visibility.Collapsed;
+			}
+
 			reservatieInfo = reservaties.Select(r => new ReservatieInfo(r)).ToList();
-			UpdateToestelList();
+			LaadReservaties(null, null);
 		}
 
 		private void LaadAdminDataInDashBord() {
 			AdminListBox.Items.Clear();
-			List<string> toestellenRaw = domeinController.GeefToestellenZonderReservatie();
-			List<ToestelInfo> toestelInfo = toestellenRaw.Select(t => new ToestelInfo(t)).ToList();
+			List<string> toestellenZonderReservatie = domeinController.GeefToestellenZonderReservatie();
+			List<string> toestellen = domeinController.GeefAlleToestellen(true);
+			List<string> toestellenMetReservatie = toestellen.Except(toestellenZonderReservatie).ToList();
+			List<string> toestellenMetReservatieModded = toestellenMetReservatie.Select(toestel => $"{toestel}@|@True").ToList();
 
+			toestellen.RemoveAll(toestel => toestellenMetReservatie.Contains(toestel));
+			toestellen.AddRange(toestellenMetReservatieModded);
+
+			List<ToestelInfo> toestelInfo = toestellen.Select(t => new ToestelInfo(t)).ToList();
+			toestelInfo = toestelInfo.OrderBy(toes => toes.VerwijderdDisplay).ThenBy(toes => toes.HeeftReservatie).ThenBy(toes => toes.ToestelNaam).ToList();
 			toestelInfo.ForEach(to => AdminListBox.Items.Add(to));
 		}
 
@@ -92,15 +111,23 @@ namespace UI {
 			DashBordInteressesTextBox.Content = (string.Join(", ", interesses).Trim() != string.Empty) ? string.Join(", ", interesses) : "Geen Interesses";
 		}
 
-		private void ToestelGekozen(object sender, SelectionChangedEventArgs e) {
+		private async void ToestelGekozen(object sender, SelectionChangedEventArgs e) {
 			TijdSlotComboBox.IsEnabled = false;
 			TijdSlotComboBox.Items.Clear();
 			DatumComboBox.Items.Clear();
 
 			if (ToestelComboBox.SelectedIndex != -1) {
 				DatumComboBox.IsEnabled = true;
-				List<DateTime> beschikbareDagen = domeinController.GeefBeschikbareDagen();
-				beschikbareDagen.ForEach(datum => DatumComboBox.Items.Add(datum.ToString("d")));
+				await Task.Run(() => domeinController.UpdateklantReservaties());
+				List<DateTime> beschikbareDagen = await Task.Run(() => domeinController.GeefBeschikbareDagen());
+
+				bool heeftNogGeenVierReservatie = true;
+				beschikbareDagen.ForEach(datum => {
+					(beschikbareUren, heeftNogGeenVierReservatie) = domeinController.GeefBeschikbareReservatieUren(new DateTime(datum.Year, datum.Month, datum.Day, 0, 0, 0), ToestelComboBox.SelectedItem.ToString());
+					if (beschikbareUren.Count != 0) {
+						DatumComboBox.Items.Add(datum.ToString("d"));
+					}
+				});
 			}
 
 			ReservatieButtonKlikbaarMaken(null, null);
@@ -144,7 +171,7 @@ namespace UI {
 				ReservatieButton.IsEnabled = false;
 		}
 
-		private void NieuweReservatieButton(object sender, RoutedEventArgs e) {
+		private async void NieuweReservatieButton(object sender, RoutedEventArgs e) {
 			if (ToestelComboBox.SelectedIndex != -1 && DatumComboBox.SelectedIndex != -1 && TijdSlotComboBox.SelectedIndex != -1) {
 				bool isDatumGoed = DateTime.TryParse(DatumComboBox.SelectedItem.ToString(), out DateTime dag);
 				if (isDatumGoed) {
@@ -157,9 +184,16 @@ namespace UI {
 
 					if (toestelId != null) {
 						ResetKeuze();
-						string reservatie = domeinController.VoegReservatieToe(tijdSlot, (int)toestelId);
+						string reservatie = await Task.Run(() => domeinController.VoegReservatieToe(tijdSlot, (int)toestelId));
 						reservatieInfo.Add(new(reservatie));
 						LaadReservaties(null, null);
+						if (reservatieInfo.Count > 0) {
+							ReservatieListBox.Visibility = Visibility.Visible;
+							NogGeenReservatieDockPl.Visibility = Visibility.Collapsed;
+						} else {
+							NogGeenReservatieDockPl.Visibility = Visibility.Visible;
+							ReservatieListBox.Visibility = Visibility.Collapsed;
+						}
 					} else {
 						MessageBox.Show("Geen toesel gevonden.");
 					}
@@ -173,6 +207,10 @@ namespace UI {
 			ToestelComboBox.SelectedIndex = -1;
 			DatumComboBox.SelectedIndex = -1;
 			TijdSlotComboBox.SelectedIndex = -1;
+
+			ToestelComboBox.Text = ". . .";
+			DatumComboBox.Text = ". . .";
+			TijdSlotComboBox.Text = ". . .";
 		}
 
 		private void VerwijderToestelButton(object sender, RoutedEventArgs e) {
@@ -207,6 +245,7 @@ namespace UI {
 			if (!string.IsNullOrEmpty(toestelNaam)) {
 				ToestelToevoegenTextBox.Text = string.Empty;
 				domeinController.VoegNieuwToestelToe(toestelNaam);
+				VoegToeBtn.IsEnabled = false;
 				LaadAdminDataInDashBord();
 			}
 
@@ -227,7 +266,7 @@ namespace UI {
 		}
 
 		private void LaadReservatieUitDb() {
-			List<string> reservaties = domeinController.GeefKlantReservaties(true);
+			HashSet<string> reservaties = domeinController.GeefKlantReservaties(true);
 			reservatieInfo = reservaties.Select(r => new ReservatieInfo(r)).ToList();
 		}
 
@@ -250,6 +289,14 @@ namespace UI {
 				domeinController.VerwijderReservatie(reservatie.Id);
 				LaadReservatieUitDb();
 				LaadReservaties(null, null);
+
+				if (reservatieInfo.Count > 0) {
+					ReservatieListBox.Visibility = Visibility.Visible;
+					NogGeenReservatieDockPl.Visibility = Visibility.Collapsed;
+				} else {
+					NogGeenReservatieDockPl.Visibility = Visibility.Visible;
+					ReservatieListBox.Visibility = Visibility.Collapsed;
+				}
 			}
 		}
 

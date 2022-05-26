@@ -19,7 +19,9 @@ namespace Domein {
 
 		#region Reservatie
 
-		public List<string> GeefKlantReservaties(bool parsed = false) => fitnessController.GeefKlantReservaties(parsed);
+		public HashSet<string> GeefKlantReservaties(bool parsed = false) => fitnessController.GeefKlantReservaties(parsed);
+
+		public void UpdateklantReservaties() => fitnessController.UpdateklantReservaties();
 
 		public string VoegReservatieToe(DateTime tijdsSlotDatum, int toestelId) => fitnessController.VoegReservatieToe(tijdsSlotDatum, toestelId);
 
@@ -55,11 +57,11 @@ namespace Domein {
 
 		public List<string> GeefToestellenZonderReservatie() => fitnessController.GeefToestellenZonderReservatie();
 
-		public List<string> GeefAlleToestellen() => fitnessController.GeefAlleToestellen();
+		public List<string> GeefAlleToestellen(bool metVerwijderde = false) => fitnessController.GeefAlleToestellen(metVerwijderde);
 
 		public int VoegNieuwToestelToe(string naam) => fitnessController.VoegNieuwToestelToe(naam);
 
-		public List<DateTime> GeefBeschikbareDagen() => fitnessController.GeefBeschikbareDagen().ToList();
+		public List<DateTime> GeefBeschikbareDagen() => fitnessController.GeefBeschikbareDagen();
 
 		public void VerwijderToestelOpId(int toestelId) => fitnessController.VerwijderToestelOpId(toestelId);
 
