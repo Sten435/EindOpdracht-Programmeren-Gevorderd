@@ -44,6 +44,41 @@ namespace Persistentie {
 			return toestellen;
 		}
 
+		public static List<Toestel> GeefAlleBeschikbareToestellenOpNaam(string naam) {
+			List<Toestel> toestellen = new();
+
+			try {
+				using SqlConnection connection = new(ConfigRepository.ConnectionString);
+				connection.Open();
+
+				SqlCommand command;
+
+				command = new("SELECT * FROM Toestellen WHERE Verwijderd = 0 AND InHerstelling = 'False' AND ToestelType = @Naam ORDER BY IdentificatieCode ASC;", connection);
+
+				command.Parameters.AddWithValue("@Naam", naam);
+				using SqlDataReader dataReader = command.ExecuteReader();
+
+				if (dataReader.HasRows) {
+					while (dataReader.Read()) {
+						int identificatieCode = (int)dataReader["IdentificatieCode"];
+						string toestelType = (string)dataReader["ToestelType"];
+						bool inHerstelling = (bool)dataReader["InHerstelling"];
+						bool verwijderd = (bool)dataReader["Verwijderd"];
+
+						Toestel toestel = new(identificatieCode, toestelType, inHerstelling, verwijderd);
+
+						toestellen.Add(toestel);
+					}
+				}
+			} catch (SqlException) {
+				throw new ToestelException("(Select) Fout met query naar toestellen Db.");
+			} catch (Exception) {
+				throw new ToestelException("(Select) Fout in toestellen Db.");
+			}
+
+			return toestellen;
+		}
+
 		public static List<Toestel> GeefToestellenZonderReservatie() {
 			List<Toestel> toestellen = new();
 
@@ -174,24 +209,6 @@ namespace Persistentie {
 				throw new ToestelException("(Delete) Fout met query naar toestellen Db.");
 			} catch (Exception) {
 				throw new ToestelException("(Delete) Fout in toestellen Db.");
-			}
-		}
-
-		public static void UpdateToestelNaam(Toestel huidigToestel) {
-			try {
-				using SqlConnection connection = new(ConfigRepository.ConnectionString);
-				connection.Open();
-
-				SqlCommand command = new("UPDATE Toestellen SET ToestelType = @ToestelType WHERE IdentificatieCode = @IdentificatieCode;", connection);
-
-				command.Parameters.AddWithValue("@IdentificatieCode", huidigToestel.IdentificatieCode);
-				command.Parameters.AddWithValue("@ToestelType", huidigToestel.ToestelType);
-
-				command.ExecuteNonQuery();
-			} catch (SqlException) {
-				throw new ToestelException("(Update Naam) Fout met query naar toestellen Db.");
-			} catch (Exception) {
-				throw new ToestelException("(Update Naam) Fout in toestellen Db.");
 			}
 		}
 

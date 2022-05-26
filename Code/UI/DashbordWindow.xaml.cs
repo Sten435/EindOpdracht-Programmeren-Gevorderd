@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using System.Collections;
 using System.Collections.ObjectModel;
 using System.Reflection;
+using System.Diagnostics;
 
 namespace UI {
 	/// <summary>
@@ -150,8 +151,10 @@ namespace UI {
 					DatumComboBox.IsEnabled = false;
 					int _tijdSlot = beschikbareUren[TijdSlotComboBox.SelectedIndex];
 					string toestelNaam = ToestelComboBox.SelectedItem.ToString();
+
 					DateTime tijdSlot = new DateTime(dag.Year, dag.Month, dag.Day, _tijdSlot, 0, 0);
 					int? toestelId = domeinController.GeefEenVrijToestelIdOpNaam(toestelNaam, tijdSlot);
+
 					if (toestelId != null) {
 						ResetKeuze();
 						string reservatie = domeinController.VoegReservatieToe(tijdSlot, (int)toestelId);

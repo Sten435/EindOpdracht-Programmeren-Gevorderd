@@ -15,16 +15,6 @@ namespace Persistentie {
 
 		public void VerwijderToestel(int toestelId) => ToestellenMapper.VerwijderToestel(toestelId);
 
-		public void UpdateToestelNaamOpId(int toestelId, string toestelNaam) {
-			Toestel huidigToestel = GeefAlleToestellen().Find(t => t.IdentificatieCode == toestelId);
-
-			if (huidigToestel != null) {
-				huidigToestel.ToestelType = toestelNaam;
-
-				ToestellenMapper.UpdateToestelNaam(huidigToestel);
-			}
-		}
-
 		public void ZetToestelInOfUitHerstelling(int toestelId) {
 			Toestel huidigToestel = ToestellenMapper.GeefToestelOpId(toestelId);
 
@@ -33,6 +23,6 @@ namespace Persistentie {
 			else throw new ToestelException("Toestel niet gevonden");
 		}
 
-		public bool GeefToestelHerstelStatusOpId(int toestelId) => GeefAlleToestellen().Find(t => t.IdentificatieCode == toestelId).InHerstelling;
+		public List<Toestel> GeefAlleBeschikbareToestellenOpNaam(string naam) => ToestellenMapper.GeefAlleBeschikbareToestellenOpNaam(naam);
 	}
 }

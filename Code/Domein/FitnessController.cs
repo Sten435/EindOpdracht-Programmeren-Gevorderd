@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -39,9 +40,8 @@ namespace Domein {
 			configRepo.LoadConfig();
 		}
 
-		private List<DateTime> GeefAlleTijdSloten(string naam) {
-			return _reservatieRepo.GeefAlleReservaties()
-			.Where(rv => rv.Toestel.ToestelType.ToLower() == naam.ToLower())
+		private List<DateTime> GeefAlleTijdSloten(string naam, DateTime dag) {
+			return _reservatieRepo.GeefReservatiesPerToestel(naam, dag)
 			.Select(r => r.TijdsSlot.StartTijd).ToList();
 		}
 
@@ -76,62 +76,57 @@ namespace Domein {
 		}
 
 		public (List<int>, bool) GeefBeschikbareReservatieUren(DateTime dag, string naam) {
-			List<Reservatie> reservaties = _reservatieRepo.GeefAlleReservaties(vandaagPlusToekomst: true);
-			List<Reservatie> klantReservaties = reservaties.Where(r => r.Klant.KlantenNummer == _klant.KlantenNummer).ToList();
+			List<Reservatie> klantReservaties = _reservatieRepo.GeefAlleReservaties(vandaagPlusToekomst: true, klantenNummer: (int)_klant.KlantenNummer);
 			List<Reservatie> klantReservatiesDag = klantReservaties.Where(r => r.TijdsSlot.StartTijd.Day == dag.Day).ToList();
 			if (klantReservatiesDag.Count == 4) return (new List<int>(), false);
 
 			List<DateTime> klantReservatiesMetGeselecteerdeToestel = klantReservaties.Where(r => r.Toestel.ToestelType == naam && r.TijdsSlot.StartTijd.Day == dag.Day)
 																					.Select(t => t.TijdsSlot.StartTijd)
 																					.ToList();
-			List<DateTime> gereserveerdeTijdSloten = GeefAlleTijdSloten(naam);
+			List<DateTime> gereserveerdeTijdSloten = GeefAlleTijdSloten(naam, dag);
 
 			int beginUur = TijdsSlot.LowerBoundUurReservatie;
 			int eindUur = TijdsSlot.UpperBoundUurReservatie;
 
 			List<int> beschikbareUrenFitness = Enumerable.Range(beginUur, (eindUur - beginUur) + 1).ToList();
-			List<int> urenNaFilter = new();
+			List<int> urenLijstNaFilter = new();
 
-			List<Toestel> toestellen = _toestselRepo.GeefAlleToestellen();
-			List<Toestel> beschikbareToestellen = toestellen.Where(t => t.ToestelType == naam && t.InHerstelling == false).ToList();
+			List<Toestel> beschikbareToestellen = _toestselRepo.GeefAlleBeschikbareToestellenOpNaam(naam);
 
 			for (int i = 0; i < beschikbareUrenFitness.Count; i++) {
 				int uur = beschikbareUrenFitness[i];
 
 				DateTime tijdsSlot = new(dag.Year, dag.Month, dag.Day, uur, 0, 0);
 
-				if (!gereserveerdeTijdSloten.Contains(tijdsSlot)) {
-					urenNaFilter.Add(uur);
+				if (gereserveerdeTijdSloten.Contains(tijdsSlot) == false) {
+					urenLijstNaFilter.Add(uur);
+
 				} else if (beschikbareToestellen.Count > gereserveerdeTijdSloten.Where(d => d == tijdsSlot).ToList().Count) {
-					urenNaFilter.Add(uur);
+					urenLijstNaFilter.Add(uur);
 				}
 
-				if (klantReservatiesMetGeselecteerdeToestel.Contains(tijdsSlot)) {
-					urenNaFilter.Remove(uur);
+				if (klantReservatiesMetGeselecteerdeToestel.Contains(tijdsSlot)) { // Als jij al een reservatie hebt op dit tijdSlot dan moet mag dit niet bij de lijst.
+					urenLijstNaFilter.Remove(uur);
 				}
 
-				if (klantReservatiesDag.Select(reservatie => reservatie.TijdsSlot.StartTijd)
-					.Contains(tijdsSlot.AddHours(-1)) && klantReservatiesDag
-					.Select(reservatie => reservatie.TijdsSlot.StartTijd)
-					.Contains(tijdsSlot.AddHours(-2))) {
-					urenNaFilter.Remove(uur);
+				IEnumerable<DateTime> klantReservatiesStartTijdenLijstDag = klantReservatiesDag.Select(reservatie => reservatie.TijdsSlot.StartTijd);
+
+				if (klantReservatiesStartTijdenLijstDag.Contains(tijdsSlot.AddHours(-1)) && klantReservatiesStartTijdenLijstDag.Contains(tijdsSlot.AddHours(-2)) || klantReservatiesStartTijdenLijstDag.Contains(tijdsSlot.AddHours(1)) && klantReservatiesStartTijdenLijstDag.Contains(tijdsSlot.AddHours(2))) {
+					urenLijstNaFilter.Remove(uur);
 				}
 
-				if (tijdsSlot < DateTime.Now) {
-					urenNaFilter.Remove(uur);
-				}
+				if (tijdsSlot < DateTime.Now) urenLijstNaFilter.Remove(uur);
 			}
 
-			return (urenNaFilter.ToList(), true);
+			return (urenLijstNaFilter.ToList(), true);
 		}
 
 		public IEnumerable<DateTime> GeefBeschikbareDagen() {
-			List<Reservatie> reservaties = _reservatieRepo.GeefAlleReservaties(alleenVandaag: true);
+			List<Reservatie> klantReservaties = _reservatieRepo.GeefAlleReservaties(vandaagPlusToekomst: true, klantenNummer: (int)_klant.KlantenNummer);
 
 			for (int i = 0; i <= Reservatie.AantalDagenInToekomstReserveren; i++) {
 				DateTime dag = DateTime.Now.AddDays(i);
 
-				List<Reservatie> klantReservaties = reservaties.Where(r => r.Klant.KlantenNummer == _klant.KlantenNummer).ToList();
 				List<Reservatie> klantReservatiesDag = klantReservaties.Where(r => r.TijdsSlot.StartTijd.Day == dag.Day).ToList();
 				if (klantReservatiesDag.Count == 4) continue;
 

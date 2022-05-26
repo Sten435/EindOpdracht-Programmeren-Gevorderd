@@ -17,9 +17,6 @@ namespace Domein {
 
 		void VerwijderToestel(int toestelId);
 
-		void UpdateToestelNaamOpId(int toestelId, string toestelNaam);
-
-		bool GeefToestelHerstelStatusOpId(int toestelId);
-
+		List<Toestel> GeefAlleBeschikbareToestellenOpNaam(string naam);
 	}
 }

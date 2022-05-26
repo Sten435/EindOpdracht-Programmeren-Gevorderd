@@ -22,7 +22,7 @@ namespace Persistentie {
 
 				if (vandaagPlusToekomst)
 					command = new($"SELECT * FROM Reservaties r join TijdSloten ts on ts.Reservatie_ReservatieNummer = ReservatieNummer WHERE DAY(StartTijd) >= DAY(GETDATE()) AND MONTH(StartTijd) >= MONTH(GETDATE()) AND YEAR(StartTijd) >= YEAR(GETDATE()) {klantenNummerTussenVoegsel} ORDER BY ReservatieNummer ASC;", connection);
-				else if(alleenVandaag)
+				else if (alleenVandaag)
 					command = new($"SELECT * FROM Reservaties r join TijdSloten ts on ts.Reservatie_ReservatieNummer = ReservatieNummer WHERE DAY(StartTijd) = DAY(GETDATE()) AND MONTH(StartTijd) = MONTH(GETDATE()) AND YEAR(StartTijd) = YEAR(GETDATE()) {klantenNummerTussenVoegsel} ORDER BY ReservatieNummer ASC;", connection);
 				else
 					command = new($"SELECT * FROM Reservaties r join TijdSloten ts on ts.Reservatie_ReservatieNummer = ReservatieNummer {(klantenNummer != -1 ? $"WHERE Klant_KlantenNummer = {klantenNummer}" : "")} ORDER BY ReservatieNummer ASC;", connection);
@@ -30,6 +30,56 @@ namespace Persistentie {
 				Reservatie reservatie;
 
 				using SqlDataReader reader = command.ExecuteReader();
+				if (reader.HasRows) {
+					while (reader.Read()) {
+						int reservatieNummer = (int)reader["ReservatieNummer"];
+						int _klantenNummer = (int)reader["Klant_KlantenNummer"];
+						int toestelNummer = (int)reader["Toestel_IdentificatieCode"];
+						DateTime startTijd = (DateTime)reader["StartTijd"];
+						DateTime eindTijd = (DateTime)reader["EindTijd"];
+
+						Klant klant = KlantenMapper.GeefKlant(_klantenNummer);
+						Toestel toestel = ToestellenMapper.GeefToestel(toestelNummer);
+						if (toestel != null) {
+							TijdsSlot tijdsSlot = new(startTijd, eindTijd);
+
+							reservatie = new(reservatieNummer, klant, tijdsSlot, toestel);
+							reservaties.Add(reservatie);
+						}
+					}
+				}
+			} catch (SqlException) {
+				throw new ReservatieException("(Select) Fout met query naar reservatie Db.");
+			} catch (Exception) {
+				throw new ReservatieException("(Select) Fout in reservatie Db.");
+			}
+			return reservaties;
+		}
+
+		public static List<Reservatie> GeefReservatiesPerToestel(string naam, DateTime? dag) {
+
+			List<Reservatie> reservaties = new();
+
+			try {
+				using SqlConnection connection = new(ConfigRepository.ConnectionString);
+				connection.Open();
+
+				SqlCommand command;
+
+				if (dag == null) {
+					command = new($"SELECT * FROM Reservaties r join TijdSloten ts on ts.Reservatie_ReservatieNummer = ReservatieNummer join Toestellen toes on toes.IdentificatieCode = r.Toestel_IdentificatieCode WHERE toes.ToestelType = @Naam ORDER BY ReservatieNummer ASC;", connection);
+				} else
+					command = new($"SELECT * FROM Reservaties r join TijdSloten ts on ts.Reservatie_ReservatieNummer = ReservatieNummer join Toestellen toes on toes.IdentificatieCode = r.Toestel_IdentificatieCode WHERE toes.ToestelType = @Naam AND DAY(StartTijd) = DAY(@Dag) AND MONTH(StartTijd) = MONTH(@Dag) AND YEAR(StartTijd) = YEAR(@Dag) ORDER BY ReservatieNummer ASC;", connection);
+
+				Reservatie reservatie;
+
+				if (dag != null) {
+					command.Parameters.AddWithValue("@Dag", dag);
+				}
+				command.Parameters.AddWithValue("@Naam", naam);
+
+				using SqlDataReader reader = command.ExecuteReader();
+
 				if (reader.HasRows) {
 					while (reader.Read()) {
 						int reservatieNummer = (int)reader["ReservatieNummer"];
