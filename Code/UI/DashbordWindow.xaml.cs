@@ -92,10 +92,12 @@ namespace UI {
 		}
 
 		private void ToestelGekozen(object sender, SelectionChangedEventArgs e) {
+			TijdSlotComboBox.IsEnabled = false;
 			TijdSlotComboBox.Items.Clear();
 			DatumComboBox.Items.Clear();
 
 			if (ToestelComboBox.SelectedIndex != -1) {
+				DatumComboBox.IsEnabled = true;
 				List<DateTime> beschikbareDagen = domeinController.GeefBeschikbareDagen();
 				beschikbareDagen.ForEach(datum => DatumComboBox.Items.Add(datum.ToString("d")));
 			}
@@ -110,6 +112,7 @@ namespace UI {
 				bool isDateTimeOk = DateTime.TryParse(DatumComboBox.SelectedItem.ToString(), out DateTime dateTime);
 
 				if (isDateTimeOk) {
+					TijdSlotComboBox.IsEnabled = true;
 					DateTime dag = new(dateTime.Year, dateTime.Month, dateTime.Day, 0, 0, 0);
 					bool heeftNogGeenVierReservaties;
 					(beschikbareUren, heeftNogGeenVierReservaties) = domeinController.GeefBeschikbareReservatieUren(dag, ToestelComboBox.SelectedItem.ToString());
@@ -144,7 +147,7 @@ namespace UI {
 			if (ToestelComboBox.SelectedIndex != -1 && DatumComboBox.SelectedIndex != -1 && TijdSlotComboBox.SelectedIndex != -1) {
 				bool isDatumGoed = DateTime.TryParse(DatumComboBox.SelectedItem.ToString(), out DateTime dag);
 				if (isDatumGoed) {
-
+					DatumComboBox.IsEnabled = false;
 					int _tijdSlot = beschikbareUren[TijdSlotComboBox.SelectedIndex];
 					string toestelNaam = ToestelComboBox.SelectedItem.ToString();
 					DateTime tijdSlot = new DateTime(dag.Year, dag.Month, dag.Day, _tijdSlot, 0, 0);

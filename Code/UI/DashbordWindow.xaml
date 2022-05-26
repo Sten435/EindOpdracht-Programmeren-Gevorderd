@@ -36,8 +36,8 @@
                         </StackPanel>
                     </TabItem.Header>
                     <DockPanel>
-                        <StackPanel DockPanel.Dock="Right" Width="300" Margin="15 0">
-                            <TextBox x:Name="ToestelToevoegenTextBox" FontSize="20" Margin="0" materialDesign:HintAssist.Hint="Toestel Naam" Style="{StaticResource MaterialDesignFloatingHintTextBox}" VerticalAlignment="Center" TextChanged="EnableVoegToestelToe" />
+                        <StackPanel DockPanel.Dock="Right" Width="300" VerticalAlignment="Top">
+                            <TextBox x:Name="ToestelToevoegenTextBox" FontSize="20" Margin="24 0" materialDesign:HintAssist.Hint="Toestel Naam" Style="{StaticResource MaterialDesignFloatingHintTextBox}" VerticalAlignment="Center" TextChanged="EnableVoegToestelToe" />
                             <Button materialDesign:ButtonAssist.CornerRadius="8" x:Name="VoegToeBtn" Content="Voeg Toe" Height="45" Width="155" FontSize="24" FontWeight="Bold" Foreground="White" Margin=" 0 20" Padding="0 0 0 4" Click="VoegToestelToe"/>
                         </StackPanel>
                         <ListView x:Name="AdminListBox" Margin="0 10 0 0">
@@ -92,7 +92,78 @@
                         </StackPanel>
                     </TabItem.Header>
                     <DockPanel>
-                        <ListView x:Name="ReservatieListBox" Margin="0 10 0 0" >
+                        <StackPanel Width="340" Background="WhiteSmoke" DockPanel.Dock="Right" Visibility="Visible" VerticalAlignment="Stretch" HorizontalAlignment="Right" Grid.RowSpan="2">
+                            <DockPanel LastChildFill="True" Margin="25 20">
+                                <Image Width="50" Source="/Assets/Images/Toestel.png" DockPanel.Dock="Left" Margin="0 12 0 0"/>
+                                <Border BorderThickness="0 0 0 2" BorderBrush="#26757273" DockPanel.Dock="Bottom" Margin="20 0 0 0">
+                                    <ComboBox IsEditable="True" IsReadOnly="True" IsTextSearchEnabled="False" Padding="0 6 0 0" Text="   . . ." Height="30" x:Name="ToestelComboBox" UseLayoutRounding="False" Foreground="#FF757273" SelectionChanged="ToestelGekozen" FontSize="15">
+                                        <ComboBox.Style>
+                                            <Style TargetType="ComboBox">
+                                                <Style.Setters>
+                                                    <Setter Property="BorderThickness" Value="0"/>
+                                                </Style.Setters>
+                                            </Style>
+                                        </ComboBox.Style>
+                                    </ComboBox>
+                                </Border>
+                                <Label FontSize="26" FontWeight="Bold" Content="Toestel" DockPanel.Dock="Top" Margin="20 0 0 0" Foreground="#FF757273"/>
+                            </DockPanel>
+                            <DockPanel LastChildFill="True" Margin="25 10">
+                                <Image Width="50" Source="/Assets/Images/Datum.png" DockPanel.Dock="Left" Margin="0 16 0 0"/>
+                                <Border BorderThickness="0 0 0 2" BorderBrush="#26757273" DockPanel.Dock="Bottom" Margin="20 0 0 0">
+                                    <ComboBox IsEditable="True" IsEnabled="False" IsReadOnly="True" IsTextSearchEnabled="False" Padding="0 6 0 0" Text="   . . ." Height="30" x:Name="DatumComboBox" UseLayoutRounding="False" Foreground="#FF757273" SelectionChanged="DatumGekozen" FontSize="15">
+                                        <ComboBox.Style>
+                                            <Style TargetType="ComboBox">
+                                                <Style.Setters>
+                                                    <Setter Property="BorderThickness" Value="0"/>
+                                                </Style.Setters>
+                                            </Style>
+                                        </ComboBox.Style>
+                                    </ComboBox>
+                                </Border>
+                                <Label FontSize="26" FontWeight="Bold" Content="Datum" DockPanel.Dock="Top" Margin="20 0 0 0" Foreground="#FF757273"/>
+                            </DockPanel>
+                            <DockPanel LastChildFill="True" Margin="25 20 25 40">
+                                <Image Width="50" Source="/Assets/Images/Tijdslot.png" DockPanel.Dock="Left" Margin="0 12 0 0"/>
+                                <Border BorderThickness="0 0 0 2" BorderBrush="#26757273" DockPanel.Dock="Bottom" Margin="20 0 0 0">
+                                    <ComboBox IsEditable="True" IsEnabled="False" IsReadOnly="True" IsTextSearchEnabled="False" Padding="0 6 0 0" Text="   . . ." Height="30" x:Name="TijdSlotComboBox" UseLayoutRounding="False" Foreground="#FF757273" FontSize="15" SelectionChanged="ReservatieButtonKlikbaarMaken">
+                                        <ComboBox.Style>
+                                            <Style TargetType="ComboBox">
+                                                <Style.Setters>
+                                                    <Setter Property="BorderThickness" Value="0"/>
+                                                </Style.Setters>
+                                            </Style>
+                                        </ComboBox.Style>
+                                    </ComboBox>
+                                </Border>
+                                <Label FontSize="26" FontWeight="Bold" Content="Tijdslot" DockPanel.Dock="Top" Margin="20 0 0 0" Foreground="#FF757273"/>
+                            </DockPanel>
+                            <Button x:Name="ReservatieButton" Height="45" MinWidth="240"
+                HorizontalContentAlignment="Center" 
+                VerticalContentAlignment="Center" 
+                Background="#FFED5959" 
+                Foreground="GhostWhite" 
+                BorderBrush="Transparent"  BorderThickness="0"
+                Padding="0 -4 0 0"
+                Margin="38 0 25 20" Click="NieuweReservatieButton" IsEnabled="False">
+                                <Button.Resources>
+                                    <Style TargetType="{x:Type Border}">
+                                        <Setter Property="CornerRadius" Value="22"/>
+                                    </Style>
+                                </Button.Resources>
+                                <Label FontSize="24" FontWeight="Bold" Content="Reserveer Toestel" Foreground="White">
+                                    <Label.Effect>
+                                        <DropShadowEffect
+                            ShadowDepth="4"
+                            Direction="330"
+                            Color="Black"
+                            Opacity="0.1"
+                            BlurRadius="4"/>
+                                    </Label.Effect>
+                                </Label>
+                            </Button>
+                        </StackPanel>
+                        <ListView x:Name="ReservatieListBox" HorizontalContentAlignment="Stretch" Margin="0 10 0 0" >
                             <ListView.View>
                                 <GridView>
                                     <GridView.ColumnHeaderContainerStyle>
@@ -139,78 +210,6 @@
                                 </GridView>
                             </ListView.View>
                         </ListView>
-                        <StackPanel DockPanel.Dock="Right" Visibility="Visible" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,35,0,0" Grid.RowSpan="2">
-                            <DockPanel Width="400" LastChildFill="True" Margin="0 0 0 20">
-                                <Image Width="50" Source="/Assets/Images/Toestel.png" DockPanel.Dock="Left" Margin="0 12 0 0"/>
-                                <Border BorderThickness="0 0 0 2" BorderBrush="#26757273" DockPanel.Dock="Bottom" Margin="20 0 0 0">
-                                    <ComboBox IsEditable="True" IsReadOnly="True" IsTextSearchEnabled="False" Padding="0 8 0 0" Text="   . . ." Height="30" x:Name="ToestelComboBox" UseLayoutRounding="False" Foreground="#FF757273" SelectionChanged="ToestelGekozen" FontSize="15">
-                                        <ComboBox.Style>
-                                            <Style TargetType="ComboBox">
-                                                <Style.Setters>
-                                                    <Setter Property="BorderThickness" Value="0"/>
-                                                </Style.Setters>
-                                            </Style>
-                                        </ComboBox.Style>
-                                    </ComboBox>
-                                </Border>
-                                <Label FontSize="26" FontWeight="Bold" Content="Toestel" DockPanel.Dock="Top" Margin="20 0 0 0" Foreground="#FF757273"/>
-                            </DockPanel>
-                            <DockPanel Width="400" LastChildFill="True" Margin="0 10">
-                                <Image Width="50" Source="/Assets/Images/Datum.png" DockPanel.Dock="Left" Margin="0 16 0 0"/>
-                                <Border BorderThickness="0 0 0 2" BorderBrush="#26757273" DockPanel.Dock="Bottom" Margin="20 0 0 0">
-                                    <ComboBox IsEditable="True" IsReadOnly="True" IsTextSearchEnabled="False" Padding="0 8 0 0" Text="   . . ." Height="30" x:Name="DatumComboBox" UseLayoutRounding="False" Foreground="#FF757273" SelectionChanged="DatumGekozen" FontSize="15">
-                                        <ComboBox.Style>
-                                            <Style TargetType="ComboBox">
-                                                <Style.Setters>
-                                                    <Setter Property="BorderThickness" Value="0"/>
-                                                </Style.Setters>
-                                            </Style>
-                                        </ComboBox.Style>
-                                    </ComboBox>
-                                </Border>
-                                <Label FontSize="26" FontWeight="Bold" Content="Datum" DockPanel.Dock="Top" Margin="20 0 0 0" Foreground="#FF757273"/>
-                            </DockPanel>
-                            <DockPanel Width="400" LastChildFill="True" Margin="0 20 0 40">
-                                <Image Width="50" Source="/Assets/Images/Tijdslot.png" DockPanel.Dock="Left" Margin="0 12 0 0"/>
-                                <Border BorderThickness="0 0 0 2" BorderBrush="#26757273" DockPanel.Dock="Bottom" Margin="20 0 0 0">
-                                    <ComboBox IsEditable="True" IsReadOnly="True" IsTextSearchEnabled="False" Padding="0 8 0 0" Text="   . . ." Height="30" x:Name="TijdSlotComboBox" UseLayoutRounding="False" Foreground="#FF757273" FontSize="15" SelectionChanged="ReservatieButtonKlikbaarMaken">
-                                        <ComboBox.Style>
-                                            <Style TargetType="ComboBox">
-                                                <Style.Setters>
-                                                    <Setter Property="BorderThickness" Value="0"/>
-                                                </Style.Setters>
-                                            </Style>
-                                        </ComboBox.Style>
-                                    </ComboBox>
-                                </Border>
-                                <Label FontSize="26" FontWeight="Bold" Content="Tijdslot" DockPanel.Dock="Top" Margin="20 0 0 0" Foreground="#FF757273"/>
-                            </DockPanel>
-                            <Button x:Name="ReservatieButton" Height="45" Width="240" 
-                MinWidth="100"
-                HorizontalContentAlignment="Center" 
-                VerticalContentAlignment="Center" 
-                Background="#FFED5959" 
-                Foreground="GhostWhite" 
-                BorderBrush="Transparent"  BorderThickness="0"
-                Padding="0 -4 0 0"
-                Margin="0 0 0 20" Click="NieuweReservatieButton" IsEnabled="False">
-                                <Button.Resources>
-                                    <Style TargetType="{x:Type Border}">
-                                        <Setter Property="CornerRadius" Value="22"/>
-                                    </Style>
-                                </Button.Resources>
-                                <Label FontSize="24" FontWeight="Bold" Content="Reserveer Toestel" Foreground="White">
-                                    <Label.Effect>
-                                        <DropShadowEffect
-                            ShadowDepth="4"
-                            Direction="330"
-                            Color="Black"
-                            Opacity="0.1"
-                            BlurRadius="4"/>
-                                    </Label.Effect>
-                                </Label>
-                            </Button>
-                        </StackPanel>
                     </DockPanel>
                 </TabItem>
                 <TabItem MinWidth="100" x:Name="AccountItem">
@@ -221,8 +220,8 @@
                             <TextBlock HorizontalAlignment="Center" Text="Account" />
                         </StackPanel>
                     </TabItem.Header>
-                    <StackPanel>
-                        <StackPanel.Resources>
+                    <DockPanel VerticalAlignment="Stretch">
+                        <DockPanel.Resources>
                             <Style TargetType="Label">
                                 <Style.Triggers>
                                     <Trigger Property="IsMouseOver" Value="True">
@@ -241,13 +240,19 @@
                                 <Setter Property="Margin" Value="0 5 5 0" />
                                 <Setter Property="Width" Value="50" />
                             </Style>
-                        </StackPanel.Resources>
+                        </DockPanel.Resources>
                         <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="1*"/>
                                 <ColumnDefinition Width="1*"/>
                             </Grid.ColumnDefinitions>
-                            <StackPanel Grid.Column="0">
+                            <StackPanel Grid.Column="0" VerticalAlignment="Stretch">
+                                <StackPanel.Resources>
+                                    <Style TargetType="Image">
+                                        <Setter Property="Width" Value="40" />
+                                        <Setter Property="Margin" Value="0 10" />
+                                    </Style>
+                                </StackPanel.Resources>
                                 <DockPanel Margin="20 25 20 0">
                                     <Image Source="/Assets/Images/Voornaam.png"/>
                                     <Border>
@@ -286,6 +291,12 @@
                                 </DockPanel>
                             </StackPanel>
                             <StackPanel Grid.Column="1">
+                                <StackPanel.Resources>
+                                    <Style TargetType="Image">
+                                        <Setter Property="Width" Value="40" />
+                                        <Setter Property="Margin" Value="0 10" />
+                                    </Style>
+                                </StackPanel.Resources>
                                 <DockPanel Margin="20 25 20 0">
                                     <Image Source="/Assets/Images/Straat.png"/>
                                     <Border>
@@ -312,7 +323,7 @@
                                 </DockPanel>
                             </StackPanel>
                         </Grid>
-                    </StackPanel>
+                    </DockPanel>
                 </TabItem>
                 <TabItem MinWidth="100" x:Name="LogoutItem">
                     <TabItem.Header>
