@@ -76,6 +76,15 @@ namespace UI {
 			ToestelComboBox.ItemsSource = new List<string>();
 
 			List<string> beschikbareToestellen = domeinController.GeefBeschikbareToestellen();
+
+			if (beschikbareToestellen.Count == 0) {
+				ToestelComboBox.IsEnabled = false;
+				ToestelComboBox.Text = "Geen Toestellen Beschikbaar";
+			} else {
+				ToestelComboBox.IsEnabled = true;
+				ToestelComboBox.Text = ". . .";
+			}
+
 			ToestelComboBox.ItemsSource = beschikbareToestellen;
 		}
 
@@ -367,8 +376,7 @@ namespace UI {
 			if ((OplopendSorteerBox.Content as Label).Content.ToString() == "Aflopend") {
 				(OplopendSorteerBox.Content as Label).Content = "Oplopend";
 				OplopendSorteerBox.IsChecked = true;
-			}
-			else {
+			} else {
 				(OplopendSorteerBox.Content as Label).Content = "Aflopend";
 				OplopendSorteerBox.IsChecked = true;
 			}

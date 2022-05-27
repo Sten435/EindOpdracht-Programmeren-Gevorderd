@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Domein {
-	internal class FitnessController : IControll {
+	public class FitnessController : IControll {
 		private IReservatieRepository _reservatieRepo;
 		private IKlantenRepository _klantenRepo;
 		private IToestelRepository _toestselRepo;

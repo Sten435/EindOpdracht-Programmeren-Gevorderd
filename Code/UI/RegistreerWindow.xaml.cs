@@ -39,65 +39,8 @@ namespace UI {
 			domeinController = _domeinController;
 			InitializeComponent();
 			this.DataContext = this;
-		}
 
-		//private string _voornaamTextBoxPlaceholder = "Voornaam";
-		//public string VoornaamTextBoxPlaceholder { get => _voornaamTextBoxPlaceholder; set { _voornaamTextBoxPlaceholder = value; } }
-
-		//private string _achternaamTextBoxPlaceholder = "Achternaam";
-		//public string AchternaamTextBoxPlaceholder { get => _achternaamTextBoxPlaceholder; set { _achternaamTextBoxPlaceholder = value; } }
-
-		//private string _emailTextBoxPlaceholder = "Email";
-		//public string EmailTextBoxPlaceholder { get => _emailTextBoxPlaceholder; set { _emailTextBoxPlaceholder = value; } }
-
-		//private string _geboorteDatumTextBoxPlaceholder = $"{DateTime.Now.Day}/{DateTime.Now.Month}/{DateTime.Now.Year}";
-		//public string GeboorteDatumTextBoxPlaceholder { get => _geboorteDatumTextBoxPlaceholder; set { _geboorteDatumTextBoxPlaceholder = value; } }
-
-		//private string _straatTextBoxPlaceholder = "Straat";
-		//public string StraatTextBoxPlaceholder { get => _straatTextBoxPlaceholder; set { _straatTextBoxPlaceholder = value; } }
-
-		//private string _huisnummerTextBoxPlaceholder = "Huisnummer";
-		//public string HuisnummerTextBoxPlaceholder { get => _huisnummerTextBoxPlaceholder; set { _huisnummerTextBoxPlaceholder = value; } }
-
-		//private string _plaatsTextBoxPlaceholder = "Plaats";
-		//public string PlaatsTextBoxPlaceholder { get => _plaatsTextBoxPlaceholder; set { _plaatsTextBoxPlaceholder = value; } }
-
-		//private string _postcodeTextBoxPlaceholder = "Postcode";
-		//public string PostcodeTextBoxPlaceholder { get => _postcodeTextBoxPlaceholder; set { _postcodeTextBoxPlaceholder = value; } }
-
-		//private void AchternaamTextBox_GotFocus(object sender, RoutedEventArgs e) {
-		//	SetTextBoxPlaceholder(AchternaamTextBox, AchternaamTextBoxPlaceholder);
-		//}
-
-		//private void EmailTextBox_GotFocus(object sender, RoutedEventArgs e) {
-		//	SetTextBoxPlaceholder(EmailTextBox, EmailTextBoxPlaceholder);
-		//}
-
-		//private void VoornaamTextBox_GotFocus(object sender, RoutedEventArgs e) {
-		//	SetTextBoxPlaceholder(VoornaamTextBox, VoornaamTextBoxPlaceholder);
-		//}
-
-		//private void HuisnummerTextBox_GotFocus(object sender, RoutedEventArgs e) {
-		//	SetTextBoxPlaceholder(HuisnummerTextBox, HuisnummerTextBoxPlaceholder);
-		//}
-
-		//private void StraatTextBox_GotFocus(object sender, RoutedEventArgs e) {
-		//	SetTextBoxPlaceholder(StraatnaamTextBox, StraatTextBoxPlaceholder);
-		//}
-
-		//private void PlaatsTextBox_GotFocus(object sender, RoutedEventArgs e) {
-		//	SetTextBoxPlaceholder(PlaatsTextBox, PlaatsTextBoxPlaceholder);
-		//}
-
-		//private void PostcodeTextBox_GotFocus(object sender, RoutedEventArgs e) {
-		//	SetTextBoxPlaceholder(PostcodeTextBox, PostcodeTextBoxPlaceholder);
-		//}
-
-		private void SetTextBoxPlaceholder(TextBox textBox, string value) {
-			if (textBox.Text.Trim() == string.Empty)
-				textBox.Text = value;
-			else if (textBox.Text.Trim().ToLower() == value.ToLower())
-				textBox.Text = string.Empty;
+			GeboorteDatumTextBox.BlackoutDates.Add(new CalendarDateRange(DateTime.Today, DateTime.MaxValue));
 		}
 
 		private void ToonVerdereVelden(object sender, RoutedEventArgs e) {
@@ -147,11 +90,11 @@ namespace UI {
 			}
 		}
 
-		private void GeboorteDatumCheck(object sender, TextCompositionEventArgs e) {
-			Regex regex = new Regex("[^0-9-/]+");
-			if (regex.IsMatch(e.Text))
-				e.Handled = true;
-		}
+		//private void GeboorteDatumCheck(object sender, TextCompositionEventArgs e) {
+		//	Regex regex = new Regex("[^0-9-/]+");
+		//	if (regex.IsMatch(e.Text))
+		//		e.Handled = true;
+		//}
 		private void PostCodeCheck(object sender, TextCompositionEventArgs e) {
 			Regex regex = new Regex("[^0-9]+");
 			if (regex.IsMatch(e.Text))
@@ -203,7 +146,7 @@ namespace UI {
 			}
 		}
 
-		private void Button_Click(object sender, RoutedEventArgs e) {
+		private void LoginBtn(object sender, RoutedEventArgs e) {
 			LoginWindow loginWindow = new(domeinController);
 			loginWindow.Show();
 			this.Close();

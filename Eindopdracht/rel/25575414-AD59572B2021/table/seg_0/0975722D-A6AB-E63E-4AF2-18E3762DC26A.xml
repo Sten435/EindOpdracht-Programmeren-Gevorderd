@@ -58,7 +58,7 @@
 <ownDataTypeParameters>,,</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
-<Column name="VERWIJDERD" id="414F5567-07C1-F62F-0D94-A2443AE2ECF9">
+<Column name="Verwijderd" id="414F5567-07C1-F62F-0D94-A2443AE2ECF9">
 <createdBy>stanp</createdBy>
 <createdTime>2022-05-05 17:47:38 UTC</createdTime>
 <generatorID>A68DD995-813C-65E9-45D5-9A44221449F0</generatorID>
