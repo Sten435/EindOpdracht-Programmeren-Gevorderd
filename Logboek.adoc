@@ -1,0 +1,20 @@
+= Logboek
+
+== Programmeren Gevorderd
+
+*23 April* - __DCD Maken__ +
+
+*23 April* - __Begonnen Aan CUI__ +
+*2 Mei* - _ERD Maken_ +
+*4 Mei* - __Database Implementeren__ +
+*8 Mei* - __Einde CUI__ +
+
+*9 Mei* - __Begonnen Aan UI__ +
+*Mei* - __Database Aanpassen waar aan nodig__ +
+*27 Mei* - __Einde UI__ +
+
+*27 Mei* - __DCD Exporteren__ +
+*27 Mei* - __Backup maken van databank__ +
+*27 Mei* - __Filmpjes maken__ +
+
+*Indienen* - Totaale uren gewerkt: **100/uur**+-
